@@ -2,52 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  --outline: theme(colors.gray.200);
-}
-
 @layer components {
   button {
     @apply px-6 py-2.5 rounded-full relative;
     --filled: theme(colors.blue.700);
     --tonal: theme(colors.blue.200);
+    --outline: theme(colors.gray.400);
   }
 
-  button.filled {
+  .filled {
     @apply bg-[--filled] text-white transition-[filter];
   }
-  button.filled:hover {
+  .filled:hover {
     @apply drop-shadow-md brightness-110;
   }
-  button.filled:active {
+  .filled:active {
     @apply drop-shadow-none brightness-125;
   }
 
-  button.tonal {
+  .tonal {
     @apply bg-[--tonal] text-black transition-[filter];
   }
-  button.tonal:hover {
+  .tonal:hover {
     @apply drop-shadow-md brightness-95;
   }
-  button.tonal:active {
+  .tonal:active {
     @apply drop-shadow-none brightness-90;
   }
 
-  button.outlined {
-    @apply border-2 transition-[transform,background-color];
+  .outlined {
+    @apply border-2 border-[--outline] text-[--filled] transition-[background-color,filter];
   }
-  button.outlined:hover,
-  button.outlined:active {
+  .outlined:hover {
     @apply bg-[--tonal];
   }
-
-  button.text::before {
-    @apply content-[""] absolute opacity-0 scale-0 bottom-0 left-0 right-0 top-0 bg-black/50 rounded-full transition-[transform,opacity];
+  .outlined:active {
+    @apply brightness-90;
   }
-  button.text:hover::before {
+
+  .text::before {
+    @apply content-[""] absolute opacity-0 scale-0 bottom-0 left-0 right-0 top-0 bg-black/50 rounded-full transition-[transform,opacity] duration-200;
+  }
+  .text:hover::before {
     @apply scale-100 opacity-5;
   }
-  button.text:active::before {
+  .text:active::before {
     @apply opacity-10;
   }
 }

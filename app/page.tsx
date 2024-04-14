@@ -1,19 +1,12 @@
 export default function Home() {
   return (
     <main>
-      <div>
-        <input type="time" name="time" id="time" />
-        <input type="text" name="title" id="title" />
-        <button className="filled">Add</button>
-      </div>
-      <div data-active>
-        <p>
-          <time dateTime="">17:00</time>-<time dateTime="21:00">21:00</time>
-        </p>
-        <p>Domra</p>
-        <button className="tonal">Edit</button>
-        <button className="text">Delete</button>
-      </div>
+      <button>hello</button>
+      <button className="filled">hello</button>
+      <button className="outlined">hello</button>
+      <button className="tonal">hello</button>
+      <button className="text">hello</button>
+      <button></button>
     </main>
   );
 }
