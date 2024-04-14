@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  button {
+    @apply px-12 py-2 rounded-full transition-transform;
+    --color: theme(colors.gray.200);
+  }
+  button.danger {
+    --color: theme(colors.red.200);
+  }
+  button:active {
+    @apply scale-95;
+  }
+
+  button.filled {
+    @apply bg-[--color] transition-[transform,filter];
+  }
+  button.filled:hover {
+    @apply brightness-105;
+  }
+
+  button.outlined {
+    @apply border-2 border-[--color] transition-[transform,background-color];
+  }
+  button.outlined:hover, 
+  button.outlined:active {
+    @apply bg-[--color];
+  }
+}
+
+@layer components {
+  input[type="text"] {
+    @apply rounded-full
+  }
+}
