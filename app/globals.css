@@ -10,6 +10,10 @@
     --outline: theme(colors.gray.400);
   }
 
+  .icon {
+    @apply px-2 py-2;
+  }
+
   .filled {
     @apply bg-[--filled] text-white transition-[filter];
   }

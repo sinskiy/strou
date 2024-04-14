@@ -6,7 +6,6 @@ export default function Home() {
       <button className="outlined">hello</button>
       <button className="tonal">hello</button>
       <button className="text">hello</button>
-      <button></button>
     </main>
   );
 }
