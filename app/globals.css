@@ -9,6 +9,9 @@
     --tonal: theme(colors.blue.200);
     --outline: theme(colors.gray.400);
   }
+  button:disabled {
+    @apply grayscale opacity-50 pointer-events-none;
+  }
 
   .icon {
     @apply px-2 py-2;
