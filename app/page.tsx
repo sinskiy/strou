@@ -11,8 +11,8 @@ export default function Home() {
           <time dateTime="">17:00</time>-<time dateTime="21:00">21:00</time>
         </p>
         <p>Domra</p>
-        <button className="outlined">Edit</button>
-        <button className="outlined danger">Delete</button>
+        <button className="tonal">Edit</button>
+        <button className="text">Delete</button>
       </div>
     </main>
   );

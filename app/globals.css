@@ -2,36 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  button {
-    @apply px-12 py-2 rounded-full transition-transform;
-    --color: theme(colors.gray.200);
-  }
-  button.danger {
-    --color: theme(colors.red.200);
-  }
-  button:active {
-    @apply scale-95;
-  }
-
-  button.filled {
-    @apply bg-[--color] transition-[transform,filter];
-  }
-  button.filled:hover {
-    @apply brightness-105;
-  }
-
-  button.outlined {
-    @apply border-2 border-[--color] transition-[transform,background-color];
-  }
-  button.outlined:hover, 
-  button.outlined:active {
-    @apply bg-[--color];
-  }
+@layer utilities {
+  --outline: theme(colors.gray.200);
 }
 
 @layer components {
-  input[type="text"] {
-    @apply rounded-full
+  button {
+    @apply px-6 py-2.5 rounded-full relative;
+    --filled: theme(colors.blue.700);
+    --tonal: theme(colors.blue.200);
+  }
+
+  button.filled {
+    @apply bg-[--filled] text-white transition-[filter];
+  }
+  button.filled:hover {
+    @apply drop-shadow-md brightness-110;
+  }
+  button.filled:active {
+    @apply drop-shadow-none brightness-125;
+  }
+
+  button.tonal {
+    @apply bg-[--tonal] text-black transition-[filter];
+  }
+  button.tonal:hover {
+    @apply drop-shadow-md brightness-95;
+  }
+  button.tonal:active {
+    @apply drop-shadow-none brightness-90;
+  }
+
+  button.outlined {
+    @apply border-2 transition-[transform,background-color];
+  }
+  button.outlined:hover,
+  button.outlined:active {
+    @apply bg-[--tonal];
+  }
+
+  button.text::before {
+    @apply content-[""] absolute opacity-0 scale-0 bottom-0 left-0 right-0 top-0 bg-black/50 rounded-full transition-[transform,opacity];
+  }
+  button.text:hover::before {
+    @apply scale-100 opacity-5;
+  }
+  button.text:active::before {
+    @apply opacity-10;
   }
 }
