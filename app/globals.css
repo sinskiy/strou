@@ -4,7 +4,7 @@
 
 @layer components {
   button {
-    @apply px-6 py-2.5 rounded-full relative;
+    @apply relative flex justify-center items-center gap-2 has-[svg]:pl-4 px-6 py-2.5 rounded-full;
     --filled: theme(colors.blue.700);
     --tonal: theme(colors.blue.200);
     --outline: theme(colors.gray.400);
