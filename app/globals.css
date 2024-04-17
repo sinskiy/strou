@@ -4,53 +4,34 @@
 
 @layer components {
   button {
-    @apply relative flex justify-center items-center gap-2 has-[svg]:pl-4 px-6 py-2.5 rounded-full;
+    @apply relative flex justify-center items-center gap-2 px-6 py-2.5 rounded-md !transition-[transform,background-color] active:scale-95;
   }
   button:disabled {
-    @apply grayscale opacity-70 cursor-not-allowed;
-  }
-
-  .icon {
-    @apply px-2 py-2;
+    @apply grayscale opacity-70 pointer-events-none;
   }
 
   .filled {
-    @apply interactive-bg-primary transition-[filter,background-color];
-  }
-  .filled:hover {
-    @apply drop-shadow-lg;
-  }
-  .filled:active {
-    @apply drop-shadow-md;
+    @apply interactive-bg-primary;
   }
 
   .tonal {
-    @apply interactive-bg-primary-container transition-[background-color,filter];
-  }
-  .tonal:hover {
-    @apply drop-shadow-lg;
-  }
-  .tonal:active {
-    @apply drop-shadow-md;
+    @apply interactive-bg-primary-container;
   }
 
   .outlined {
-    @apply !text-primary border-2 border-outline transition-colors;
-  }
-  .outlined:hover:not(:disabled) {
-    @apply interactive-bg-primary-container;
+    @apply !text-primary border-2 border-outline hover:interactive-bg-primary-container;
   }
 
   .text {
     @apply text-primary;
   }
   .text::before {
-    @apply content-[""] absolute opacity-0 scale-0 bottom-0 left-0 right-0 top-0 bg-black rounded-full transition-[transform,opacity] duration-300;
+    @apply content-[""] absolute opacity-0 scale-0 bottom-0 left-0 right-0 top-0 bg-black rounded-full duration-300 hover:scale-100 hover:opacity-5 active:opacity-10;
   }
-  .text:hover:not(:disabled)::before {
-    @apply scale-100 opacity-5;
-  }
-  .text:active::before {
-    @apply opacity-10;
+}
+
+@layer components {
+  input[type="text"] {
+    @apply bg-surface-container border-2 border-outline/30 h-14 pl-4 text-2xl rounded-md placeholder:text-on-surface/30 focus-visible:border-outline transition-colors;
   }
 }

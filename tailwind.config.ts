@@ -13,5 +13,5 @@ const config: Config = {
   plugins: [],
 };
 export default withMaterialColors(config, {
-  primary: "#ff0000",
+  primary: "#446732",
 });
