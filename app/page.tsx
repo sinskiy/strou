@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ReactEventHandler, useState } from "react";
 
 type Modes = "edit" | "view";
 
@@ -29,9 +29,15 @@ export default function Home() {
           );
         })
       : "";
+
+  function handleAddTodo(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSchedule((schedule) => (schedule += `${schedule && "\n"}${newTask}`));
+    setNewTask("");
+  }
   return (
     <main className="flex flex-col items-center justify-center gap-4 w-fit mx-auto">
-      <div className="flex gap-4">
+      <form onSubmit={handleAddTodo} className="flex gap-4">
         <input
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
@@ -57,7 +63,7 @@ export default function Home() {
           </svg>
           add
         </button>
-      </div>
+      </form>
       <div className="w-full flex gap-2">
         <button
           onClick={() => (mode === "view" ? setMode("edit") : setMode("view"))}
