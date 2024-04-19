@@ -4,24 +4,17 @@
 
 @layer components {
   button {
-    @apply relative flex justify-center items-center gap-2 px-6 py-2.5 rounded-md !transition-[transform,background-color] active:scale-95;
+    @apply relative flex justify-center items-center gap-2 px-6 py-2.5 rounded-md !transition-[transform,background-color] active:scale-95 disabled:grayscale disabled:opacity-70 disabled:pointer-events-none;
   }
-  button:disabled {
-    @apply grayscale opacity-70 pointer-events-none;
-  }
-
   .filled {
     @apply interactive-bg-primary;
   }
-
   .tonal {
     @apply interactive-bg-primary-container;
   }
-
   .outlined {
     @apply !text-primary border-2 border-outline hover:interactive-bg-primary-container;
   }
-
   .text {
     @apply text-primary;
   }
@@ -31,7 +24,20 @@
 }
 
 @layer components {
+  input[type="text"],
+  textarea {
+    @apply bg-surface-container border-2 border-outline/30 rounded-md placeholder:text-on-surface/30 focus-visible:border-primary transition-colors;
+  }
   input[type="text"] {
-    @apply bg-surface-container border-2 border-outline/30 h-14 pl-4 text-2xl rounded-md placeholder:text-on-surface/30 focus-visible:border-outline transition-colors;
+    @apply h-14 pl-4 text-2xl;
+  }
+  textarea {
+    @apply bg-surface-container-highest p-2 text-base;
+  }
+}
+
+@layer components {
+  input[type="checkbox"] {
+    @apply accent-primary w-6 h-6 transition-[filter] active:scale-95;
   }
 }
