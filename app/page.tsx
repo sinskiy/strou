@@ -3,18 +3,22 @@
 import Add from "@/components/icons/addIcon";
 import DeleteIcon from "@/components/icons/deleteIcon";
 import EditIcon from "@/components/icons/editIcon";
+import TaskIcon from "@/components/icons/taskIcon";
 import Button from "@/components/ui/button";
 import { useState } from "react";
 
-type Modes = "edit" | "view";
+type Modes = "edit" | "tasks";
 
 export default function Home() {
   const [newTask, setNewTask] = useState("");
-  const [mode, setMode] = useState<Modes>("view");
+
   const [schedule, setSchedule] = useState("");
 
+  const initialMode = schedule ? "tasks" : "edit";
+  const [mode, setMode] = useState<Modes>(initialMode);
+
   const scheduleList =
-    mode === "view"
+    mode === "tasks"
       ? schedule.split("\n").map((task) => {
           if (!task.length) return "";
           return (
@@ -50,21 +54,25 @@ export default function Home() {
           add
         </Button>
       </form>
-      <div className="w-full flex gap-2">
-        <Button
-          onClick={() => (mode === "view" ? setMode("edit") : setMode("view"))}
-          variant="outlined"
-          colors="primary-container"
-          className="p-4"
-        >
-          <EditIcon />
-          {`enter ${mode === "view" ? "edit" : "task"} mode`}
-        </Button>
-        <Button variant="text" colors="background" className="p-4">
-          <DeleteIcon />
-          delete current schedule
-        </Button>
-      </div>
+      {schedule && (
+        <div className="w-full flex gap-2">
+          <Button
+            onClick={() =>
+              mode === "tasks" ? setMode("edit") : setMode("tasks")
+            }
+            variant="outlined"
+            colors="primary-container"
+            className="p-4"
+          >
+            {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
+            {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
+          </Button>
+          <Button variant="text" colors="background" className="p-4">
+            <DeleteIcon />
+            delete current schedule
+          </Button>
+        </div>
+      )}
       <div className="w-full">
         {mode === "edit" ? (
           <textarea
@@ -76,7 +84,7 @@ export default function Home() {
             id="schedule"
             className="resize-none w-full"
           >
-            hello
+            {schedule}
           </textarea>
         ) : (
           <div className="flex flex-col gap-2">{scheduleList}</div>
