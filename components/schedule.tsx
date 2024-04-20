@@ -31,9 +31,7 @@ export default function Schedule({
           name="schedule"
           id="schedule"
           className="resize-none w-full"
-        >
-          {schedule}
-        </textarea>
+        ></textarea>
       ) : (
         <div className="flex flex-col gap-2">{scheduleList}</div>
       )}
