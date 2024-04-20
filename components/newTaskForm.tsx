@@ -3,7 +3,7 @@ import Add from "./icons/addIcon";
 import Button from "./ui/button";
 import { HandleAddTodo } from "@/app/page";
 
-interface Props {
+interface NewTaskFormProps {
   handleAddTodo: HandleAddTodo;
   newTask: string;
   setNewTask: (value: SetStateAction<string>) => void;
@@ -13,7 +13,7 @@ export default function NewTaskForm({
   handleAddTodo,
   newTask,
   setNewTask,
-}: Props) {
+}: NewTaskFormProps) {
   return (
     <form onSubmit={handleAddTodo} className="flex gap-4">
       <input

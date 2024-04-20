@@ -5,6 +5,7 @@ import EditIcon from "@/components/icons/editIcon";
 import TaskIcon from "@/components/icons/taskIcon";
 import NewTaskForm from "@/components/newTaskForm";
 import Button from "@/components/ui/button";
+import Task from "@/components/ui/task";
 import { useState } from "react";
 
 type Modes = "edit" | "tasks";
@@ -22,15 +23,7 @@ export default function Home() {
     mode === "tasks"
       ? schedule.split("\n").map((task) => {
           if (!task.length) return "";
-          return (
-            <div
-              key={task}
-              className="bg-surface-container rounded-md p-4 flex items-center gap-2"
-            >
-              <input type="checkbox" name={task} id={task} />
-              <label htmlFor={task}>{task}</label>
-            </div>
-          );
+          return <Task key={task} task={task} />;
         })
       : "";
 
