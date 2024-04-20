@@ -1,13 +1,14 @@
 "use client";
 
-import Add from "@/components/icons/addIcon";
 import DeleteIcon from "@/components/icons/deleteIcon";
 import EditIcon from "@/components/icons/editIcon";
 import TaskIcon from "@/components/icons/taskIcon";
+import NewTaskForm from "@/components/newTaskForm";
 import Button from "@/components/ui/button";
 import { useState } from "react";
 
 type Modes = "edit" | "tasks";
+export type HandleAddTodo = (e: React.FormEvent<HTMLFormElement>) => void;
 
 export default function Home() {
   const [newTask, setNewTask] = useState("");
@@ -33,46 +34,41 @@ export default function Home() {
         })
       : "";
 
-  function handleAddTodo(e: React.FormEvent<HTMLFormElement>) {
+  const handleAddTodo: HandleAddTodo = (e) => {
     e.preventDefault();
     setSchedule((schedule) => (schedule += `${schedule && "\n"}${newTask}`));
     setNewTask("");
-  }
+  };
   return (
     <main className="flex flex-col items-center justify-center gap-4 w-fit mx-auto">
-      <form onSubmit={handleAddTodo} className="flex gap-4">
-        <input
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          type="text"
-          placeholder="what you want to do?"
-          name="task-title"
-          id="task-title"
-        />
-        <Button>
-          <Add />
-          add
+      <NewTaskForm
+        handleAddTodo={handleAddTodo}
+        newTask={newTask}
+        setNewTask={setNewTask}
+      />
+      <div className="w-full flex gap-2">
+        <Button
+          disabled={!schedule}
+          onClick={() =>
+            mode === "tasks" ? setMode("edit") : setMode("tasks")
+          }
+          variant="outlined"
+          colors="primary-container"
+          className="p-4"
+        >
+          {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
+          {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
         </Button>
-      </form>
-      {schedule && (
-        <div className="w-full flex gap-2">
-          <Button
-            onClick={() =>
-              mode === "tasks" ? setMode("edit") : setMode("tasks")
-            }
-            variant="outlined"
-            colors="primary-container"
-            className="p-4"
-          >
-            {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
-            {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
-          </Button>
-          <Button variant="text" colors="background" className="p-4">
-            <DeleteIcon />
-            delete current schedule
-          </Button>
-        </div>
-      )}
+        <Button
+          disabled={!schedule}
+          variant="text"
+          colors="background"
+          className="p-4"
+        >
+          <DeleteIcon />
+          delete current schedule
+        </Button>
+      </div>
       <div className="w-full">
         {mode === "edit" ? (
           <textarea
