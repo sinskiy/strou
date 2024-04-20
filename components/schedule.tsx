@@ -1,5 +1,4 @@
 import { type Modes, type Schedule } from "@/app/page";
-import { type ReactElement } from "react";
 import Task from "./ui/task";
 
 interface ScheduleProps {
