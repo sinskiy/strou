@@ -1,5 +1,6 @@
 import { type Modes, type Schedule } from "@/app/page";
 import Task from "./ui/task";
+import { parseSchedule } from "@/lib/scheduleParser";
 
 interface ScheduleProps {
   mode: Modes;
@@ -12,24 +13,24 @@ export default function Schedule({
   schedule,
   setSchedule,
 }: ScheduleProps) {
-  const date = new Date();
-  const tasks = schedule.split("\n");
-  tasks.map((task) => {
-    task.split(" ").map((item) => {
-      const taskTime = item.split(":").map((time) => Number(time));
-      console.log(taskTime);
-      if (taskTime.length === 2) {
-        const [hours, minutes] = taskTime;
-        if (hours == date.getHours()) {
-          if (minutes - 10 > date.getMinutes()) {
-            console.log(task);
-          }
-        } else if (hours < date.getHours()) {
-          console.log(task);
-        }
-      }
-    });
-  });
+  const parsedSchedule = parseSchedule(schedule);
+  console.log(parsedSchedule);
+  // const date = new Date();
+  // const tasks = schedule.split("\n").map((task) => task.split(" "));
+  // tasks.forEach((task) => {
+  //   const likelyTime = task[0];
+  //   const taskTime = likelyTime.split(":").map((time) => Number(time));
+  //   if (taskTime.length === 2) {
+  //     const [hours, minutes] = taskTime;
+  //     if (hours === date.getHours()) {
+  //       if (minutes - 10 > date.getMinutes()) {
+  //         console.log(task);
+  //       }
+  //     } else if (hours < date.getHours()) {
+  //       console.log(task);
+  //     }
+  //   }
+  // });
 
   const scheduleList =
     mode === "tasks"
