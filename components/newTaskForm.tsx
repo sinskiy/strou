@@ -1,7 +1,7 @@
-import { SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import Add from "./icons/addIcon";
 import Button from "./ui/button";
-import { HandleAddTodo } from "@/app/page";
+import { type HandleAddTodo } from "@/app/page";
 
 interface NewTaskFormProps {
   handleAddTodo: HandleAddTodo;
