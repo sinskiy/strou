@@ -20,7 +20,7 @@ export default function NewTaskForm({
         value={newTask}
         onChange={(e) => setNewTask(e.target.value)}
         type="text"
-        placeholder="what you want to do?"
+        placeholder="what do you want to do?"
         name="task-title"
         id="task-title"
       />
