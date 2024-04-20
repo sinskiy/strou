@@ -12,10 +12,30 @@ export default function Schedule({
   schedule,
   setSchedule,
 }: ScheduleProps) {
+  const date = new Date();
+  const tasks = schedule.split("\n");
+  tasks.map((task) => {
+    task.split(" ").map((item) => {
+      const taskTime = item.split(":").map((time) => Number(time));
+      console.log(taskTime);
+      if (taskTime.length === 2) {
+        const [hours, minutes] = taskTime;
+        if (hours == date.getHours()) {
+          if (minutes - 10 > date.getMinutes()) {
+            console.log(task);
+          }
+        } else if (hours < date.getHours()) {
+          console.log(task);
+        }
+      }
+    });
+  });
+
   const scheduleList =
     mode === "tasks"
       ? schedule.split("\n").map((task) => {
           if (!task.length) return "";
+
           return <Task key={task} task={task} />;
         })
       : "";
