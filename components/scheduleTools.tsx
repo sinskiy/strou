@@ -37,9 +37,13 @@ export default function ScheduleTools({
         {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
         {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
       </Button>
-      <Button disabled={!schedule} variant="text" colors="error-container">
+      <Button
+        disabled={!schedule}
+        variant="text"
+        colors="error-container"
+        className="w-auto h-full p-4 aspect-square"
+      >
         <DeleteIcon />
-        delete current schedule
       </Button>
     </div>
   );
