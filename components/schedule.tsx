@@ -17,12 +17,12 @@ export default function Schedule({
 }: ScheduleProps) {
   const scheduleList =
     mode === "tasks"
-      ? scheduleObject.map((task) => {
+      ? scheduleObject.map((task, i) => {
           const key = `${task.start && task.start.toString()} ${
             task.finish && task.finish.toString()
           } ${task.name}`;
 
-          return <Task key={key} task={task} />;
+          return <Task key={key} task={task} setSchedule={setSchedule} />;
         })
       : "";
   return (
