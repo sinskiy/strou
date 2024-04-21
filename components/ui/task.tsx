@@ -10,7 +10,7 @@ const Task = ({ task }: TaskProps) => {
   const taskFinish =
     task.finish && task.finish !== task.start && humanTime(task.finish);
   return (
-    <div className="bg-surface-container rounded-md p-4 flex items-center gap-2">
+    <div className="bg-surface-container rounded-md px-8 py-4 flex items-center gap-4">
       <input type="checkbox" name={task.name} id={task.name} />
       <label htmlFor={task.name}>
         {taskStart}
