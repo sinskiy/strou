@@ -38,7 +38,7 @@ export default function ScheduleTools({
         disabled={!schedule}
         onClick={handleModeClick}
         variant="outlined"
-        colors="primary-container"
+        colors="primary"
       >
         {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
         {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
@@ -47,7 +47,7 @@ export default function ScheduleTools({
         disabled={!schedule}
         onClick={handleDeleteClick}
         variant="text"
-        colors="error-container"
+        colors="error"
         className="w-auto h-full p-4 aspect-square"
       >
         <DeleteIcon />
