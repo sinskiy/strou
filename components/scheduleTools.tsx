@@ -10,6 +10,7 @@ import { sortSchedule } from "@/lib/scheduleSorter";
 interface ScheduleToolsProps {
   schedule: string;
   mode: Modes;
+  setSchedule: SetStateFunction<string>;
   setMode: SetStateFunction<Modes>;
   setScheduleObject: SetStateFunction<Task[]>;
 }
@@ -17,20 +18,25 @@ interface ScheduleToolsProps {
 export default function ScheduleTools({
   schedule,
   mode,
+  setSchedule,
   setMode,
   setScheduleObject,
 }: ScheduleToolsProps) {
-  function handleClick(): void {
+  function handleModeClick(): void {
     mode === "tasks" ? setMode("edit") : setMode("tasks");
     const parsedSchedule = parseSchedule(schedule);
     const sortedSchedule = sortSchedule(parsedSchedule);
     setScheduleObject(sortedSchedule);
   }
+  function handleDeleteClick(): void {
+    setScheduleObject([]);
+    setSchedule("");
+  }
   return (
     <div className="w-full flex gap-2">
       <Button
         disabled={!schedule}
-        onClick={handleClick}
+        onClick={handleModeClick}
         variant="outlined"
         colors="primary-container"
       >
@@ -39,6 +45,7 @@ export default function ScheduleTools({
       </Button>
       <Button
         disabled={!schedule}
+        onClick={handleDeleteClick}
         variant="text"
         colors="error-container"
         className="w-auto h-full p-4 aspect-square"
