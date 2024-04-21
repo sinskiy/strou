@@ -1,43 +1,28 @@
-import { type Modes, type Schedule } from "@/app/page";
+import { type Modes } from "@/app/page";
 import Task from "./ui/task";
-import { parseSchedule } from "@/lib/scheduleParser";
+import type { Task as ITask } from "@/lib/scheduleTypes";
 
 interface ScheduleProps {
   mode: Modes;
-  schedule: Schedule;
+  schedule: string;
   setSchedule: SetStateFunction<string>;
+  scheduleObject: ITask[];
 }
 
 export default function Schedule({
   mode,
   schedule,
   setSchedule,
+  scheduleObject,
 }: ScheduleProps) {
-  const parsedSchedule = parseSchedule(schedule);
-  console.log(parsedSchedule);
-  // const date = new Date();
-  // const tasks = schedule.split("\n").map((task) => task.split(" "));
-  // tasks.forEach((task) => {
-  //   const likelyTime = task[0];
-  //   const taskTime = likelyTime.split(":").map((time) => Number(time));
-  //   if (taskTime.length === 2) {
-  //     const [hours, minutes] = taskTime;
-  //     if (hours === date.getHours()) {
-  //       if (minutes - 10 > date.getMinutes()) {
-  //         console.log(task);
-  //       }
-  //     } else if (hours < date.getHours()) {
-  //       console.log(task);
-  //     }
-  //   }
-  // });
-
   const scheduleList =
     mode === "tasks"
-      ? schedule.split("\n").map((task) => {
-          if (!task.length) return "";
+      ? scheduleObject.map((task) => {
+          const key = `${task.start && task.start.toString()} ${
+            task.finish && task.finish.toString()
+          } ${task.name}`;
 
-          return <Task key={task} task={task} />;
+          return <Task key={key} task={task} />;
         })
       : "";
   return (

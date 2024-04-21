@@ -3,23 +3,36 @@
 import NewTaskForm from "@/components/newTaskForm";
 import Schedule from "@/components/schedule";
 import ScheduleTools from "@/components/scheduleTools";
+import { parseSchedule } from "@/lib/scheduleParser";
+import { sortSchedule } from "@/lib/scheduleSorter";
+import { Task } from "@/lib/scheduleTypes";
 import { useState } from "react";
 
-export type Schedule = string;
 export type Modes = "edit" | "tasks";
 export type HandleAddTodo = (e: React.FormEvent<HTMLFormElement>) => void;
 
 export default function Home() {
   const [newTask, setNewTask] = useState("");
 
-  const [schedule, setSchedule] = useState<Schedule>("");
+  const [schedule, setSchedule] = useState("");
+  const [scheduleObject, setScheduleObject] = useState<Task[]>([]);
 
   const initialMode = schedule ? "tasks" : "edit";
   const [mode, setMode] = useState<Modes>(initialMode);
 
   const handleAddTodo: HandleAddTodo = (e) => {
     e.preventDefault();
-    setSchedule((schedule) => (schedule += `${schedule && "\n"}${newTask}`));
+
+    setSchedule((schedule) => {
+      const newSchedule = schedule + `${schedule && "\n"}${newTask}`;
+
+      const parsedSchedule = parseSchedule(newSchedule);
+      const sortedSchedule = sortSchedule(parsedSchedule);
+      setScheduleObject(sortedSchedule);
+
+      return newSchedule;
+    });
+
     setNewTask("");
   };
   return (
@@ -29,8 +42,18 @@ export default function Home() {
         newTask={newTask}
         setNewTask={setNewTask}
       />
-      <ScheduleTools schedule={schedule} mode={mode} setMode={setMode} />
-      <Schedule mode={mode} schedule={schedule} setSchedule={setSchedule} />
+      <ScheduleTools
+        schedule={schedule}
+        mode={mode}
+        setMode={setMode}
+        setScheduleObject={setScheduleObject}
+      />
+      <Schedule
+        mode={mode}
+        schedule={schedule}
+        setSchedule={setSchedule}
+        scheduleObject={scheduleObject}
+      />
     </main>
   );
 }

@@ -1,17 +1,5 @@
-interface CertainTime {
-  hours: number;
-  minutes: number;
-}
-
-interface Period {
-  from: CertainTime;
-  to: CertainTime;
-}
-
-interface Task {
-  name: string;
-  time?: CertainTime | Period;
-}
+import type { Period, Time } from "./datetimeTypes";
+import type { Task } from "./scheduleTypes";
 
 export function parseSchedule(schedule: string): Task[] {
   const tasks = schedule.split("\n");
@@ -23,21 +11,19 @@ export function parseSchedule(schedule: string): Task[] {
 function parseTask(task: string): Task {
   const parameters = task.split(" ");
 
-  let parsedTask: any = {};
-
-  parameters.forEach((parameter) => {
+  const taskObject: Task = parameters.reduce((acc: any, parameter) => {
     if (isTime(parameter)) {
-      parsedTask["time"] = toTime(parameter);
+      return { ...acc, ...parseTime(parameter) };
     } else {
-      if (Object.hasOwn(parsedTask, "name")) {
-        parsedTask["name"] += " " + parameter;
+      if (Object.hasOwn(acc, "name")) {
+        return { ...acc, name: (acc.name += " " + parameter) };
       } else {
-        parsedTask["name"] = parameter;
+        return { ...acc, name: (acc.name = parameter) };
       }
     }
-  });
+  }, {});
 
-  return parsedTask;
+  return taskObject;
 }
 
 function isTime(parameter: string): boolean {
@@ -48,30 +34,24 @@ function isTime(parameter: string): boolean {
   }
 }
 
-function toTime(parameter: string): CertainTime | Period {
-  const period = parameter.split("-");
+function parseTime(time: string): Period {
+  const period = time.split("-");
   if (period.length === 2) {
-    return toPeriod(period);
+    const [start, finish]: Time[] = period.map((timestamp) =>
+      toTimeObject(timestamp)
+    );
+    return { start, finish };
   } else if (period.length === 1) {
-    return toCertainTime(parameter);
+    const start = toTimeObject(time);
+    const finish = start;
+    return { start, finish };
   }
   throw Error();
 }
 
-function toCertainTime(timeString: string): CertainTime {
-  const [hours, minutes] = timeString.split(":").map((time) => Number(time));
-  const time: CertainTime = {
-    hours,
-    minutes,
-  };
-  return time;
-}
-
-function toPeriod(period: string[]): Period {
-  const [from, to] = period.map((time) => toCertainTime(time));
-  const periodObject: Period = {
-    from,
-    to,
-  };
-  return periodObject;
+function toTimeObject(timestamp: string): Time {
+  const [hours, minutes] = timestamp
+    .split(":")
+    .map((timeUnitString) => Number(timeUnitString));
+  return { hours, minutes };
 }

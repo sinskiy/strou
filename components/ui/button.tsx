@@ -16,7 +16,7 @@ const Button = ({
   const variants = {
     text: `text-${colors} text relative`,
     filled: `interactive-bg-${colors}`,
-    outlined: `border-2 border-${colors} text-black hover:interactive-bg-${colors}`,
+    outlined: `border-2 border-${colors} text-inherit hover:interactive-bg-${colors}`,
   };
   return (
     <button
