@@ -33,17 +33,11 @@ export default function ScheduleTools({
         onClick={handleClick}
         variant="outlined"
         colors="primary-container"
-        className="p-4"
       >
         {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
         {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
       </Button>
-      <Button
-        disabled={!schedule}
-        variant="text"
-        colors="background"
-        className="p-4"
-      >
+      <Button disabled={!schedule} variant="text" colors="error-container">
         <DeleteIcon />
         delete current schedule
       </Button>

@@ -3,9 +3,11 @@ const { withMaterialColors } = require("@sinskiy/tailwind-material-colors");
 const config: Config = {
   safelist: [
     "interactive-bg-primary",
-    "interactive-bg-primary-container",
-    "border-primary-container",
     "hover:interactive-bg-primary-container",
+    "before:bg-primary-container",
+    "before:bg-error-container",
+    "text-error-container",
+    "hover:text-on-error-container",
   ],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
