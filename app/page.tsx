@@ -6,6 +6,7 @@ import ScheduleTools from "@/components/scheduleTools";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
 import { Task } from "@/lib/scheduleTypes";
+import { updateSchedule } from "@/lib/storage";
 import { useEffect, useState } from "react";
 
 export type Modes = "edit" | "tasks";
@@ -78,8 +79,4 @@ export default function Home() {
       />
     </main>
   );
-}
-
-export function updateSchedule(schedule: string): void {
-  localStorage.setItem("schedule", schedule);
 }

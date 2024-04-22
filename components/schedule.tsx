@@ -22,14 +22,7 @@ export default function Schedule({
             task.finish && task.finish.toString()
           } ${task.name}`;
 
-          return (
-            <Task
-              key={key}
-              task={task}
-              schedule={schedule}
-              setSchedule={setSchedule}
-            />
-          );
+          return <Task key={key} task={task} setSchedule={setSchedule} />;
         })
       : "";
   return (
