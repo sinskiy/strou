@@ -6,7 +6,7 @@ import ScheduleTools from "@/components/scheduleTools";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
 import { Task } from "@/lib/scheduleTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type Modes = "edit" | "tasks";
 export type HandleAddTodo = (e: React.FormEvent<HTMLFormElement>) => void;
@@ -17,8 +17,27 @@ export default function Home() {
   const [schedule, setSchedule] = useState("");
   const [scheduleObject, setScheduleObject] = useState<Task[]>([]);
 
-  const initialMode = schedule ? "tasks" : "edit";
-  const [mode, setMode] = useState<Modes>(initialMode);
+  // retrieve schedule on page load
+  useEffect(() => {
+    const savedSchedule = localStorage.getItem("schedule");
+    const savedScheduleObject = JSON.parse(
+      localStorage.getItem("scheduleObject") ?? ""
+    );
+    if (savedSchedule && savedScheduleObject) {
+      setSchedule(savedSchedule);
+      setScheduleObject(savedScheduleObject);
+      setMode("tasks");
+    }
+  }, []);
+
+  // whenever scheduleObject changes, scheduleObject and schedule in localStorage gets updated
+  useEffect(() => {
+    localStorage.setItem("schedule", schedule);
+    localStorage.setItem("scheduleObject", JSON.stringify(scheduleObject));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scheduleObject]);
+
+  const [mode, setMode] = useState<Modes>("tasks");
 
   const handleAddTodo: HandleAddTodo = (e) => {
     e.preventDefault();
