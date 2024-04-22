@@ -1,3 +1,4 @@
+import { updateSchedule } from "@/app/page";
 import { humanTime } from "@/lib/datetime";
 import { check } from "@/lib/scheduleModifier";
 import type { Task } from "@/lib/scheduleTypes";
@@ -5,15 +6,18 @@ import { ChangeEvent } from "react";
 
 interface TaskProps {
   task: Task;
+  schedule: string;
   setSchedule: SetStateFunction<string>;
 }
 
-const Task = ({ task, setSchedule }: TaskProps) => {
+const Task = ({ task, schedule, setSchedule }: TaskProps) => {
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const { checked } = e.target;
-    setSchedule((schedule: string) =>
-      check(schedule, checked, task.originalIndex)
-    );
+    setSchedule((schedule: string) => {
+      const checkedSchedule = check(schedule, checked, task.originalIndex);
+      updateSchedule(checkedSchedule);
+      return checkedSchedule;
+    });
     task.checked = !task.checked;
   }
   const taskStart = task.start && humanTime(task.start);
