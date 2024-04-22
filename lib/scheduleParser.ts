@@ -18,7 +18,10 @@ function parseTask(task: string, index: number): Task {
       } else if (parameter === "x") {
         return { ...acc, checked: true };
       } else {
-        return { ...acc, name: `${acc.name && acc.name + " "}${parameter}` };
+        return {
+          ...acc,
+          name: `${acc.name ? acc.name + " " : ""}${parameter}`,
+        };
       }
     },
     { checked: false, originalIndex: index }
