@@ -20,3 +20,9 @@
     @apply accent-primary w-6 h-6 transition-[filter] active:scale-95;
   }
 }
+
+@layer components {
+  dialog[open] {
+    @apply flex flex-col gap-4 bg-surface rounded-md p-12 text-xl;
+  }
+}

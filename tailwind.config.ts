@@ -7,6 +7,7 @@ const config: Config = {
     "before:bg-primary/20",
     "text-error",
     "before:bg-error/20",
+    "interactive-bg-primary-container",
   ],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",

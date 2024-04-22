@@ -6,6 +6,7 @@ import Button from "./ui/button";
 import { Task } from "@/lib/scheduleTypes";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
+import { useRef } from "react";
 
 interface ScheduleToolsProps {
   schedule: string;
@@ -28,30 +29,46 @@ export default function ScheduleTools({
     const sortedSchedule = sortSchedule(parsedSchedule);
     setScheduleObject(sortedSchedule);
   }
-  function handleDeleteClick(): void {
+
+  function handleDeleteSchedule() {
     setScheduleObject([]);
     setSchedule("");
   }
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
   return (
-    <div className="w-full flex gap-2">
-      <Button
-        disabled={!schedule}
-        onClick={handleModeClick}
-        variant="outlined"
-        colors="primary"
-      >
-        {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
-        {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
-      </Button>
-      <Button
-        disabled={!schedule}
-        onClick={handleDeleteClick}
-        variant="text"
-        colors="error"
-        className="w-auto h-full p-4 aspect-square"
-      >
-        <DeleteIcon />
-      </Button>
-    </div>
+    <>
+      <div className="w-full flex gap-2">
+        <Button
+          disabled={!schedule}
+          onClick={handleModeClick}
+          variant="outlined"
+          colors="primary"
+        >
+          {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
+          {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
+        </Button>
+        <Button
+          disabled={!schedule}
+          onClick={() => dialogRef.current?.showModal()}
+          variant="text"
+          colors="error"
+          className="w-auto h-full p-4 aspect-square"
+        >
+          <DeleteIcon />
+        </Button>
+        <dialog ref={dialogRef}>
+          <p>are you sure you want to delete this schedule?</p>
+          <form method="dialog">
+            <Button autoFocus colors="primary-container">
+              no, cancel
+            </Button>
+            <Button variant="text" onClick={handleDeleteSchedule}>
+              yes, delete this schedule
+            </Button>
+          </form>
+        </dialog>
+      </div>
+    </>
   );
 }
