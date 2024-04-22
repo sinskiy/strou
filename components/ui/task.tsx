@@ -1,4 +1,4 @@
-import { humanTime } from "@/lib/datetime";
+import { objectToHumanTime } from "@/lib/datetime";
 import { check } from "@/lib/scheduleModifier";
 import type { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
@@ -12,16 +12,20 @@ interface TaskProps {
 const Task = ({ task, setSchedule }: TaskProps) => {
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const { checked } = e.target;
+
     setSchedule((schedule: string) => {
-      const checkedSchedule = check(schedule, checked, task.originalIndex);
+      const checkedSchedule = check(schedule, task.originalIndex, checked);
+
       updateSchedule(checkedSchedule);
+
       return checkedSchedule;
     });
     task.checked = !task.checked;
   }
-  const taskStart = task.start && humanTime(task.start);
+
+  const taskStart = task.start && objectToHumanTime(task.start);
   const taskFinish =
-    task.finish && task.finish !== task.start && humanTime(task.finish);
+    task.finish && task.finish !== task.start && objectToHumanTime(task.finish);
 
   return (
     <div className="bg-surface-container rounded-md px-8 py-4 flex items-center gap-4">

@@ -1,4 +1,4 @@
-import { isTime, parseTime } from "./datetime";
+import { hasTimestamp, humanTimeToObject } from "./datetime";
 import type { Task } from "./scheduleTypes";
 
 export function parseSchedule(schedule: string): Task[] {
@@ -12,21 +12,18 @@ function parseTask(task: string, index: number): Task {
   const parameters = task.split(" ");
 
   const taskObject: Task = parameters.reduce(
-    (acc: any, parameter) => {
-      if (isTime(parameter)) {
-        return { ...acc, ...parseTime(parameter) };
+    (acc: Partial<Task>, parameter) => {
+      if (hasTimestamp(parameter)) {
+        return { ...acc, ...humanTimeToObject(parameter) };
       } else if (parameter === "x") {
         return { ...acc, checked: true };
       } else {
-        if (Object.hasOwn(acc, "name")) {
-          return { ...acc, name: (acc.name += " " + parameter) };
-        } else {
-          return { ...acc, name: (acc.name = parameter) };
-        }
+        return { ...acc, name: `${acc.name && acc.name + " "}${parameter}` };
       }
     },
     { checked: false, originalIndex: index }
-  );
+  ) as Task;
+  console.log(taskObject);
 
   return taskObject;
 }

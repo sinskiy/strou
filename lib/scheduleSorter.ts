@@ -1,5 +1,5 @@
-import { Task } from "./scheduleTypes";
-import { Time } from "./datetimeTypes";
+import type { Task } from "./scheduleTypes";
+import type { Time } from "./datetimeTypes";
 
 export function sortSchedule(schedule: Task[]): Task[] {
   return schedule.sort((prev, next) => {

@@ -5,23 +5,19 @@
 @layer components {
   input[type="text"],
   textarea {
-    @apply border-2 border-outline/30 outline-none rounded-md placeholder:text-on-surface/30 focus-visible:border-primary transition-colors;
+    @apply border-2 border-outline/30 outline-none rounded-md placeholder:text-on-surface/30 focus:border-primary transition-colors;
   }
   input[type="text"] {
-    @apply bg-surface-container h-14 pl-4 text-2xl focus-visible:bg-surface-container-high;
+    @apply bg-surface-container h-14 pl-4 text-2xl focus:bg-surface-container-high;
   }
   textarea {
-    @apply bg-surface-container-high p-2 text-base focus-visible:bg-surface-container-highest;
+    @apply bg-surface-container-high p-2 text-base focus:bg-surface-container-highest;
   }
-}
 
-@layer components {
   input[type="checkbox"] {
     @apply accent-primary w-6 h-6 transition-[filter] active:scale-95;
   }
-}
 
-@layer components {
   dialog[open] {
     @apply flex flex-col gap-4 bg-surface rounded-md p-12 text-xl;
   }
