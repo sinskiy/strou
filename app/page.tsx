@@ -20,9 +20,11 @@ export default function Home() {
   // retrieve schedule on page load
   useEffect(() => {
     const savedSchedule = localStorage.getItem("schedule");
-    const savedScheduleObject = JSON.parse(
-      localStorage.getItem("scheduleObject") ?? ""
-    );
+
+    const savedScheduleObjectUnparsed = localStorage.getItem("scheduleObject");
+    const savedScheduleObject =
+      savedScheduleObjectUnparsed && JSON.parse(savedScheduleObjectUnparsed);
+
     if (savedSchedule && savedScheduleObject) {
       setSchedule(savedSchedule);
       setScheduleObject(savedScheduleObject);
@@ -34,6 +36,7 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("schedule", schedule);
     localStorage.setItem("scheduleObject", JSON.stringify(scheduleObject));
+    // i think it's an overkill to update local storage when schedule (string) is updated
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scheduleObject]);
 
