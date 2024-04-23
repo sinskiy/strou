@@ -26,7 +26,7 @@ export default function Schedule({
         })
       : "";
   return (
-    <div className="w-full">
+    <div>
       {mode === "edit" ? (
         <textarea
           value={schedule}

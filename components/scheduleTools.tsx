@@ -38,7 +38,7 @@ export default function ScheduleTools({
   const dialogRef = useRef<HTMLDialogElement>(null);
   return (
     <>
-      <div className="w-full flex gap-2">
+      <div className="w-full flex gap-2 flex-wrap">
         <Button
           disabled={!schedule}
           onClick={handleModeClick}
