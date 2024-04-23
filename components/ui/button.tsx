@@ -23,9 +23,9 @@ const Button = ({
   return (
     <button
       className={twMerge(
-        "inline-flex items-center jusify-center gap-2 px-8 py-4 rounded-full font-medium text-base transition-[transform,background-color,color] active:scale-95 disabled:pointer-events-none disabled:opacity-50",
+        `inline-flex items-center jusify-center gap-2 px-8 py-4 rounded-full font-medium text-base focus-visible:outline-${colors} transition-[transform,background-color,color] active:scale-95 disabled:pointer-events-none disabled:opacity-50`,
         variants[variant],
-        className
+        className,
       )}
       {...attributes}
     >

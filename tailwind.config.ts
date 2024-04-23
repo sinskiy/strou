@@ -8,6 +8,8 @@ const config: Config = {
     "text-error",
     "before:bg-error/20",
     "interactive-bg-primary-container",
+    "focus-visible:outline-primary",
+    "focus-visible:outline-error",
   ],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
