@@ -26,7 +26,6 @@ function parseTask(task: string, index: number): Task {
     },
     { checked: false, originalIndex: index }
   ) as Task;
-  console.log(taskObject);
 
   return taskObject;
 }
