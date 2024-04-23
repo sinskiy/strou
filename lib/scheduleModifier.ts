@@ -8,7 +8,10 @@ export function check(
   if (checked) {
     tasks[index] += " x";
   } else {
-    tasks[index] = tasks[index].slice(0, -2);
+    tasks[index] = tasks[index]
+      .split(" ")
+      .filter((parameter) => parameter !== "x")
+      .join(" ");
   }
 
   return tasks.join("\n");
