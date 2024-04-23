@@ -9,7 +9,7 @@ export function objectToHumanTime({ hours, minutes }: Time) {
 
 export function hasTimestamp(parameter: string): boolean {
   const timeUnits: string[] = parameter.split(":");
-  if (timeUnits.length === 1) {
+  if (timeUnits.length === 2) {
     return true;
   } else if (timeUnits.length === 3) {
     const period = parameter.split("-");
