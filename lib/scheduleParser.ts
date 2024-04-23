@@ -4,11 +4,13 @@ import type { Task } from "./scheduleTypes";
 export function parseSchedule(schedule: string): Task[] {
   const tasks = schedule.split("\n");
 
-  const parsedSchedule: Task[] = tasks.map((task, i) => parseTask(task, i));
+  const parsedSchedule: Task[] = tasks
+    .map((task, i) => parseTask(task, i))
+    .filter((task) => !!task?.name) as Task[];
   return parsedSchedule;
 }
 
-function parseTask(task: string, index: number): Task {
+function parseTask(task: string, index: number): Task | undefined {
   const parameters = task.split(" ");
 
   const taskObject: Task = parameters.reduce(
@@ -24,7 +26,7 @@ function parseTask(task: string, index: number): Task {
         };
       }
     },
-    { checked: false, originalIndex: index }
+    { checked: false, originalIndex: index },
   ) as Task;
 
   return taskObject;
