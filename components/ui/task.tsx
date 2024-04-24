@@ -31,7 +31,7 @@ const Task = ({ task, setSchedule }: TaskProps) => {
   return (
     <div
       className={twMerge(
-        "flex items-center gap-4 rounded-md bg-surface-container px-8 py-4",
+        "flex items-center gap-4 rounded-md bg-surface-container-high px-8 py-4",
         task.checked && "opacity-50",
       )}
     >

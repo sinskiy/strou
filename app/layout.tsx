@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/header";
+import { twMerge } from "tailwind-merge";
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +29,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-background my-4`}>
-        {children}
+      <body
+        className={twMerge(
+          inter.className,
+          "bg-background m-4 flex w-fit flex-col gap-8 sm:mx-auto",
+        )}
+      >
+        <ThemeProvider attribute="class" disableTransitionOnChange>
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

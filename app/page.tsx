@@ -58,7 +58,7 @@ export default function Home() {
     setNewTask("");
   };
   return (
-    <main className="mx-4 flex w-fit flex-col gap-4 sm:mx-auto">
+    <main className="flex flex-col gap-4">
       <NewTaskForm
         handleAddTodo={handleAddTodo}
         newTask={newTask}

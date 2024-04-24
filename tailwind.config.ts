@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 const { withMaterialColors } = require("@sinskiy/tailwind-material-colors");
 const config: Config = {
+  darkMode: "class",
   safelist: [
     "interactive-bg-primary",
     "text-primary",
@@ -10,6 +11,7 @@ const config: Config = {
     "interactive-bg-primary-container",
     "focus-visible:outline-primary",
     "focus-visible:outline-error",
+    "before:bg-on-background/20",
   ],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
