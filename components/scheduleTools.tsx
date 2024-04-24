@@ -58,13 +58,16 @@ export default function ScheduleTools({
           <DeleteIcon />
         </Button>
         <dialog ref={dialogRef}>
-          <p>are you sure you want to delete this schedule?</p>
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl">delete this schedule?</h2>
+            <p>are you sure you want to delete this schedule?</p>
+          </div>
           <form method="dialog">
             <Button autoFocus colors="primary-container">
-              no, cancel
+              cancel
             </Button>
             <Button variant="text" onClick={handleDeleteSchedule}>
-              yes, delete this schedule
+              ok
             </Button>
           </form>
         </dialog>
