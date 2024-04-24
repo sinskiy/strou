@@ -33,13 +33,13 @@ const Task = ({ task, setSchedule }: TaskProps) => {
   // based on a task duration
   const taskHeight =
     task.start && task.finish
-      ? Math.max(Math.round(duration(task.start, task.finish) / 30), 16)
+      ? Math.round(duration(task.start, task.finish) / 15)
       : "auto";
 
   return (
     <div
       style={{ height: `${taskHeight}rem` }}
-      className={`group relative flex min-h-16 gap-4 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest
+      className={`group relative flex min-h-20 gap-4 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest
         ${task.checked && "opacity-50"}`}
     >
       <input
