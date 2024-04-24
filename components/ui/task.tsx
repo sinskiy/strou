@@ -31,10 +31,8 @@ const Task = ({ task, setSchedule }: TaskProps) => {
 
   return (
     <div
-      className={twMerge(
-        "relative flex items-center gap-4 rounded-md bg-surface-container-high px-8 py-6 group transition-[filter] duration-300 hover:brightness-110",
-        task.checked && "opacity-50",
-      )}
+      className={`group relative flex h-fit items-center gap-4 rounded-md bg-surface-container-high px-8 py-6 transition-colors duration-300 hover:bg-surface-container-highest
+        ${task.checked && "opacity-50"}`}
     >
       <input
         checked={task.checked}
