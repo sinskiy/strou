@@ -7,7 +7,10 @@ export default function Skeleton({
 }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={twMerge("animate-pulse rounded-md bg-surface", className)}
+      className={twMerge(
+        "animate-pulse rounded-md bg-on-background/20",
+        className,
+      )}
       {...props}
     />
   );

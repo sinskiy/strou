@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={twMerge(
           inter.className,
-          "bg-background m-4 flex w-fit flex-col gap-8 sm:mx-auto",
+          "bg-background m-4 flex w-[calc(100%-2rem)] flex-col gap-8 sm:mx-auto sm:w-fit",
         )}
       >
         <ThemeProvider attribute="class" disableTransitionOnChange>

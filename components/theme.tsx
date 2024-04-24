@@ -30,7 +30,7 @@ export default function Theme() {
           <SunIcon />
         )
       ) : (
-        <Skeleton className="size-6 rounded-full bg-on-background/20" />
+        <Skeleton className="size-6 rounded-full" />
       )}
     </Button>
   );
