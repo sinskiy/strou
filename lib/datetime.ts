@@ -45,3 +45,12 @@ export function timestampToObject(timestamp: string): Time {
 
   return { hours, minutes };
 }
+
+export function absoluteTime(timeObject: Time[]): number[] {
+  return timeObject.map(({ hours, minutes }) => hours * 60 + minutes);
+}
+
+export function duration(start: Time, finish: Time): number {
+  const [startAbsolute, finishAbsolute] = absoluteTime([start, finish]);
+  return finishAbsolute - startAbsolute;
+}

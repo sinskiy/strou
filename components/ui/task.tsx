@@ -1,10 +1,10 @@
-import { objectToHumanTime } from "@/lib/datetime";
+import { duration, objectToHumanTime } from "@/lib/datetime";
 import { check } from "@/lib/scheduleModifier";
 import type { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
 import { ChangeEvent } from "react";
-import { twMerge } from "tailwind-merge";
 import Checkbox from "./checkbox";
+import { absoluteTime } from "@/lib/datetime";
 
 interface TaskProps {
   task: Task;
@@ -27,11 +27,19 @@ const Task = ({ task, setSchedule }: TaskProps) => {
 
   const taskStart = task.start && objectToHumanTime(task.start);
   const taskFinish =
-    task.finish && task.finish !== task.start && objectToHumanTime(task.finish);
+    task.finish &&
+    (task.finish !== task.start ? objectToHumanTime(task.finish) : null);
+
+  // based on a task duration
+  const taskHeight =
+    task.start && task.finish
+      ? Math.max(Math.round(duration(task.start, task.finish) / 30), 16)
+      : "auto";
 
   return (
     <div
-      className={`group relative flex h-fit items-center gap-4 rounded-md bg-surface-container-high px-8 py-6 transition-colors duration-300 hover:bg-surface-container-highest
+      style={{ height: `${taskHeight}rem` }}
+      className={`group relative flex min-h-16 gap-4 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest
         ${task.checked && "opacity-50"}`}
     >
       <input
