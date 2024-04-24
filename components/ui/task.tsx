@@ -3,6 +3,7 @@ import { check } from "@/lib/scheduleModifier";
 import type { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
 import { ChangeEvent } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface TaskProps {
   task: Task;
@@ -28,7 +29,12 @@ const Task = ({ task, setSchedule }: TaskProps) => {
     task.finish && task.finish !== task.start && objectToHumanTime(task.finish);
 
   return (
-    <div className="flex items-center gap-4 rounded-md bg-surface-container px-8 py-4">
+    <div
+      className={twMerge(
+        "flex items-center gap-4 rounded-md bg-surface-container px-8 py-4",
+        task.checked && "opacity-50",
+      )}
+    >
       <input
         checked={task.checked}
         onChange={handleCheck}
@@ -36,7 +42,10 @@ const Task = ({ task, setSchedule }: TaskProps) => {
         name={task.name}
         id={task.name}
       />
-      <label htmlFor={task.name}>
+      <label
+        htmlFor={task.name}
+        className={`${task.checked && "line-through"}`}
+      >
         {taskStart}
         {taskFinish && "-"}
         {taskFinish} {task.name}
