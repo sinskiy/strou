@@ -15,7 +15,7 @@
   }
 
   input[type="checkbox"] {
-    @apply accent-primary w-6 h-6 transition-[filter] active:scale-95;
+    @apply accent-primary transition-[filter] active:scale-95;
   }
 
   dialog[open] {

@@ -4,6 +4,7 @@ import type { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
 import { ChangeEvent } from "react";
 import { twMerge } from "tailwind-merge";
+import Checkbox from "./checkbox";
 
 interface TaskProps {
   task: Task;
@@ -31,7 +32,7 @@ const Task = ({ task, setSchedule }: TaskProps) => {
   return (
     <div
       className={twMerge(
-        "flex items-center gap-4 rounded-md bg-surface-container-high px-8 py-4",
+        "relative flex items-center gap-4 rounded-md bg-surface-container-high px-8 py-6 group",
         task.checked && "opacity-50",
       )}
     >
@@ -41,10 +42,12 @@ const Task = ({ task, setSchedule }: TaskProps) => {
         type="checkbox"
         name={task.name}
         id={task.name}
+        className="absolute left-0 top-0 z-10 size-full opacity-0"
       />
+      <Checkbox checked={task.checked} className="group-active:scale-95" />
       <label
         htmlFor={task.name}
-        className={`${task.checked && "line-through"}`}
+        className={`${task.checked && "line-through"} text-lg`}
       >
         {taskStart}
         {taskFinish && "-"}
