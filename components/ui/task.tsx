@@ -4,7 +4,6 @@ import type { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
 import { ChangeEvent } from "react";
 import Checkbox from "./checkbox";
-import { absoluteTime } from "@/lib/datetime";
 
 interface TaskProps {
   task: Task;
@@ -33,7 +32,7 @@ const Task = ({ task, setSchedule }: TaskProps) => {
   // based on a task duration
   const taskHeight =
     task.start && task.finish
-      ? Math.round(duration(task.start, task.finish) / 15)
+      ? Math.round(duration(task.start, task.finish) / 15) + 4
       : "auto";
 
   return (
