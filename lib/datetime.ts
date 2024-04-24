@@ -26,7 +26,7 @@ export function humanTimeToObject(time: string): Period {
 
   if (period.length === 2) {
     const [start, finish]: Time[] = period.map((timestamp) =>
-      timestampToObject(timestamp)
+      timestampToObject(timestamp),
     );
     return { start, finish };
   } else if (period.length === 1) {
@@ -42,5 +42,6 @@ export function timestampToObject(timestamp: string): Time {
   const [hours, minutes] = timestamp
     .split(":")
     .map((humanUnit) => Number(humanUnit));
+
   return { hours, minutes };
 }
