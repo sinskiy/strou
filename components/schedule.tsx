@@ -35,7 +35,7 @@ export default function Schedule({
           placeholder="17:00-21:00 domra&#10;&#13;then homework"
           name="schedule"
           id="schedule"
-          className="resize-none w-full"
+          className="w-full resize-none"
         ></textarea>
       ) : (
         <div className="flex flex-col gap-2">{scheduleList}</div>

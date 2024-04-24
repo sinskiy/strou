@@ -15,7 +15,7 @@ export default function NewTaskForm({
   setNewTask,
 }: NewTaskFormProps) {
   return (
-    <form onSubmit={handleAddTodo} className="flex gap-4 flex-wrap">
+    <form onSubmit={handleAddTodo} className="flex flex-wrap gap-4">
       <input
         value={newTask}
         onChange={(e) => setNewTask(e.target.value)}

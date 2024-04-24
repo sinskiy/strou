@@ -28,7 +28,7 @@ const Task = ({ task, setSchedule }: TaskProps) => {
     task.finish && task.finish !== task.start && objectToHumanTime(task.finish);
 
   return (
-    <div className="bg-surface-container rounded-md px-8 py-4 flex items-center gap-4">
+    <div className="flex items-center gap-4 rounded-md bg-surface-container px-8 py-4">
       <input
         checked={task.checked}
         onChange={handleCheck}
