@@ -40,7 +40,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scheduleObject]);
 
-  const [mode, setMode] = useState<Modes>("tasks");
+  const [mode, setMode] = useState<Modes>("edit");
 
   const handleAddTodo: HandleAddTodo = (e) => {
     e.preventDefault();
