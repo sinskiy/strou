@@ -38,29 +38,31 @@ const Task = ({ task, setSchedule }: TaskProps) => {
   return (
     <div
       style={{ height: `${taskHeight}rem` }}
-      className={`group relative flex min-h-20 gap-4 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest
+      className={`group relative min-h-20 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest
         ${task.checked && "opacity-50"}`}
     >
-      <input
-        checked={task.checked}
-        onChange={handleCheck}
-        type="checkbox"
-        name={task.name}
-        id={task.name}
-        className="peer absolute left-0 top-0 z-10 size-full opacity-0"
-      />
-      <Checkbox
-        checked={task.checked}
-        className="group-active:scale-95 peer-focus-visible:border-primary"
-      />
-      <label
-        htmlFor={task.name}
-        className={`${task.checked && "line-through"} text-lg`}
-      >
-        {taskStart}
-        {taskFinish && "-"}
-        {taskFinish} {task.name}
-      </label>
+      <div className="flex items-center gap-4">
+        <input
+          checked={task.checked}
+          onChange={handleCheck}
+          type="checkbox"
+          name={task.name}
+          id={task.name}
+          className="peer absolute left-0 top-0 z-10 size-full opacity-0"
+        />
+        <Checkbox
+          checked={task.checked}
+          className="group-active:scale-95 peer-focus-visible:border-primary"
+        />
+        <label
+          htmlFor={task.name}
+          className={`${task.checked && "line-through"} text-lg`}
+        >
+          {taskStart}
+          {taskFinish && "-"}
+          {taskFinish} {task.name}
+        </label>
+      </div>
     </div>
   );
 };

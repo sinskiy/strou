@@ -13,7 +13,7 @@ export function parseSchedule(schedule: string): Task[] {
 function parseTask(task: string, index: number): Task | undefined {
   const parameters = task.split(" ");
 
-  const taskObject: Task = parameters.reduce(
+  const taskObject = parameters.reduce(
     (acc: Partial<Task>, parameter) => {
       if (hasTimestamp(parameter)) {
         return { ...acc, ...humanTimeToObject(parameter) };
