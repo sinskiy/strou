@@ -21,27 +21,28 @@ export function hasTimestamp(parameter: string): boolean {
   return false;
 }
 
-export function humanTimeToObject(time: string): Period {
+export function humanTimeToObject(time: string): Period | null {
   const period = time.split("-");
 
-  if (period.length === 2) {
-    const [start, finish]: Time[] = period.map((timestamp) =>
-      timestampToObject(timestamp),
-    );
-    return { start, finish };
-  } else if (period.length === 1) {
-    const start = timestampToObject(time);
-    const finish = start;
-    return { start, finish };
+  const [start, finish = start]: Array<Time | null> = period.map((timestamp) =>
+    timestampToObject(timestamp),
+  );
+
+  if (!start || !finish) {
+    return null;
   }
 
-  throw Error();
+  return { start, finish };
 }
 
-export function timestampToObject(timestamp: string): Time {
+export function timestampToObject(timestamp: string): Time | null {
   const [hours, minutes] = timestamp
     .split(":")
     .map((humanUnit) => Number(humanUnit));
+
+  if (hours < 0 || hours > 24 || minutes < 0 || minutes > 60) {
+    return null;
+  }
 
   return { hours, minutes };
 }
