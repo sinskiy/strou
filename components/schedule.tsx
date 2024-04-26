@@ -1,6 +1,9 @@
 import { type Modes } from "@/app/page";
 import Task from "./ui/task";
 import type { Task as ITask } from "@/lib/scheduleTypes";
+import { useEffect, useState } from "react";
+import Skeleton from "./ui/skeleton";
+import Checkbox from "./ui/checkbox";
 
 interface ScheduleProps {
   mode: Modes;
@@ -15,6 +18,13 @@ export default function Schedule({
   setSchedule,
   scheduleObject,
 }: ScheduleProps) {
+  const [mounted, setMounted] = useState(false);
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const scheduleList =
     mode === "tasks"
       ? scheduleObject.map((task) => (
@@ -25,6 +35,19 @@ export default function Schedule({
           />
         ))
       : "";
+
+  if (!mounted) {
+    const skeletonList = Array(3)
+      .fill(0)
+      .map((_, i) => (
+        <Skeleton key={i} className="flex h-20 w-full items-center gap-4 px-8">
+          <Skeleton className="size-6" />
+          <Skeleton className="h-4 w-24" />
+        </Skeleton>
+      ));
+    return <div className="flex flex-col gap-2">{skeletonList}</div>;
+  }
+
   return (
     <div>
       {mode === "edit" ? (

@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 export default function Skeleton({
   className,
+  children,
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
@@ -12,6 +13,8 @@ export default function Skeleton({
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 }
