@@ -12,7 +12,7 @@ const Checkbox = ({ checked, className, ...props }: CheckboxProps) => {
       role="checkbox"
       aria-checked={checked}
       className={twMerge(
-        "size-6 bg-transparent border-2 border-outline rounded-md focus-visible:outline-primary transition-[transform,background-color,color] duration-300 active:scale-95 aria-checked:bg-primary aria-checked:border-primary disabled:pointer-events-none disabled:opacity-50",
+        "size-6 bg-transparent border-2 border-outline rounded-md focus-visible:outline-primary transition-[transform,background-color,color,border-color] duration-300 active:scale-95 aria-checked:bg-primary aria-checked:border-primary disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
       {...props}
