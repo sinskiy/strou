@@ -38,7 +38,7 @@ export default function ScheduleTools({
   const dialogRef = useRef<HTMLDialogElement>(null);
   return (
     <>
-      <div className="flex w-full flex-wrap gap-2">
+      <div className="flex w-full flex-wrap">
         <Button
           disabled={!schedule}
           onClick={handleModeClick}
@@ -63,7 +63,7 @@ export default function ScheduleTools({
             <p>are you sure you want to delete this schedule?</p>
           </div>
           <form method="dialog">
-            <Button autoFocus colors="primary-container">
+            <Button autoFocus variant="text">
               cancel
             </Button>
             <Button variant="text" onClick={handleDeleteSchedule}>

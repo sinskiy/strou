@@ -23,11 +23,11 @@ export default function NewTaskForm({
         placeholder="what do you want to do?"
         name="task-title"
         id="task-title"
-        className="max-w-xs sm:max-w-fit"
+        className="w-[calc(100%-5rem)] sm:w-auto"
       />
-      <Button disabled={!newTask}>
+      <Button disabled={!newTask} className="p-4 sm:px-8">
         <Add />
-        add
+        <span className="hidden sm:inline-block">add</span>
       </Button>
     </form>
   );

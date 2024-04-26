@@ -8,7 +8,7 @@
     @apply border-2 border-outline/30 outline-none rounded-md text-on-surface placeholder:text-on-surface/30 focus:border-primary transition-colors;
   }
   input[type="text"] {
-    @apply bg-surface-container h-14 pl-2 sm:pl-4 text-2xl focus:bg-surface-container-high;
+    @apply bg-surface-container h-14 p-2 sm:p-4 text-xl sm:text-2xl focus:bg-surface-container-high;
   }
   textarea {
     @apply bg-surface-container-high px-3 py-2 text-sm focus:bg-surface-container-highest;
