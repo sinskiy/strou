@@ -24,6 +24,8 @@ const Task = ({ task, setSchedule }: TaskProps) => {
     task.checked = !task.checked;
   }
 
+  const taskId = `task-${task.originalIndex}-${task.name}`;
+
   const taskStart = task.start && objectToHumanTime(task.start);
   const taskFinish =
     task.finish &&
@@ -46,8 +48,8 @@ const Task = ({ task, setSchedule }: TaskProps) => {
           checked={task.checked}
           onChange={handleCheck}
           type="checkbox"
-          name={task.name}
-          id={task.name}
+          name={taskId}
+          id={taskId}
           className="peer absolute left-0 top-0 z-10 size-full opacity-0"
         />
         <Checkbox
@@ -55,7 +57,7 @@ const Task = ({ task, setSchedule }: TaskProps) => {
           className="group-active:scale-95 peer-focus-visible:border-primary"
         />
         <label
-          htmlFor={task.name}
+          htmlFor={taskId}
           className={`${task.checked && "line-through"} text-lg`}
         >
           {taskStart}
