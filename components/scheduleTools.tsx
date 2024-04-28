@@ -38,14 +38,12 @@ export default function ScheduleTools({
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const handleKeyPress = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.altKey && e.key === "t") {
-        handleModeClick();
-      }
-    },
-    [handleModeClick],
-  );
+  const modeButtonRef = useRef<HTMLButtonElement>(null);
+  const handleKeyPress = useCallback((e: KeyboardEvent) => {
+    if (e.altKey && e.key === "t") {
+      modeButtonRef.current?.click();
+    }
+  }, []);
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
@@ -57,6 +55,7 @@ export default function ScheduleTools({
     <>
       <div className="flex w-full flex-wrap">
         <Button
+          ref={modeButtonRef}
           disabled={!schedule}
           onClick={handleModeClick}
           variant="outlined"
