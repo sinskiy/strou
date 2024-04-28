@@ -4,4 +4,5 @@ export interface Task extends Period {
   name: string;
   checked: boolean;
   originalIndex: number;
+  description?: string;
 }

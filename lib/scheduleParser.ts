@@ -13,9 +13,17 @@ export function parseSchedule(schedule: string): Task[] {
 function parseTask(task: string, index: number): Task | undefined {
   const parameters = task.split(" ");
 
+  let descriptionStarted = false;
+
   const taskObject = parameters.reduce(
     (acc: Partial<Task>, parameter) => {
-      if (hasTimestamp(parameter)) {
+      if (descriptionStarted || parameter[0] === '"') {
+        descriptionStarted = !(parameter.at(-1) === '"');
+        return {
+          ...acc,
+          description: `${acc.description ? acc.description + " " : ""}${parameter.replace('"', "")}`,
+        };
+      } else if (hasTimestamp(parameter)) {
         return { ...acc, ...humanTimeToObject(parameter) };
       } else if (parameter === "x") {
         return { ...acc, checked: true };
@@ -28,6 +36,8 @@ function parseTask(task: string, index: number): Task | undefined {
     },
     { checked: false, originalIndex: index },
   ) as Task;
+
+  console.log(taskObject);
 
   return taskObject;
 }

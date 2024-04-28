@@ -65,6 +65,11 @@ const Task = ({ task, setSchedule }: TaskProps) => {
           {taskFinish} {task.name}
         </label>
       </div>
+      {task.description && (
+        <div className="mt-2 text-sm text-on-surface-variant">
+          {task.description}
+        </div>
+      )}
     </div>
   );
 };

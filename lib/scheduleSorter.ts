@@ -1,5 +1,4 @@
 import type { Task } from "./scheduleTypes";
-import type { Time } from "./datetimeTypes";
 import { absoluteTime } from "./datetime";
 
 export function sortSchedule(schedule: Task[]): Task[] {

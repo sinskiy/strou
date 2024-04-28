@@ -54,6 +54,7 @@ export default function Home() {
 
       return newSchedule;
     });
+    console.log(scheduleObject);
 
     setNewTask("");
   };
