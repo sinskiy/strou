@@ -54,7 +54,7 @@ const Task = ({ task, setSchedule }: TaskProps) => {
         />
         <Checkbox
           checked={task.checked}
-          className="group-active:scale-95 peer-focus-visible:border-primary"
+          className="group-active:scale-95 peer-focus-visible:outline peer-focus-visible:outline-primary"
         />
         <label
           htmlFor={taskId}

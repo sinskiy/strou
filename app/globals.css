@@ -22,3 +22,9 @@
     @apply visible z-10 scale-100;
   }
 }
+
+@layer utilities {
+  .outline-default {
+    @apply outline-2 focus-visible:outline focus-visible:outline-current;
+  }
+}
