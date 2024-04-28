@@ -21,6 +21,10 @@
   dialog[open] {
     @apply visible z-10 scale-100;
   }
+
+  kbd {
+    @apply hidden sm:inline-block rounded-sm bg-surface-container-low px-2;
+  }
 }
 
 @layer utilities {
