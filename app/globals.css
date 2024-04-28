@@ -23,7 +23,7 @@
   }
 
   kbd {
-    @apply hidden sm:inline-block rounded-sm bg-surface-container-low px-2;
+    @apply hidden sm:inline-block rounded-sm bg-surface-container-low text-on-surface px-2;
   }
 }
 

@@ -6,7 +6,7 @@ import Button from "./ui/button";
 import { Task } from "@/lib/scheduleTypes";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface ScheduleToolsProps {
   schedule: string;
@@ -23,12 +23,13 @@ export default function ScheduleTools({
   setMode,
   setScheduleObject,
 }: ScheduleToolsProps) {
-  function handleModeClick(): void {
-    mode === "tasks" ? setMode("edit") : setMode("tasks");
+  const handleModeClick = useCallback(() => {
+    mode === "edit" ? setMode("tasks") : setMode("edit");
+
     const parsedSchedule = parseSchedule(schedule);
     const sortedSchedule = sortSchedule(parsedSchedule);
     setScheduleObject(sortedSchedule);
-  }
+  }, [mode, schedule, setMode, setScheduleObject]);
 
   function handleDeleteSchedule() {
     setScheduleObject([]);
@@ -36,6 +37,22 @@ export default function ScheduleTools({
   }
 
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleKeyPress = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.altKey && e.key === "t") {
+        handleModeClick();
+      }
+    },
+    [handleModeClick],
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [handleKeyPress]);
   return (
     <>
       <div className="flex w-full flex-wrap">
@@ -47,6 +64,7 @@ export default function ScheduleTools({
         >
           {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
           {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
+          <kbd>alt+t</kbd>
         </Button>
         <Button
           disabled={!schedule}
