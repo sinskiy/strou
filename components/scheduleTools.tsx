@@ -53,6 +53,35 @@ export default function ScheduleTools({
   }, [handleKeyPress]);
   return (
     <>
+      <div className="flex w-full rounded-full bg-surface-container-high p-1 font-medium">
+        <div className="relative flex w-1/3 items-center justify-center rounded-full py-2 has-[:checked]:interactive-bg-primary-container">
+          <label htmlFor="edit">Edit</label>
+          <input
+            type="radio"
+            name="mode"
+            id="edit"
+            className="absolute left-0 top-0 size-full opacity-0"
+          />
+        </div>
+        <div className="relative flex w-1/3 items-center justify-center rounded-full has-[:checked]:interactive-bg-primary-container">
+          <label htmlFor="tasks">Tasks</label>
+          <input
+            type="radio"
+            name="mode"
+            id="tasks"
+            className="absolute left-0 top-0 size-full opacity-0"
+          />
+        </div>
+        <div className="relative flex w-1/3 items-center justify-center rounded-full has-[:checked]:interactive-bg-primary-container">
+          <label htmlFor="representative">Representative</label>
+          <input
+            type="radio"
+            name="mode"
+            id="representative"
+            className="absolute left-0 top-0 size-full opacity-0"
+          />
+        </div>
+      </div>
       <div className="flex w-full flex-wrap">
         <Button
           ref={modeButtonRef}
