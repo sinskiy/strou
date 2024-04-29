@@ -1,8 +1,8 @@
-import { InputHTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import CheckIcon from "../icons/checkIcon";
 
-export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps extends HTMLAttributes<HTMLDivElement> {
   checked: boolean;
 }
 

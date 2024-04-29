@@ -3,7 +3,6 @@ import Task from "./ui/task";
 import type { Task as ITask } from "@/lib/scheduleTypes";
 import { useEffect, useState } from "react";
 import Skeleton from "./ui/skeleton";
-import Checkbox from "./ui/checkbox";
 
 interface ScheduleProps {
   mode: Modes;
@@ -20,7 +19,6 @@ export default function Schedule({
 }: ScheduleProps) {
   const [mounted, setMounted] = useState(false);
 
-  // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
   }, []);

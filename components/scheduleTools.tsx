@@ -1,12 +1,11 @@
-import { type Modes } from "@/app/page";
+import { modes, type Modes } from "@/app/page";
 import DeleteIcon from "./icons/deleteIcon";
-import EditIcon from "./icons/editIcon";
-import TaskIcon from "./icons/taskIcon";
 import Button from "./ui/button";
 import { Task } from "@/lib/scheduleTypes";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
+import { Tab, Tabs } from "./ui/tabs";
 
 interface ScheduleToolsProps {
   schedule: string;
@@ -38,62 +37,13 @@ export default function ScheduleTools({
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const modeButtonRef = useRef<HTMLButtonElement>(null);
-  const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    if (e.altKey && e.key === "t") {
-      modeButtonRef.current?.click();
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [handleKeyPress]);
+  const tabList = modes.map((mode) => (
+    <Tab key={mode} name={mode} group="mode" />
+  ));
   return (
     <>
-      <div className="flex w-full rounded-full bg-surface-container-high p-1 font-medium">
-        <div className="relative flex w-1/3 items-center justify-center rounded-full py-2 has-[:checked]:interactive-bg-primary-container">
-          <label htmlFor="edit">Edit</label>
-          <input
-            type="radio"
-            name="mode"
-            id="edit"
-            className="absolute left-0 top-0 size-full opacity-0"
-          />
-        </div>
-        <div className="relative flex w-1/3 items-center justify-center rounded-full has-[:checked]:interactive-bg-primary-container">
-          <label htmlFor="tasks">Tasks</label>
-          <input
-            type="radio"
-            name="mode"
-            id="tasks"
-            className="absolute left-0 top-0 size-full opacity-0"
-          />
-        </div>
-        <div className="relative flex w-1/3 items-center justify-center rounded-full has-[:checked]:interactive-bg-primary-container">
-          <label htmlFor="representative">Representative</label>
-          <input
-            type="radio"
-            name="mode"
-            id="representative"
-            className="absolute left-0 top-0 size-full opacity-0"
-          />
-        </div>
-      </div>
+      <Tabs>{tabList}</Tabs>
       <div className="flex w-full flex-wrap">
-        <Button
-          ref={modeButtonRef}
-          disabled={!schedule}
-          onClick={handleModeClick}
-          variant="outlined"
-          colors="primary"
-        >
-          {mode === "tasks" ? <EditIcon /> : <TaskIcon />}
-          {`enter ${mode === "tasks" ? "edit" : "tasks"} mode`}
-          <kbd>alt+t</kbd>
-        </Button>
         <Button
           disabled={!schedule}
           onClick={() => dialogRef.current?.showModal()}

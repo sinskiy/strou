@@ -9,7 +9,8 @@ import { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
 import { useEffect, useState } from "react";
 
-export type Modes = "edit" | "tasks";
+export const modes = ["edit", "tasks", "representative"] as const;
+export type Modes = (typeof modes)[number];
 export type HandleAddTodo = (e: React.FormEvent<HTMLFormElement>) => void;
 
 export default function Home() {
