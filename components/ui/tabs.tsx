@@ -7,7 +7,7 @@ const Tabs = ({ className, children, ...props }: TabsProps) => {
   return (
     <div
       className={twMerge(
-        "flex w-full rounded-full bg-surface-container-high p-1 font-medium has-[:disabled]:opacity-50",
+        "flex w-full rounded-full bg-surface-container-high p-1.5 font-medium has-[:disabled]:opacity-50",
         className,
       )}
       {...props}
