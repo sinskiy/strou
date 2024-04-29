@@ -4,8 +4,10 @@ import Button from "./ui/button";
 import { Task } from "@/lib/scheduleTypes";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
-import { ChangeEvent, useCallback, useRef } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { Tab, Tabs } from "./ui/tabs";
+import TaskIcon from "./icons/taskIcon";
+import { updateSchedule } from "@/lib/storage";
 
 interface ScheduleToolsProps {
   schedule: string;
@@ -22,6 +24,8 @@ export default function ScheduleTools({
   setMode,
   setScheduleObject,
 }: ScheduleToolsProps) {
+  const [lastSavedSchedule, setLastSaved] = useState(schedule);
+
   const handleModeChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setMode(e.target.id);
@@ -32,6 +36,11 @@ export default function ScheduleTools({
     },
     [schedule, setMode, setScheduleObject],
   );
+
+  function handleSaveClick() {
+    setLastSaved(schedule);
+    updateSchedule(schedule);
+  }
 
   function handleDeleteSchedule() {
     setScheduleObject([]);
@@ -55,6 +64,17 @@ export default function ScheduleTools({
     <>
       <Tabs>{tabList}</Tabs>
       <div className="flex w-full flex-wrap">
+        <Button
+          disabled={
+            !schedule || mode !== "edit" || lastSavedSchedule === schedule
+          }
+          onClick={handleSaveClick}
+          variant="outlined"
+          colors="primary"
+        >
+          <TaskIcon />
+          {mode !== "edit" || lastSavedSchedule == schedule ? "saved" : "save"}
+        </Button>
         <Button
           disabled={!schedule}
           onClick={() => dialogRef.current?.showModal()}
