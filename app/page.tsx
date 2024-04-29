@@ -67,7 +67,6 @@ export default function Home() {
       />
       <ScheduleTools
         schedule={schedule}
-        mode={mode}
         setSchedule={setSchedule}
         setMode={setMode}
         setScheduleObject={setScheduleObject}

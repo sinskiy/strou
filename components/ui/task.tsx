@@ -8,9 +8,10 @@ import Checkbox from "./checkbox";
 interface TaskProps {
   task: Task;
   setSchedule: SetStateFunction<string>;
+  representative: boolean;
 }
 
-const Task = ({ task, setSchedule }: TaskProps) => {
+const Task = ({ task, setSchedule, representative }: TaskProps) => {
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const { checked } = e.target;
 
@@ -33,15 +34,16 @@ const Task = ({ task, setSchedule }: TaskProps) => {
 
   // based on a task duration
   const taskHeight =
-    task.start && task.finish
-      ? Math.round(duration(task.start, task.finish) / 15) + 4
+    representative && task.start && task.finish
+      ? `${Math.round(duration(task.start, task.finish) / 15) + 4}rem`
       : "auto";
+
+  console.log(taskHeight);
 
   return (
     <div
-      style={{ height: `${taskHeight}rem` }}
-      className={`group relative min-h-20 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest
-        ${task.checked && "opacity-50"}`}
+      style={{ height: taskHeight }}
+      className={`group relative min-h-20 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest ${task.checked ? "opacity-50" : ""}`}
     >
       <div className="flex items-center gap-4">
         <input

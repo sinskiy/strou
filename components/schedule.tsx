@@ -30,6 +30,7 @@ export default function Schedule({
             key={task.originalIndex}
             task={task}
             setSchedule={setSchedule}
+            representative={mode === "representative"}
           />
         ))
       : "";
