@@ -1,4 +1,4 @@
-import { modes, type Modes } from "@/app/page";
+import { modes } from "@/lib/const";
 import DeleteIcon from "./icons/deleteIcon";
 import Button from "./ui/button";
 import { Task } from "@/lib/scheduleTypes";

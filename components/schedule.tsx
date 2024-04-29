@@ -1,4 +1,3 @@
-import { type Modes } from "@/app/page";
 import Task from "./ui/task";
 import type { Task as ITask } from "@/lib/scheduleTypes";
 import { useEffect, useState } from "react";

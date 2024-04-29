@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, type SetStateAction } from "react";
 import Add from "./icons/addIcon";
 import Button from "./ui/button";
-import { type HandleAddTodo } from "@/app/page";
 
 interface NewTaskFormProps {
   handleAddTodo: HandleAddTodo;
