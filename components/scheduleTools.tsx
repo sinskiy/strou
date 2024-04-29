@@ -4,7 +4,7 @@ import Button from "./ui/button";
 import { Task } from "@/lib/scheduleTypes";
 import { parseSchedule } from "@/lib/scheduleParser";
 import { sortSchedule } from "@/lib/scheduleSorter";
-import { useCallback, useRef } from "react";
+import { ChangeEvent, useCallback, useRef } from "react";
 import { Tab, Tabs } from "./ui/tabs";
 
 interface ScheduleToolsProps {
@@ -22,13 +22,16 @@ export default function ScheduleTools({
   setMode,
   setScheduleObject,
 }: ScheduleToolsProps) {
-  const handleModeClick = useCallback(() => {
-    mode === "edit" ? setMode("tasks") : setMode("edit");
+  const handleModeClick = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setMode(e.target.id);
 
-    const parsedSchedule = parseSchedule(schedule);
-    const sortedSchedule = sortSchedule(parsedSchedule);
-    setScheduleObject(sortedSchedule);
-  }, [mode, schedule, setMode, setScheduleObject]);
+      const parsedSchedule = parseSchedule(schedule);
+      const sortedSchedule = sortSchedule(parsedSchedule);
+      setScheduleObject(sortedSchedule);
+    },
+    [schedule, setMode, setScheduleObject],
+  );
 
   function handleDeleteSchedule() {
     setScheduleObject([]);
@@ -38,7 +41,7 @@ export default function ScheduleTools({
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const tabList = modes.map((mode) => (
-    <Tab key={mode} name={mode} group="mode" />
+    <Tab key={mode} name={mode} group="mode" onChange={handleModeClick} />
   ));
   return (
     <>

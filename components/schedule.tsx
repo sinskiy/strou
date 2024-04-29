@@ -24,7 +24,7 @@ export default function Schedule({
   }, []);
 
   const scheduleList =
-    mode === "tasks"
+    mode !== "edit"
       ? scheduleObject.map((task) => (
           <Task
             key={task.originalIndex}

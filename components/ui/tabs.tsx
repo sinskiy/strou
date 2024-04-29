@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface TabsProps extends HTMLAttributes<HTMLDivElement> {}
@@ -17,7 +17,7 @@ const Tabs = ({ className, children, ...props }: TabsProps) => {
   );
 };
 
-export interface TabProps extends HTMLAttributes<HTMLDivElement> {
+export interface TabProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   group: string;
 }
@@ -29,13 +29,13 @@ const Tab = ({ name, group, className, children, ...props }: TabProps) => {
         "relative flex w-1/3 items-center justify-center rounded-full py-2 capitalize has-[:checked]:interactive-bg-primary-container",
         className,
       )}
-      {...props}
     >
       <input
         type="radio"
         name={group}
         id={name}
         className="absolute left-0 top-0 size-full opacity-0"
+        {...props}
       />
       <label htmlFor={name}>
         {name} {children}
