@@ -4,6 +4,7 @@ import type { Task } from "@/lib/scheduleTypes";
 import { updateSchedule } from "@/lib/storage";
 import { ChangeEvent } from "react";
 import Checkbox from "./checkbox";
+import { twMerge } from "tailwind-merge";
 
 interface TaskProps {
   task: Task;
@@ -38,12 +39,13 @@ const Task = ({ task, setSchedule, representative }: TaskProps) => {
       ? `${Math.round(duration(task.start, task.finish) / 15) + 4}rem`
       : "auto";
 
-  console.log(taskHeight);
-
   return (
     <div
       style={{ height: taskHeight }}
-      className={`group relative min-h-20 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest ${task.checked ? "opacity-50" : ""}`}
+      className={twMerge(
+        "group relative min-h-20 rounded-md bg-surface-container-high px-8 py-6 transition-colors hover:bg-surface-container-highest",
+        task.checked && "opacity-50",
+      )}
     >
       <div className="flex items-center gap-4">
         <input

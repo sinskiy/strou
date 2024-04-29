@@ -7,7 +7,7 @@ const Tabs = ({ className, children, ...props }: TabsProps) => {
   return (
     <div
       className={twMerge(
-        "flex w-full rounded-full bg-surface-container-high p-1 font-medium",
+        "flex w-full rounded-full bg-surface-container-high p-1 font-medium has-[:disabled]:opacity-50",
         className,
       )}
       {...props}
@@ -26,7 +26,7 @@ const Tab = ({ name, group, className, children, ...props }: TabProps) => {
   return (
     <div
       className={twMerge(
-        "relative flex w-1/3 items-center justify-center rounded-full py-2 capitalize has-[:checked]:interactive-bg-primary-container",
+        "relative flex w-1/3 items-center justify-center rounded-full py-2 capitalize has-[:checked]:interactive-bg-primary-container disabled:pointer-events-none",
         className,
       )}
     >

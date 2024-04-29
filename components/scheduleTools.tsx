@@ -10,6 +10,7 @@ import { Tab, Tabs } from "./ui/tabs";
 interface ScheduleToolsProps {
   schedule: string;
   setSchedule: SetStateFunction<string>;
+  mode: Modes;
   setMode: SetStateFunction<Modes>;
   setScheduleObject: SetStateFunction<Task[]>;
 }
@@ -17,6 +18,7 @@ interface ScheduleToolsProps {
 export default function ScheduleTools({
   schedule,
   setSchedule,
+  mode,
   setMode,
   setScheduleObject,
 }: ScheduleToolsProps) {
@@ -38,8 +40,15 @@ export default function ScheduleTools({
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const tabList = modes.map((mode) => (
-    <Tab key={mode} name={mode} group="mode" onChange={handleModeChange} />
+  const tabList = modes.map((tabMode) => (
+    <Tab
+      key={tabMode}
+      name={tabMode}
+      group="mode"
+      onChange={handleModeChange}
+      checked={tabMode === mode}
+      disabled={!schedule}
+    />
   ));
 
   return (
