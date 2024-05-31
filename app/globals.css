@@ -78,3 +78,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .card {
+    @apply bg-card text-card-foreground p-8 text-center rounded-lg my-4;
+  }
+}
