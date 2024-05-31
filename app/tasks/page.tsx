@@ -1,3 +1,4 @@
+import Task from "@/components/task";
 import Tag from "@/components/ui/tag";
 
 const tags = [
@@ -15,8 +16,13 @@ export default function Tasks() {
     </Tag>
   ));
   return (
-    <section className="card">
+    <section className="card space-y-4">
       <ul className="flex gap-2">{tagsList}</ul>
+      <div>
+        <Task title="play the domra" />
+        <Task title="play the chess" />
+        <Task title="finish this" />
+      </div>
     </section>
   );
 }

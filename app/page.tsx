@@ -5,9 +5,9 @@ import { Label } from "@/components/ui/label";
 export default function Timer() {
   return (
     <>
-      <section className="card">
+      <section className="card text-center">
         <p className="opacity-50">work 1</p>
-        <p className="font-bold text-6xl text-center mt-2 mb-6">
+        <p className="font-bold text-6xl mt-2 mb-6">
           <time>50:00</time>
         </p>
         <div className="flex gap-4 justify-center">
@@ -24,7 +24,9 @@ export default function Timer() {
             play the domra <span className="opacity-30">is current task</span>
           </p>
         </Label>
-        <Button variant="secondary">change</Button>
+        <Button variant="secondary" size="sm">
+          change
+        </Button>
       </section>
     </>
   );
