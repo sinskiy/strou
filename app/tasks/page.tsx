@@ -9,6 +9,14 @@ const tags = [
 ] as const;
 
 export default function Tasks() {
-  const tagsList = tags.map((tag) => <Tag key={tag}>{tag}</Tag>);
-  return <section className="card">{tagsList}</section>;
+  const tagsList = tags.map((tag, i) => (
+    <Tag key={tag} defaultChecked={i === 0}>
+      {tag}
+    </Tag>
+  ));
+  return (
+    <section className="card">
+      <ul className="flex gap-2">{tagsList}</ul>
+    </section>
+  );
 }
