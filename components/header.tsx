@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import NavLink from "./NavLink";
+import NavLink from "./ui/navLink";
 
 export const links = ["timer", "tasks", "statistics"];
 
@@ -15,5 +15,7 @@ export default function Header() {
       </NavLink>
     );
   });
-  return <header className="flex gap-2">{navLinksList}</header>;
+  return (
+    <header className="flex justify-between w-full">{navLinksList}</header>
+  );
 }

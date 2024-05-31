@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import Header from "@/components/header";
 import { twMerge } from "tailwind-merge";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,15 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="size-full">
-      <body
-        className={twMerge(
-          "size-full flex flex-col justify-center items-center gap-2",
-          inter.className,
-        )}
-      >
+    <html lang="en" className="size-full flex m-auto">
+      <body className={twMerge("m-auto bg-background", inter.className)}>
         <Header />
-        {children}
+        <main className="bg-card text-card-foreground p-8 text-center rounded-lg my-4">
+          {children}
+        </main>
       </body>
     </html>
   );
