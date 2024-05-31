@@ -18,9 +18,11 @@ export default function Timer() {
         </div>
       </div>
       <div className="card flex items-center gap-4">
-        <Label className="flex gap-2">
+        <Label className="flex gap-3">
           <Checkbox />
-          play the domra <span className="opacity-30">is current task</span>
+          <p>
+            play the domra <span className="opacity-30">is current task</span>
+          </p>
         </Label>
         <Button variant="secondary">change</Button>
       </div>

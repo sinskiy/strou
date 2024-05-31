@@ -14,7 +14,7 @@ export default function NavLink({
   return (
     <Link
       className={twMerge(
-        "font-medium text-sm px-4 py-2 rounded-full transition-colorsAndTransform active:scale-95",
+        "font-medium text-sm px-8 py-2 rounded-full transition-colorsAndTransform active:scale-95",
         active
           ? "bg-primary text-primary-foreground hover:bg-primary/90"
           : "hover:bg-white/10",
