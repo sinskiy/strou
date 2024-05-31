@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import NavLink from "./ui/navLink";
 
-export const links = ["timer", "tasks", "statistics"];
+export const links = ["timer", "tasks", "statistics"] as const;
 
 export default function Header() {
   const pathname = usePathname();

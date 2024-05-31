@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 export default function Timer() {
   return (
     <>
-      <div className="card">
+      <section className="card">
         <p className="opacity-50">work 1</p>
         <p className="font-bold text-6xl text-center mt-2 mb-6">
           <time>50:00</time>
@@ -16,8 +16,8 @@ export default function Timer() {
             ▶▶
           </Button>
         </div>
-      </div>
-      <div className="card flex items-center gap-4">
+      </section>
+      <section className="card flex items-center gap-4">
         <Label className="flex gap-3">
           <Checkbox />
           <p>
@@ -25,7 +25,7 @@ export default function Timer() {
           </p>
         </Label>
         <Button variant="secondary">change</Button>
-      </div>
+      </section>
     </>
   );
 }
