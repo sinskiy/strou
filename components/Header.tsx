@@ -9,12 +9,11 @@ export default function Header() {
   const pathname = usePathname();
   const navLinksList = links.map((link, i) => {
     const NavLinkURL = `/${i === 0 ? "" : link}`;
-    const isActive = pathname === NavLinkURL;
     return (
-      <NavLink key={link} href={NavLinkURL} active={isActive}>
+      <NavLink key={link} href={NavLinkURL} active={pathname === NavLinkURL}>
         {link}
       </NavLink>
     );
   });
-  return <header className="space-x-2">{navLinksList}</header>;
+  return <header className="flex gap-2">{navLinksList}</header>;
 }

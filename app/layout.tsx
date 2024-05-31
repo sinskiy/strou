@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className="size-full">
       <body
         className={twMerge(
-          "size-full flex flex-col justify-center items-center",
+          "size-full flex flex-col justify-center items-center gap-2",
           inter.className,
         )}
       >
