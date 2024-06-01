@@ -1,3 +1,4 @@
+import { type HandleChangeTask, type HandleDeleteTask } from "@/app/tasks/page";
 import Task from "./ui/task";
 
 export interface Task {
@@ -8,12 +9,22 @@ export interface Task {
 
 interface TasksProps {
   tasks: Task[];
-  onDeleteTask: (originalIndex: number) => void;
+  onChangeTask: HandleChangeTask;
+  onDeleteTask: HandleDeleteTask;
 }
 
-export default function Tasks({ tasks, onDeleteTask }: TasksProps) {
+export default function Tasks({
+  tasks,
+  onChangeTask,
+  onDeleteTask,
+}: TasksProps) {
   const tasksList = tasks.map((task) => (
-    <Task key={task.originalIndex} task={task} onDelete={onDeleteTask} />
+    <Task
+      key={task.originalIndex}
+      task={task}
+      onChange={onChangeTask}
+      onDelete={onDeleteTask}
+    />
   ));
   return <ul>{tasksList}</ul>;
 }

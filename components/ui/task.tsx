@@ -5,14 +5,23 @@ import type { Task } from "../tasks";
 
 interface TaskProps {
   task: Task;
+  onChange: (task: Task) => void;
   onDelete: (originalIndex: number) => void;
 }
 
-export default function Task({ task, onDelete }: TaskProps) {
+export default function Task({ task, onChange, onDelete }: TaskProps) {
   return (
     <div className="flex gap-4 items-center py-4 justify-between w-full">
       <Label className="flex gap-2">
-        <Checkbox />
+        <Checkbox
+          checked={task.checked}
+          onCheckedChange={(checked) => {
+            onChange({
+              ...task,
+              checked: checked as boolean,
+            });
+          }}
+        />
         {task.title}
       </Label>
       <div className="flex gap-2">

@@ -4,6 +4,10 @@ import Tags from "@/components/tags";
 import Tasks, { Task } from "@/components/tasks";
 import { useReducer } from "react";
 
+export type HandleAddTask = (title: string) => void;
+export type HandleChangeTask = (task: Task) => void;
+export type HandleDeleteTask = (originalIndex: number) => void;
+
 export default function TasksPage() {
   const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
 
@@ -31,7 +35,11 @@ export default function TasksPage() {
   return (
     <section className="card space-y-4">
       <Tags tags={tags} />
-      <Tasks tasks={tasks} onDeleteTask={handleDeleteTask} />
+      <Tasks
+        tasks={tasks}
+        onChangeTask={handleChangeTask}
+        onDeleteTask={handleDeleteTask}
+      />
     </section>
   );
 }
