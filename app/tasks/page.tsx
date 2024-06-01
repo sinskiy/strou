@@ -4,21 +4,39 @@ import Tags from "@/components/tags";
 import Tasks, { Task } from "@/components/tasks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 export type HandleAddTask = (title: string) => void;
 export type HandleChangeTask = (task: Task) => void;
 export type HandleDeleteTask = (originalIndex: number) => void;
 
 export default function TasksPage() {
-  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+  const [tasks, dispatch] = useReducer(tasksReducer, []);
+  const [largestIndex, setLargestIndex] = useState(0);
+
+  useEffect(() => {
+    dispatch({ type: "initialized" });
+    const largestIndexInitial = tasks.length
+      ? tasks.toSorted((a, b) =>
+          a.originalIndex < b.originalIndex ? 1 : -1,
+        )[0].originalIndex
+      : 0;
+    setLargestIndex(largestIndexInitial);
+  }, []);
+
+  useEffect(
+    () => localStorage.setItem("tasks", JSON.stringify(tasks)),
+    [tasks],
+  );
 
   function handleAddTask(title: string) {
+    const newIndex = largestIndex + 1;
     dispatch({
       type: "added",
-      originalIndex: ++largestIndex,
+      originalIndex: newIndex,
       title,
     });
+    setLargestIndex(newIndex);
   }
 
   function handleChangeTask(task: Task) {
@@ -60,6 +78,9 @@ export default function TasksPage() {
 
 type TasksAction =
   | {
+      type: "initialized";
+    }
+  | {
       type: "added";
       originalIndex: number;
       title: string;
@@ -73,8 +94,13 @@ type TasksAction =
       originalIndex: number;
     };
 
-function tasksReducer(tasks: typeof initialTasks, action: TasksAction) {
+function tasksReducer(tasks: Task[], action: TasksAction) {
   switch (action.type) {
+    case "initialized": {
+      const savedTasks: string | undefined = localStorage.tasks;
+      const initialTasks: Task[] = savedTasks ? JSON.parse(savedTasks) : [];
+      return initialTasks;
+    }
     case "added": {
       return [
         ...tasks,
@@ -109,12 +135,3 @@ const tags = [
   "distracting",
   "unnecessary",
 ] as const;
-
-const initialTasks: Task[] = [
-  { originalIndex: 0, title: "Visit Kafka Museum", checked: true },
-  { originalIndex: 42, title: "Watch a puppet show", checked: false },
-  { originalIndex: 2, title: "Lennon Wall pic", checked: false },
-];
-let largestIndex = initialTasks.toSorted((a, b) =>
-  a.originalIndex < b.originalIndex ? 1 : -1,
-)[0].originalIndex;
