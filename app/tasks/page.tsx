@@ -2,7 +2,9 @@
 
 import Tags from "@/components/tags";
 import Tasks, { Task } from "@/components/tasks";
-import { useReducer } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useReducer, useState } from "react";
 
 export type HandleAddTask = (title: string) => void;
 export type HandleChangeTask = (task: Task) => void;
@@ -32,9 +34,21 @@ export default function TasksPage() {
       originalIndex,
     });
   }
+
+  const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
     <section className="card space-y-4">
       <Tags tags={tags} />
+      <div className="flex gap-4">
+        <Input
+          type="text"
+          value={newTaskTitle}
+          onChange={(e) => setNewTaskTitle(e.target.value)}
+        />
+        <Button variant="secondary" onClick={() => handleAddTask(newTaskTitle)}>
+          add task
+        </Button>
+      </div>
       <Tasks
         tasks={tasks}
         onChangeTask={handleChangeTask}
