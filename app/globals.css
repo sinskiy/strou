@@ -79,6 +79,12 @@
   }
 }
 
+@layer base {
+  input {
+    @apply bg-transparent w-min p-0;
+  }
+}
+
 @layer components {
   .card {
     @apply bg-card text-card-foreground p-8 rounded-lg my-4;

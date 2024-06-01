@@ -12,7 +12,7 @@ interface TaskProps {
 export default function Task({ task, onChange, onDelete }: TaskProps) {
   return (
     <div className="flex gap-4 items-center py-4 justify-between w-full">
-      <Label className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Checkbox
           checked={task.checked}
           onCheckedChange={(checked) => {
@@ -21,7 +21,20 @@ export default function Task({ task, onChange, onDelete }: TaskProps) {
               checked: checked as boolean,
             });
           }}
+          id={String(task.originalIndex)}
         />
+        <input
+          value={task.title}
+          aria-hidden={true}
+          onChange={(e) => {
+            onChange({
+              ...task,
+              title: e.target.value,
+            });
+          }}
+        />
+      </div>
+      <Label className="sr-only" htmlFor={String(task.originalIndex)}>
         {task.title}
       </Label>
       <div className="flex gap-2">
