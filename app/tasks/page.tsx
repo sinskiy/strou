@@ -1,5 +1,5 @@
-import Task from "@/components/task";
-import Tag from "@/components/ui/tag";
+import Tags from "@/components/tags";
+import Task from "@/components/ui/task";
 
 const tags = [
   "all",
@@ -10,14 +10,9 @@ const tags = [
 ] as const;
 
 export default function Tasks() {
-  const tagsList = tags.map((tag, i) => (
-    <Tag key={tag} defaultChecked={i === 0}>
-      {tag}
-    </Tag>
-  ));
   return (
     <section className="card space-y-4">
-      <ul className="flex gap-2">{tagsList}</ul>
+      <Tags tags={tags} />
       <div>
         <Task title="play the domra" />
         <Task title="play the chess" />
