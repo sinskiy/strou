@@ -1,6 +1,6 @@
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
-import { Label } from "./ui/label";
+import { Button } from "./button";
+import { Checkbox } from "./checkbox";
+import { Label } from "./label";
 
 interface TaskProps {
   title: string;
