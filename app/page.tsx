@@ -6,6 +6,10 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
 type Mode = "paused" | "started" | "finished";
+const timeModes = ["work", "break"] as const;
+type Time = {
+  [Key in (typeof timeModes)[number]]: number;
+};
 
 const SECOND = 1;
 const MINUTE = SECOND * 60;
@@ -14,9 +18,17 @@ const HOUR = MINUTE * 60;
 export default function Timer() {
   const [mode, setMode] = useState<Mode>("paused");
 
-  const [time, setTime] = useState(MINUTE * 50);
+  const [time, setTime] = useState<Time>({
+    work: MINUTE * 50,
+    break: MINUTE * 5,
+  });
+  const [timeMode, setTimeMode] = useState<(typeof timeModes)[number]>("work");
+
   const [elapsed, setElapsed] = useState(0);
-  const timeLeft = time - elapsed;
+  const timeLeft = time[timeMode] - elapsed;
+  if (timeLeft < 0) {
+    setMode("finished");
+  }
   const timeFromMs = {
     hours: (timeLeft / HOUR) % 24,
     minutes: (timeLeft / MINUTE) % 60,
@@ -26,6 +38,8 @@ export default function Timer() {
   const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
   function handleTimerStart() {
     interval && clearInterval(interval);
+
+    if (mode === "finished") return;
 
     const nextMode: Mode = mode === "started" ? "paused" : "started";
     if (nextMode === "started") {
@@ -40,7 +54,7 @@ export default function Timer() {
   return (
     <>
       <section className="card text-center">
-        <p className="opacity-50">work 1</p>
+        <p className="opacity-50">work</p>
         <p className="font-bold text-6xl mt-2 mb-6">
           {Object.entries(timeFromMs).map(([label, value], i) => (
             <span key={label}>
