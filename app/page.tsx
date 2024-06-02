@@ -1,17 +1,56 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+
+const SECOND = 1;
+const MINUTE = SECOND * 60;
+const HOUR = MINUTE * 60;
 
 export default function Timer() {
+  const [paused, setPaused] = useState(true);
+
+  const [time, setTime] = useState(MINUTE * 50);
+  const [elapsed, setElapsed] = useState(0);
+  const timeLeft = time - elapsed;
+  const timeFromMs = {
+    hours: (timeLeft / HOUR) % 24,
+    minutes: (timeLeft / MINUTE) % 60,
+    seconds: (timeLeft / SECOND) % 60,
+  };
+
+  const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
+  function handleTimerStart() {
+    interval && clearInterval(interval);
+
+    const nextPaused = !paused;
+    if (!nextPaused) {
+      const newInterval = setInterval(() => {
+        setElapsed((elapsed) => elapsed + 1);
+      }, 1000);
+      setIntervalVar(newInterval);
+    }
+
+    setPaused(nextPaused);
+  }
   return (
     <>
       <section className="card text-center">
         <p className="opacity-50">work 1</p>
         <p className="font-bold text-6xl mt-2 mb-6">
-          <time>50:00</time>
+          {Object.entries(timeFromMs).map(([label, value], i) => (
+            <span key={label}>
+              {`${Math.floor(value)}`.padStart(2, "0")}
+              {i !== 2 && ":"}
+            </span>
+          ))}
         </p>
         <div className="flex gap-4 justify-center">
-          <Button size="icon">▶</Button>
+          <Button size="icon" onClick={handleTimerStart}>
+            ▶
+          </Button>
           <Button variant="secondary" size="icon">
             ▶▶
           </Button>
