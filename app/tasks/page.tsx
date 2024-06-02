@@ -1,9 +1,8 @@
 "use client";
 
+import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
 import Tasks, { Task } from "@/components/tasks";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useEffect, useReducer, useState } from "react";
 
 export type HandleAddTask = (title: string) => void;
@@ -16,11 +15,7 @@ export default function TasksPage() {
 
   useEffect(() => {
     dispatch({ type: "initialized" });
-    const largestIndexInitial = tasks.length
-      ? tasks.toSorted((a, b) =>
-          a.originalIndex < b.originalIndex ? 1 : -1,
-        )[0].originalIndex
-      : 0;
+    const largestIndexInitial = getLargestIndex(tasks);
     setLargestIndex(largestIndexInitial);
   }, []);
 
@@ -52,16 +47,11 @@ export default function TasksPage() {
   return (
     <section className="card space-y-4">
       <Tags tags={tags} />
-      <div className="flex gap-4">
-        <Input
-          type="text"
-          value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.target.value)}
-        />
-        <Button variant="secondary" onClick={() => handleAddTask(newTaskTitle)}>
-          add task
-        </Button>
-      </div>
+      <AddTask
+        newTaskTitle={newTaskTitle}
+        setNewTaskTitle={setNewTaskTitle}
+        handleAddTask={handleAddTask}
+      />
       <Tasks
         tasks={tasks}
         onChangeTask={handleChangeTask}
@@ -127,6 +117,13 @@ function tasksReducer(tasks: Task[], action: TasksAction) {
       return deletedTasks;
     }
   }
+}
+
+function getLargestIndex(tasks: Task[]) {
+  return tasks.length
+    ? tasks.toSorted((a, b) => (a.originalIndex < b.originalIndex ? 1 : -1))[0]
+        .originalIndex
+    : 0;
 }
 
 const tags = [

@@ -1,21 +1,21 @@
-import { Mode } from "@/app/page";
+import { TimerState } from "@/app/page";
 import { Button } from "./ui/button";
 
 interface TimerControlsProps {
   handleTimerStart: () => void;
-  mode: Mode;
+  state: TimerState;
   handleTimeModeSkip: () => void;
 }
 
 export default function TimerControls({
   handleTimerStart,
-  mode,
+  state,
   handleTimeModeSkip,
 }: TimerControlsProps) {
   return (
     <div className="flex gap-4 justify-center">
       <Button size="icon" onClick={handleTimerStart}>
-        {mode === "started" ? "⏸" : "▶"}
+        {state === "started" ? "⏸" : "▶"}
       </Button>
       <Button variant="secondary" size="icon" onClick={handleTimeModeSkip}>
         ▶▶

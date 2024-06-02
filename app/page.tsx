@@ -6,9 +6,7 @@ import Timestamp from "@/components/timestamp";
 import { useEffect, useState } from "react";
 import {
   Timestamp as ITimestamp,
-  HOUR_IN_SECONDS,
   MINUTE_IN_SECONDS,
-  SECOND,
   secondsToHours,
   secondsToMinutes,
   secondsToLeft,
@@ -19,24 +17,24 @@ export type TimerState = (typeof timerStates)[number];
 
 const timerModes = ["work", "break"] as const;
 type TimerMode = (typeof timerModes)[number];
-type TimerModeTimes = {
+type TimerModesTime = {
   [Key in TimerMode]: number;
 };
 
 export default function Timer() {
-  const [mode, setMode] = useState<TimerState>("paused");
+  const [state, setState] = useState<TimerState>("paused");
 
-  const [time, setTime] = useState<TimerModeTimes>({
+  const [timerModesTime, setTimerModesTime] = useState<TimerModesTime>({
     work: MINUTE_IN_SECONDS * 50,
     break: MINUTE_IN_SECONDS * 5,
   });
-  const [timeMode, setTimeMode] = useState<TimerMode>("work");
-  function nextTimeMode() {
-    return timeMode === "work" ? "break" : "work";
+  const [timerMode, setTimerMode] = useState<TimerMode>("work");
+  function nextTimerMode() {
+    return timerMode === "work" ? "break" : "work";
   }
 
   const [elapsed, setElapsed] = useState(0);
-  const timeLeft = time[timeMode] - elapsed;
+  const timeLeft = timerModesTime[timerMode] - elapsed;
   const timeFromMs: ITimestamp = {
     hours: secondsToHours(timeLeft),
     minutes: secondsToMinutes(timeLeft),
@@ -44,35 +42,53 @@ export default function Timer() {
   } as const;
 
   useEffect(() => {
+    const savedState = localStorage.state;
+    console.log(savedState);
+    savedState && setState(savedState);
+
+    const savedTimerMode = localStorage.timerMode;
+    savedTimerMode && setTimerMode(savedTimerMode);
+  }, []);
+
+  useEffect(() => {
     if (timeLeft < 0) {
       setTimerFinished();
     }
+    // localStorage.timeLeft = timeLeft;
   }, [timeLeft]);
+
+  // useEffect(() => {
+  //   localStorage.state = state;
+  // }, [state]);
+
+  // useEffect(() => {
+  //   localStorage.timerMode = timerMode;
+  // }, [timerMode]);
 
   const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
   function handleTimerStart() {
     interval && clearInterval(interval);
 
-    if (mode === "finished") {
-      setTimeMode(nextTimeMode());
+    if (state === "finished") {
+      setTimerMode(nextTimerMode());
 
       setElapsed(0);
     }
 
-    const nextMode: TimerState = mode === "started" ? "paused" : "started";
-    if (nextMode === "started") {
+    const nextState: TimerState = state === "started" ? "paused" : "started";
+    if (nextState === "started") {
       const newInterval = setInterval(() => {
         setElapsed((elapsed) => elapsed + 1);
       }, 1);
       setIntervalVar(newInterval);
     }
 
-    setMode(nextMode);
+    setState(nextState);
   }
   function handleTimeModeSkip() {
-    setTimeMode(nextTimeMode());
+    setTimerMode(nextTimerMode());
 
-    setMode("paused");
+    setState("paused");
     interval && clearInterval(interval);
 
     setElapsed(0);
@@ -80,16 +96,16 @@ export default function Timer() {
   function setTimerFinished() {
     interval && clearInterval(interval);
 
-    setMode("finished");
+    setState("finished");
   }
   return (
     <>
       <section className="card text-center">
-        <p className="opacity-50">{timeMode}</p>
+        <p className="opacity-50">{timerMode}</p>
         <Timestamp timeObject={timeFromMs} />
         <TimerControls
           handleTimerStart={handleTimerStart}
-          mode={mode}
+          state={state}
           handleTimeModeSkip={handleTimeModeSkip}
         />
       </section>
