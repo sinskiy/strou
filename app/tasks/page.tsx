@@ -24,11 +24,6 @@ export default function TasksPage() {
     setLargestIndex(largestIndexInitial);
   }, []);
 
-  useEffect(
-    () => localStorage.setItem("tasks", JSON.stringify(tasks)),
-    [tasks],
-  );
-
   function handleAddTask(title: string) {
     const newIndex = largestIndex + 1;
     dispatch({
@@ -102,7 +97,7 @@ function tasksReducer(tasks: Task[], action: TasksAction) {
       return initialTasks;
     }
     case "added": {
-      return [
+      const addedTasks = [
         ...tasks,
         {
           originalIndex: action.originalIndex,
@@ -110,20 +105,26 @@ function tasksReducer(tasks: Task[], action: TasksAction) {
           checked: false,
         },
       ];
+      localStorage.tasks = JSON.stringify(addedTasks);
+      return addedTasks;
     }
     case "changed": {
-      return tasks.map((task) => {
+      const changedTasks = tasks.map((task) => {
         if (task.originalIndex === action.task.originalIndex) {
           return action.task;
         } else {
           return task;
         }
       });
+      localStorage.tasks = JSON.stringify(changedTasks);
+      return changedTasks;
     }
     case "deleted": {
-      return tasks.filter(
+      const deletedTasks = tasks.filter(
         (task) => task.originalIndex !== action.originalIndex,
       );
+      localStorage.tasks = JSON.stringify(deletedTasks);
+      return deletedTasks;
     }
   }
 }
