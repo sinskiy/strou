@@ -1,46 +1,52 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import CurrentTask from "@/components/currentTask";
+import TimerControls from "@/components/timerControls";
+import Timestamp from "@/components/timestamp";
 import { useEffect, useState } from "react";
+import {
+  Timestamp as ITimestamp,
+  HOUR_IN_SECONDS,
+  MINUTE_IN_SECONDS,
+  SECOND,
+  secondsToHours,
+  secondsToMinutes,
+  secondsToLeft,
+} from "@/lib/time";
 
-type Mode = "paused" | "started" | "finished";
-const timeModes = ["work", "break"] as const;
-type Time = {
-  [Key in (typeof timeModes)[number]]: number;
+const timerStates = ["paused", "started", "finished"] as const;
+export type TimerState = (typeof timerStates)[number];
+
+const timerModes = ["work", "break"] as const;
+type TimerMode = (typeof timerModes)[number];
+type TimerModeTimes = {
+  [Key in TimerMode]: number;
 };
 
-const SECOND = 1;
-const MINUTE = SECOND * 60;
-const HOUR = MINUTE * 60;
-
 export default function Timer() {
-  const [mode, setMode] = useState<Mode>("paused");
+  const [mode, setMode] = useState<TimerState>("paused");
 
-  const [time, setTime] = useState<Time>({
-    work: MINUTE * 50,
-    break: MINUTE * 5,
+  const [time, setTime] = useState<TimerModeTimes>({
+    work: MINUTE_IN_SECONDS * 50,
+    break: MINUTE_IN_SECONDS * 5,
   });
-  const [timeMode, setTimeMode] = useState<(typeof timeModes)[number]>("work");
+  const [timeMode, setTimeMode] = useState<TimerMode>("work");
   function nextTimeMode() {
     return timeMode === "work" ? "break" : "work";
   }
 
   const [elapsed, setElapsed] = useState(0);
   const timeLeft = time[timeMode] - elapsed;
-  const timeFromMs = {
-    hours: (timeLeft / HOUR) % 24,
-    minutes: (timeLeft / MINUTE) % 60,
-    seconds: (timeLeft / SECOND) % 60,
-  };
+  const timeFromMs: ITimestamp = {
+    hours: secondsToHours(timeLeft),
+    minutes: secondsToMinutes(timeLeft),
+    seconds: secondsToLeft(timeLeft),
+  } as const;
 
   useEffect(() => {
-    if (timeLeft > 0) return;
-
-    interval && clearInterval(interval);
-
-    setMode("finished");
+    if (timeLeft < 0) {
+      setTimerFinished();
+    }
   }, [timeLeft]);
 
   const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
@@ -53,7 +59,7 @@ export default function Timer() {
       setElapsed(0);
     }
 
-    const nextMode: Mode = mode === "started" ? "paused" : "started";
+    const nextMode: TimerState = mode === "started" ? "paused" : "started";
     if (nextMode === "started") {
       const newInterval = setInterval(() => {
         setElapsed((elapsed) => elapsed + 1);
@@ -71,38 +77,23 @@ export default function Timer() {
 
     setElapsed(0);
   }
+  function setTimerFinished() {
+    interval && clearInterval(interval);
+
+    setMode("finished");
+  }
   return (
     <>
       <section className="card text-center">
         <p className="opacity-50">{timeMode}</p>
-        <p className="font-bold text-6xl mt-2 mb-6">
-          {Object.entries(timeFromMs).map(([label, value], i) => (
-            <span key={label}>
-              {`${Math.floor(value)}`.padStart(2, "0")}
-              {i !== 2 && ":"}
-            </span>
-          ))}
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Button size="icon" onClick={handleTimerStart}>
-            {mode === "started" ? "⏸" : "▶"}
-          </Button>
-          <Button variant="secondary" size="icon" onClick={handleTimeModeSkip}>
-            ▶▶
-          </Button>
-        </div>
+        <Timestamp timeObject={timeFromMs} />
+        <TimerControls
+          handleTimerStart={handleTimerStart}
+          mode={mode}
+          handleTimeModeSkip={handleTimeModeSkip}
+        />
       </section>
-      <section className="card flex items-center gap-4">
-        <Label className="flex gap-3">
-          <Checkbox />
-          <p>
-            play the domra <span className="opacity-30">is current task</span>
-          </p>
-        </Label>
-        <Button variant="secondary" size="sm">
-          change
-        </Button>
-      </section>
+      <CurrentTask />
     </>
   );
 }
