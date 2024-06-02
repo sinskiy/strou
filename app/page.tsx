@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Mode = "paused" | "started" | "finished";
 const timeModes = ["work", "break"] as const;
@@ -26,26 +26,37 @@ export default function Timer() {
 
   const [elapsed, setElapsed] = useState(0);
   const timeLeft = time[timeMode] - elapsed;
-  if (timeLeft < 0) {
-    setMode("finished");
-  }
   const timeFromMs = {
     hours: (timeLeft / HOUR) % 24,
     minutes: (timeLeft / MINUTE) % 60,
     seconds: (timeLeft / SECOND) % 60,
   };
 
+  useEffect(() => {
+    if (timeLeft > 0) return;
+
+    interval && clearInterval(interval);
+
+    setMode("finished");
+  }, [timeLeft]);
+
   const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
   function handleTimerStart() {
     interval && clearInterval(interval);
 
-    if (mode === "finished") return;
+    if (mode === "finished") {
+      const nextTimeMode: typeof timeMode =
+        timeMode === "work" ? "break" : "work";
+      setTimeMode(nextTimeMode);
+
+      setElapsed(0);
+    }
 
     const nextMode: Mode = mode === "started" ? "paused" : "started";
     if (nextMode === "started") {
       const newInterval = setInterval(() => {
         setElapsed((elapsed) => elapsed + 1);
-      }, 1000);
+      }, 1);
       setIntervalVar(newInterval);
     }
 
@@ -54,7 +65,7 @@ export default function Timer() {
   return (
     <>
       <section className="card text-center">
-        <p className="opacity-50">work</p>
+        <p className="opacity-50">{timeMode}</p>
         <p className="font-bold text-6xl mt-2 mb-6">
           {Object.entries(timeFromMs).map(([label, value], i) => (
             <span key={label}>
@@ -65,7 +76,7 @@ export default function Timer() {
         </p>
         <div className="flex gap-4 justify-center">
           <Button size="icon" onClick={handleTimerStart}>
-            ▶
+            {mode === "started" ? "⏸" : "▶"}
           </Button>
           <Button variant="secondary" size="icon">
             ▶▶
