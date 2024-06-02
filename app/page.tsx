@@ -23,6 +23,9 @@ export default function Timer() {
     break: MINUTE * 5,
   });
   const [timeMode, setTimeMode] = useState<(typeof timeModes)[number]>("work");
+  function nextTimeMode() {
+    return timeMode === "work" ? "break" : "work";
+  }
 
   const [elapsed, setElapsed] = useState(0);
   const timeLeft = time[timeMode] - elapsed;
@@ -45,9 +48,7 @@ export default function Timer() {
     interval && clearInterval(interval);
 
     if (mode === "finished") {
-      const nextTimeMode: typeof timeMode =
-        timeMode === "work" ? "break" : "work";
-      setTimeMode(nextTimeMode);
+      setTimeMode(nextTimeMode());
 
       setElapsed(0);
     }
@@ -61,6 +62,14 @@ export default function Timer() {
     }
 
     setMode(nextMode);
+  }
+  function handleTimeModeSkip() {
+    setTimeMode(nextTimeMode());
+
+    setMode("paused");
+    interval && clearInterval(interval);
+
+    setElapsed(0);
   }
   return (
     <>
@@ -78,7 +87,7 @@ export default function Timer() {
           <Button size="icon" onClick={handleTimerStart}>
             {mode === "started" ? "⏸" : "▶"}
           </Button>
-          <Button variant="secondary" size="icon">
+          <Button variant="secondary" size="icon" onClick={handleTimeModeSkip}>
             ▶▶
           </Button>
         </div>
