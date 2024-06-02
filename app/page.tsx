@@ -5,12 +5,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
+type Mode = "paused" | "started" | "finished";
+
 const SECOND = 1;
 const MINUTE = SECOND * 60;
 const HOUR = MINUTE * 60;
 
 export default function Timer() {
-  const [paused, setPaused] = useState(true);
+  const [mode, setMode] = useState<Mode>("paused");
 
   const [time, setTime] = useState(MINUTE * 50);
   const [elapsed, setElapsed] = useState(0);
@@ -25,15 +27,15 @@ export default function Timer() {
   function handleTimerStart() {
     interval && clearInterval(interval);
 
-    const nextPaused = !paused;
-    if (!nextPaused) {
+    const nextMode: Mode = mode === "started" ? "paused" : "started";
+    if (nextMode === "started") {
       const newInterval = setInterval(() => {
         setElapsed((elapsed) => elapsed + 1);
       }, 1000);
       setIntervalVar(newInterval);
     }
 
-    setPaused(nextPaused);
+    setMode(nextMode);
   }
   return (
     <>
