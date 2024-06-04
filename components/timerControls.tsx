@@ -15,7 +15,7 @@ export default function TimerControls({
   return (
     <div className="flex gap-4 justify-center">
       <Button size="icon" onClick={handleTimerStart}>
-        {state === "started" ? "⏸" : "▶"}
+        {state === "unpaused" ? "⏸" : "▶"}
       </Button>
       <Button variant="secondary" size="icon" onClick={handleTimeModeSkip}>
         ▶▶

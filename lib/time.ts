@@ -4,13 +4,13 @@ export interface Timestamp {
   seconds: number;
 }
 
-export const SECOND = 1;
-export const MINUTE_IN_SECONDS = SECOND * 60;
-export const HOUR_IN_SECONDS = MINUTE_IN_SECONDS * 60;
+export const SECOND = 1000;
+export const MINUTE_IN_MS = SECOND * 60;
+export const HOUR_IN_MS = MINUTE_IN_MS * 60;
 
-export const secondsToHours = (s: number) => (s / HOUR_IN_SECONDS) % 24;
-export const secondsToMinutes = (s: number) => (s / MINUTE_IN_SECONDS) % 60;
-export const secondsToLeft = (s: number) => s % 60;
+export const msToHours = (ms: number) => (ms / HOUR_IN_MS) % 24;
+export const msToMinutes = (ms: number) => (ms / MINUTE_IN_MS) % 60;
+export const msToSeconds = (ms: number) => (ms / SECOND) % 60;
 
 export const formatTimeUnit = (timeUnit: number) =>
   `${Math.floor(timeUnit)}`.padStart(2, "0");
