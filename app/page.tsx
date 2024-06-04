@@ -37,7 +37,7 @@ export default function Timer() {
     return timerMode === "work" ? "break" : "work";
   }
 
-  const [started, setStarted] = useState(0);
+  const [started, setStarted] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const timeFromMs: ITimestamp = {
     hours: msToHours(timeLeft),
@@ -82,11 +82,15 @@ export default function Timer() {
     if (state === "finished") {
       setTimerMode(nextTimerMode());
 
-      setStarted(0);
+      setStarted(null);
     }
 
     const nextState = assignNextState(state);
     if (nextState === "unpaused") {
+      if (started === null) {
+        setStarted(Date.now());
+      }
+
       let newPauses = pauses;
       newPauses[pauses.length - 1].end = Date.now();
       setPauses([...newPauses]);
@@ -94,7 +98,7 @@ export default function Timer() {
       const newInterval = setInterval(() => {
         const timePaused = getTimePaused();
         const newTimeLeft =
-          started + timerModesTime[timerMode] - Date.now() + timePaused;
+          started! + timerModesTime[timerMode] - Date.now() + timePaused;
         setTimeLeft(newTimeLeft);
       }, 1);
       setIntervalVar(newInterval);
@@ -110,7 +114,7 @@ export default function Timer() {
     setState("paused");
     interval && clearInterval(interval);
 
-    setStarted(0);
+    setStarted(null);
   }
   function setTimerPaused() {
     setPauses([...pauses, { start: Date.now(), end: undefined }]);
