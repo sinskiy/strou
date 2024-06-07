@@ -26,9 +26,8 @@ interface Pause {
 }
 
 export default function Timer() {
-  const [mounted, setMounted] = useState(false);
-
   const [state, setState] = useState<TimerState>("paused");
+  // TODO: refactor this
   function nextState(): TimerState {
     return state === "paused" ? "unpaused" : "paused";
   }
@@ -53,21 +52,7 @@ export default function Timer() {
   const [pauses, setPauses] = useState<Pause[]>([]);
 
   useEffect(() => {
-    const savedStarted =
-      localStorage.started === "null" || !localStorage.started
-        ? null
-        : +localStorage.started;
-    setStarted(savedStarted);
-
-    const savedTimerMode: TimerMode = localStorage.timerMode ?? "work";
-    setTimerMode(savedTimerMode);
-
-    const savedPauses = JSON.parse(localStorage.pauses ?? "[]");
-    setPauses(savedPauses);
-
-    setTimeLeft(calculateTimeLeft(savedStarted, savedTimerMode, savedPauses));
-
-    setMounted(true);
+    setTimeLeft(timerModesTime[timerMode]);
   }, []);
 
   useEffect(() => {
@@ -75,15 +60,6 @@ export default function Timer() {
       setTimerFinished();
     }
   }, [timeLeft]);
-
-  useStorage(
-    {
-      started,
-      timerMode,
-      pauses: JSON.stringify(pauses),
-    },
-    mounted,
-  );
 
   const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
   function handleTimerStart() {
@@ -122,15 +98,11 @@ export default function Timer() {
 
     setStarted(null);
   }
-  function startTimer(newStarted?: number) {
-    interval && clearInterval(interval);
+  function startTimer() {
+    const newStarted = started === null ? Date.now() : started;
+    setStarted(newStarted);
 
-    setStarted(newStarted ?? started ?? Date.now());
-
-    const newInterval = setInterval(
-      () => handleTimer(newStarted ?? started ?? Date.now()),
-      1000,
-    );
+    const newInterval = setInterval(() => handleTimer(newStarted), 1000);
     setIntervalVar(newInterval);
   }
   function setTimerPaused() {
@@ -152,23 +124,18 @@ export default function Timer() {
     lastPause.end = Date.now();
     setPauses(pauses);
   }
-  function calculateTimeLeft(
-    newStarted: number | null,
-    newTimerMode?: TimerMode,
-    newPauses?: Pause[],
-  ) {
-    const timePaused = newPauses ? getTimePaused(newPauses) : getTimePaused();
+  function calculateTimeLeft(newStarted: number | null) {
+    const timePaused = getTimePaused();
 
     const newTimeLeft =
       (newStarted ?? started ?? Date.now()) +
-      timerModesTime[newTimerMode ?? timerMode] +
+      timerModesTime[timerMode] +
       timePaused -
       Date.now();
     return newTimeLeft;
   }
-  function getTimePaused(localPauses?: Pause[]) {
-    const pausesToCalculate = localPauses ?? pauses;
-    const pausesTime = pausesToCalculate.reduce(
+  function getTimePaused() {
+    const pausesTime = pauses.reduce(
       (acc, curr) =>
         curr.end ? acc + curr.end - curr.start : acc + Date.now() - curr.start,
       0,
@@ -189,20 +156,4 @@ export default function Timer() {
       <CurrentTask />
     </>
   );
-}
-
-interface ToStore {
-  [key: string]: string | number | null;
-}
-function useStorage(toStore: ToStore, mounted: boolean): void {
-  const dependencies = Object.keys(toStore);
-  useEffect(() => {
-    if (!mounted) return;
-
-    for (const item in toStore) {
-      if (!item) continue;
-
-      localStorage[item] = toStore[item];
-    }
-  }, [dependencies]);
 }
