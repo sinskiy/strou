@@ -36,6 +36,9 @@ export default function Timer() {
   function nextTimerMode() {
     return timerMode === "work" ? "break" : "work";
   }
+  function nextState(): TimerState {
+    return state === "paused" ? "unpaused" : "paused";
+  }
 
   const [started, setStarted] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -48,16 +51,7 @@ export default function Timer() {
   const [pauses, setPauses] = useState<Pause[]>([]);
 
   useEffect(() => {
-    const savedState = localStorage.state;
-    savedState && setState(savedState);
-
-    const savedTimerMode = localStorage.timerMode;
-    savedTimerMode && setTimerMode(savedTimerMode);
-
-    setStarted(Date.now());
     setTimeLeft(timerModesTime[timerMode]);
-    setState("paused");
-    setTimerPaused();
   }, []);
 
   useEffect(() => {
@@ -85,28 +79,30 @@ export default function Timer() {
       setStarted(null);
     }
 
-    const nextState = assignNextState(state);
-    if (nextState === "unpaused") {
-      if (started === null) {
+    const newState = nextState();
+    if (newState === "unpaused") {
+      let newStarted = started === null ? Date.now() : null;
+      if (newStarted) {
         setStarted(Date.now());
       }
 
-      let newPauses = pauses;
-      newPauses[pauses.length - 1].end = Date.now();
-      setPauses([...newPauses]);
+      setLastPauseEnd();
 
       const newInterval = setInterval(() => {
         const timePaused = getTimePaused();
         const newTimeLeft =
-          started! + timerModesTime[timerMode] - Date.now() + timePaused;
+          (newStarted ?? started!) +
+          timerModesTime[timerMode] +
+          timePaused -
+          Date.now();
         setTimeLeft(newTimeLeft);
-      }, 1);
+      }, 1000);
       setIntervalVar(newInterval);
-    } else if (nextState === "paused") {
+    } else if (newState === "paused") {
       setTimerPaused();
     }
 
-    setState(nextState);
+    setState(newState);
   }
   function handleTimeModeSkip() {
     setTimerMode(nextTimerMode());
@@ -114,22 +110,38 @@ export default function Timer() {
     setState("paused");
     interval && clearInterval(interval);
 
+    setPauses([]);
+
+    setTimeLeft(timerModesTime[nextTimerMode()]);
+
     setStarted(null);
   }
   function setTimerPaused() {
-    setPauses([...pauses, { start: Date.now(), end: undefined }]);
+    const newPause = {
+      start: Date.now(),
+      end: undefined,
+    };
+    setPauses([...pauses, newPause]);
   }
   function setTimerFinished() {
     interval && clearInterval(interval);
 
     setState("finished");
   }
+  function setLastPauseEnd() {
+    const lastPause = pauses.at(-1);
+    if (!lastPause) return;
+
+    lastPause.end = Date.now();
+    setPauses(pauses);
+  }
   function getTimePaused() {
-    return pauses.reduce(
+    const pausesTime = pauses.reduce(
       (acc, curr) =>
         curr.end ? acc + curr.end - curr.start : acc + Date.now() - curr.start,
       0,
     );
+    return pausesTime;
   }
   return (
     <>
@@ -145,14 +157,4 @@ export default function Timer() {
       <CurrentTask />
     </>
   );
-}
-
-function assignNextState(currentState: TimerState): TimerState {
-  switch (currentState) {
-    case "finished":
-    case "paused":
-      return "unpaused";
-    case "unpaused":
-      return "paused";
-  }
 }
