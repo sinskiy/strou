@@ -11,22 +11,21 @@ export type HandleDeleteTask = (originalIndex: number) => void;
 
 export default function TasksPage() {
   const [tasks, dispatch] = useReducer(tasksReducer, []);
-  const [largestIndex, setLargestIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(0);
 
   useEffect(() => {
     dispatch({ type: "initialized" });
-    const largestIndexInitial = getLargestIndex(tasks);
-    setLargestIndex(largestIndexInitial);
+    const largestIndexInitial = getNextIndex(JSON.parse(localStorage.tasks));
+    setNextIndex(largestIndexInitial);
   }, []);
 
   function handleAddTask(title: string) {
-    const newIndex = largestIndex + 1;
     dispatch({
       type: "added",
-      originalIndex: newIndex,
+      originalIndex: nextIndex,
       title,
     });
-    setLargestIndex(newIndex);
+    setNextIndex(nextIndex + 1);
   }
 
   function handleChangeTask(task: Task) {
@@ -119,11 +118,12 @@ function tasksReducer(tasks: Task[], action: TasksAction) {
   }
 }
 
-function getLargestIndex(tasks: Task[]) {
-  return tasks.length
-    ? tasks.toSorted((a, b) => (a.originalIndex < b.originalIndex ? 1 : -1))[0]
-        .originalIndex
-    : 0;
+function getNextIndex(tasks: Task[]) {
+  if (!tasks.length) return 0;
+
+  return (
+    tasks.sort((a, b) => b.originalIndex - a.originalIndex)[0].originalIndex + 1
+  );
 }
 
 const tags = [
