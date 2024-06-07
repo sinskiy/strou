@@ -26,38 +26,31 @@ interface Pause {
 }
 
 export default function Timer() {
-  const [state, setState] = useState<TimerState>("paused");
-  // TODO: refactor this
-  function nextState(): TimerState {
-    return state === "paused" ? "unpaused" : "paused";
-  }
+  const [timerState, setTimerState] = useState<TimerState>("paused");
+  const nextTimerState: TimerState =
+    timerState === "paused" ? "unpaused" : "paused";
 
   const [timerModesTime, setTimerModesTime] = useState<TimerModesTime>({
     work: MINUTE_IN_MS * 50,
     break: MINUTE_IN_MS * 5,
   });
   const [timerMode, setTimerMode] = useState<TimerMode>("work");
-  function nextTimerMode() {
-    return timerMode === "work" ? "break" : "work";
-  }
+  const nextTimerMode: TimerMode = timerMode === "work" ? "break" : "work";
 
-  const [started, setStarted] = useState<number | null>(null);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeStarted, setTimeStarted] = useState<number | null>(null);
+
+  const [pauses, setPauses] = useState<Pause[]>([]);
+
+  const [timeLeft, setTimeLeft] = useState(timerModesTime[timerMode]);
   const timeFromMs: ITimestamp = {
     hours: msToHours(timeLeft),
     minutes: msToMinutes(timeLeft),
     seconds: msToSeconds(timeLeft),
   } as const;
 
-  const [pauses, setPauses] = useState<Pause[]>([]);
-
-  useEffect(() => {
-    setTimeLeft(timerModesTime[timerMode]);
-  }, []);
-
   useEffect(() => {
     if (timeLeft < 0) {
-      setTimerFinished();
+      handleTimeModeSkip();
     }
   }, [timeLeft]);
 
@@ -65,57 +58,54 @@ export default function Timer() {
   function handleTimerStart() {
     interval && clearInterval(interval);
 
-    if (state === "finished") {
-      setTimerMode(nextTimerMode());
+    if (timerState === "finished") {
+      setTimeStarted(null);
 
-      setStarted(null);
+      setTimerMode(nextTimerMode);
     }
 
-    const newState = nextState();
-    if (newState === "unpaused") {
-      setLastPauseEnd();
-
+    if (nextTimerState === "unpaused") {
       startTimer();
-    } else if (newState === "paused") {
-      setTimerPaused();
+
+      setLastPauseEnd();
+    } else if (nextTimerState === "paused") {
+      // we have already paused with clearInterval
+      addPause();
     }
 
-    setState(newState);
+    setTimerState(nextTimerState);
   }
-  function handleTimer(newStarted: number) {
-    const newTimeLeft = calculateTimeLeft(newStarted);
-    setTimeLeft(newTimeLeft);
-  }
-  function handleTimeModeSkip() {
-    setTimerMode(nextTimerMode());
 
-    setState("paused");
+  function handleTimeModeSkip() {
     interval && clearInterval(interval);
 
+    setTimerMode(nextTimerMode);
+
+    setTimerState("paused");
+
     setPauses([]);
+    setTimeStarted(null);
 
-    setTimeLeft(timerModesTime[nextTimerMode()]);
-
-    setStarted(null);
+    setTimeLeft(timerModesTime[nextTimerMode]);
   }
-  function startTimer() {
-    const newStarted = started === null ? Date.now() : started;
-    setStarted(newStarted);
 
-    const newInterval = setInterval(() => handleTimer(newStarted), 1000);
+  function startTimer() {
+    const newStarted = timeStarted === null ? Date.now() : timeStarted;
+    setTimeStarted(newStarted);
+
+    const newInterval = setInterval(
+      () => handleTimerInterval(newStarted),
+      1000,
+    );
     setIntervalVar(newInterval);
   }
-  function setTimerPaused() {
+
+  function addPause() {
     const newPause = {
       start: Date.now(),
       end: undefined,
     };
     setPauses([...pauses, newPause]);
-  }
-  function setTimerFinished() {
-    interval && clearInterval(interval);
-
-    setState("finished");
   }
   function setLastPauseEnd() {
     const lastPause = pauses.at(-1);
@@ -124,16 +114,21 @@ export default function Timer() {
     lastPause.end = Date.now();
     setPauses(pauses);
   }
-  function calculateTimeLeft(newStarted: number | null) {
+
+  function handleTimerInterval(newStarted: number) {
+    const newTimeLeft = getTimeLeft(newStarted);
+    setTimeLeft(newTimeLeft);
+  }
+
+  function getTimeLeft(newStarted: number) {
     const timePaused = getTimePaused();
 
-    const newTimeLeft =
-      (newStarted ?? started ?? Date.now()) +
-      timerModesTime[timerMode] +
-      timePaused -
-      Date.now();
+    const timerEndsAt = newStarted + timerModesTime[timerMode] + timePaused;
+
+    const newTimeLeft = timerEndsAt - Date.now();
     return newTimeLeft;
   }
+
   function getTimePaused() {
     const pausesTime = pauses.reduce(
       (acc, curr) =>
@@ -149,7 +144,7 @@ export default function Timer() {
         <Timestamp timeObject={timeFromMs} />
         <TimerControls
           handleTimerStart={handleTimerStart}
-          state={state}
+          state={timerState}
           handleTimeModeSkip={handleTimeModeSkip}
         />
       </section>
