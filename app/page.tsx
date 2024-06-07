@@ -27,6 +27,9 @@ interface Pause {
 
 export default function Timer() {
   const [state, setState] = useState<TimerState>("paused");
+  function nextState(): TimerState {
+    return state === "paused" ? "unpaused" : "paused";
+  }
 
   const [timerModesTime, setTimerModesTime] = useState<TimerModesTime>({
     work: MINUTE_IN_MS * 50,
@@ -35,9 +38,6 @@ export default function Timer() {
   const [timerMode, setTimerMode] = useState<TimerMode>("work");
   function nextTimerMode() {
     return timerMode === "work" ? "break" : "work";
-  }
-  function nextState(): TimerState {
-    return state === "paused" ? "unpaused" : "paused";
   }
 
   const [started, setStarted] = useState<number | null>(null);
@@ -81,28 +81,23 @@ export default function Timer() {
 
     const newState = nextState();
     if (newState === "unpaused") {
-      let newStarted = started === null ? Date.now() : null;
-      if (newStarted) {
-        setStarted(Date.now());
-      }
-
       setLastPauseEnd();
 
-      const newInterval = setInterval(() => {
-        const timePaused = getTimePaused();
-        const newTimeLeft =
-          (newStarted ?? started!) +
-          timerModesTime[timerMode] +
-          timePaused -
-          Date.now();
-        setTimeLeft(newTimeLeft);
-      }, 1000);
-      setIntervalVar(newInterval);
+      startTimer();
     } else if (newState === "paused") {
       setTimerPaused();
     }
 
     setState(newState);
+  }
+  function handleTimer(newStarted: number) {
+    const timePaused = getTimePaused();
+    const newTimeLeft =
+      (newStarted ?? started!) +
+      timerModesTime[timerMode] +
+      timePaused -
+      Date.now();
+    setTimeLeft(newTimeLeft);
   }
   function handleTimeModeSkip() {
     setTimerMode(nextTimerMode());
@@ -115,6 +110,13 @@ export default function Timer() {
     setTimeLeft(timerModesTime[nextTimerMode()]);
 
     setStarted(null);
+  }
+  function startTimer() {
+    const newStarted = started === null ? Date.now() : started;
+    setStarted(newStarted);
+
+    const newInterval = setInterval(() => handleTimer(newStarted), 1000);
+    setIntervalVar(newInterval);
   }
   function setTimerPaused() {
     const newPause = {
