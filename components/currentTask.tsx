@@ -1,6 +1,7 @@
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface Props {}
 export default function CurrentTask({}: Props) {
@@ -12,8 +13,8 @@ export default function CurrentTask({}: Props) {
           play the domra <span className="opacity-30">is current task</span>
         </p>
       </Label>
-      <Button variant="secondary" size="sm">
-        change
+      <Button variant="secondary" size="sm" asChild>
+        <Link href="/tasks">change</Link>
       </Button>
     </section>
   );
