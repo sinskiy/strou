@@ -13,12 +13,20 @@ export default function TasksPage() {
   const [tasks, dispatch] = useReducer(tasksReducer, []);
   const [nextIndex, setNextIndex] = useState(0);
 
+  const [currentTask, setCurrentTask] = useState<null | number>(null);
+
   useEffect(() => {
     dispatch({ type: "initialized" });
     const largestIndexInitial = getNextIndex(
       JSON.parse(localStorage.tasks ?? "[]"),
     );
     setNextIndex(largestIndexInitial);
+
+    const savedCurrentTask = localStorage.currentTask
+      ? Number(localStorage.currentTask)
+      : null;
+    console.log(savedCurrentTask);
+    setCurrentTask(savedCurrentTask);
   }, []);
 
   function handleAddTask(title: string) {
@@ -55,6 +63,7 @@ export default function TasksPage() {
       />
       <Tasks
         tasks={tasks}
+        currentTask={currentTask}
         onChangeTask={handleChangeTask}
         onDeleteTask={handleDeleteTask}
       />

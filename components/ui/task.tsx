@@ -5,11 +5,13 @@ import type { Task } from "../tasks";
 
 interface TaskProps {
   task: Task;
+  current: boolean;
   onChange: (task: Task) => void;
   onDelete: (originalIndex: number) => void;
 }
+// TODO: refactor this
 
-export default function Task({ task, onChange, onDelete }: TaskProps) {
+export default function Task({ task, current, onChange, onDelete }: TaskProps) {
   return (
     <div className="flex gap-4 items-center py-4 justify-between w-full">
       <div className="flex gap-2 items-center">
@@ -38,9 +40,11 @@ export default function Task({ task, onChange, onDelete }: TaskProps) {
         {task.title}
       </Label>
       <div className="flex gap-2">
-        <Button variant="secondary" size="sm">
-          start working on
-        </Button>
+        {!current && (
+          <Button variant="secondary" size="sm">
+            start working on
+          </Button>
+        )}
         <Button
           variant="destructive"
           size="sm"
