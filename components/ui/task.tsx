@@ -53,7 +53,7 @@ export default function Task({
             />
             <ul className="flex gap-1">
               {task.tags && <TaskTags tags={task.tags} />}
-              <TasksSelector tags={tags} />
+              <TasksSelector task={task} tags={tags} onChange={onChange} />
             </ul>
           </div>
         </div>
