@@ -2,17 +2,19 @@ import { InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { Label } from "./label";
 
-interface TagProps extends InputHTMLAttributes<HTMLInputElement> {}
+interface TagProps extends InputHTMLAttributes<HTMLInputElement> {
+  tag: string;
+}
 
-export default function Tag({ className, children, ...props }: TagProps) {
+export default function Tag({ className, tag, ...props }: TagProps) {
   return (
     <li>
       <Label className="relative">
         <input
           type="checkbox"
           className="absolute inset-0 peer opacity-0"
-          id="TODO"
-          name="TODO"
+          id={tag}
+          name="tags"
           {...props}
         />
         <span
@@ -21,7 +23,7 @@ export default function Tag({ className, children, ...props }: TagProps) {
             className,
           )}
         >
-          {children}
+          {tag}
         </span>
       </Label>
     </li>
