@@ -2,17 +2,18 @@ import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Label } from "./label";
 import type { Task } from "../tasks";
-import Tags from "../tags";
 import { tags } from "@/app/tasks/page";
-import TaskTag from "./taskTag";
 import TaskTags from "../taskTags";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
+// TODO: reduce duplication in props
 interface TaskProps {
   task: Task;
   current: boolean;
   handleCurrentTaskChange: (originalIndex: number) => void;
   onChange: (task: Task) => void;
   onDelete: (originalIndex: number) => void;
+  onAddTag: (originalIndex: number, tag: string) => void;
 }
 // TODO: refactor this component
 
@@ -22,6 +23,7 @@ export default function Task({
   handleCurrentTaskChange,
   onChange,
   onDelete,
+  onAddTag,
 }: TaskProps) {
   return (
     <article>
@@ -50,7 +52,25 @@ export default function Task({
             />
             <ul className="flex gap-1">
               {task.tags && <TaskTags tags={task.tags} />}
-              <TaskTag>+</TaskTag>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="py-0 px-4 size-6 rounded-full"
+                  >
+                    +
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <ul className="flex flex-wrap gap-2">
+                    <TaskTags
+                      onTagClick={onAddTag}
+                      originalIndex={task.originalIndex}
+                      tags={tags.slice(1)}
+                    />
+                  </ul>
+                </PopoverContent>
+              </Popover>
             </ul>
           </div>
         </div>

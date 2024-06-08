@@ -8,6 +8,7 @@ import { useEffect, useReducer, useState } from "react";
 export type HandleAddTask = (title: string) => void;
 export type HandleChangeTask = (task: Task) => void;
 export type HandleDeleteTask = (originalIndex: number) => void;
+export type HandleAddTag = (originalIndex: number, tag: string) => void;
 
 export default function TasksPage() {
   const [tasks, dispatch] = useReducer(tasksReducer, []);
@@ -51,6 +52,14 @@ export default function TasksPage() {
     });
   }
 
+  function handleAddTag(originalIndex: number, tag: string) {
+    dispatch({
+      type: "tagAdded",
+      originalIndex,
+      tag,
+    });
+  }
+
   function handleCurrentTaskChange(originalIndex: number) {
     setCurrentTask(originalIndex);
     localStorage.currentTask = originalIndex;
@@ -71,6 +80,7 @@ export default function TasksPage() {
         handleCurrentTaskChange={handleCurrentTaskChange}
         onChangeTask={handleChangeTask}
         onDeleteTask={handleDeleteTask}
+        onAddTag={handleAddTag}
       />
     </section>
   );
@@ -92,6 +102,11 @@ type TasksAction =
   | {
       type: "deleted";
       originalIndex: number;
+    }
+  | {
+      type: "tagAdded";
+      originalIndex: number;
+      tag: string;
     };
 
 function tasksReducer(tasks: Task[], action: TasksAction) {
@@ -130,6 +145,20 @@ function tasksReducer(tasks: Task[], action: TasksAction) {
       );
       localStorage.tasks = JSON.stringify(deletedTasks);
       return deletedTasks;
+    }
+    case "tagAdded": {
+      const tasksWithTagAdded = tasks.map((task) => {
+        if (task.originalIndex === action.originalIndex) {
+          return {
+            ...task,
+            tags: task.tags ? [...task.tags, action.tag] : [action.tag],
+          };
+        } else {
+          return task;
+        }
+      });
+      localStorage.tasks = JSON.stringify(tasksWithTagAdded);
+      return tasksWithTagAdded;
     }
   }
 }
