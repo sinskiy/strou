@@ -15,7 +15,9 @@ export default function TasksPage() {
 
   useEffect(() => {
     dispatch({ type: "initialized" });
-    const largestIndexInitial = getNextIndex(JSON.parse(localStorage.tasks));
+    const largestIndexInitial = getNextIndex(
+      JSON.parse(localStorage.tasks ?? "[]"),
+    );
     setNextIndex(largestIndexInitial);
   }, []);
 
