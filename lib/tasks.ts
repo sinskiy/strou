@@ -1,0 +1,14 @@
+export interface Task {
+  originalIndex: number;
+  title: string;
+  checked: boolean;
+  tags?: string[];
+}
+
+export function getNextIndex(tasks: Task[]) {
+  if (!tasks.length) return 0;
+
+  return (
+    tasks.sort((a, b) => b.originalIndex - a.originalIndex)[0].originalIndex + 1
+  );
+}

@@ -1,44 +1,34 @@
 import {
+  HandleCurrentTaskChange,
   type HandleChangeTask,
   type HandleDeleteTask,
-  type HandleAddTag,
 } from "@/app/tasks/page";
 import Task from "./ui/task";
-
-export interface Task {
-  originalIndex: number;
-  title: string;
-  checked: boolean;
-  tags?: string[];
-}
+import type { Task as ITask } from "@/lib/tasks";
 
 interface TasksProps {
-  tasks: Task[];
+  tasks: ITask[];
   currentTask: number | null;
-  // TODO: refactor type
-  handleCurrentTaskChange: (originalIndex: number) => void;
   onChangeTask: HandleChangeTask;
   onDeleteTask: HandleDeleteTask;
-  onAddTag: HandleAddTag;
+  onCurrentTaskChange: HandleCurrentTaskChange;
 }
 
 export default function Tasks({
   tasks,
   currentTask,
-  handleCurrentTaskChange,
+  onCurrentTaskChange,
   onChangeTask,
   onDeleteTask,
-  onAddTag,
 }: TasksProps) {
   const tasksList = tasks.map((task) => (
     <Task
       key={task.originalIndex}
-      current={currentTask === task.originalIndex}
-      handleCurrentTaskChange={handleCurrentTaskChange}
       task={task}
+      current={currentTask === task.originalIndex}
       onChange={onChangeTask}
       onDelete={onDeleteTask}
-      onAddTag={onAddTag}
+      onCurrentTaskChange={onCurrentTaskChange}
     />
   ));
   return <ul>{tasksList}</ul>;

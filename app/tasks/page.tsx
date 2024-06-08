@@ -2,13 +2,15 @@
 
 import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
-import Tasks, { Task } from "@/components/tasks";
+import Tasks from "@/components/tasks";
+import { Task, getNextIndex } from "@/lib/tasks";
+import tasksReducer from "@/lib/tasksReducer";
 import { useEffect, useReducer, useState } from "react";
 
 export type HandleAddTask = (title: string) => void;
 export type HandleChangeTask = (task: Task) => void;
 export type HandleDeleteTask = (originalIndex: number) => void;
-export type HandleAddTag = (originalIndex: number, tag: string) => void;
+export type HandleCurrentTaskChange = (originalIndex: number) => void;
 
 export default function TasksPage() {
   const [tasks, dispatch] = useReducer(tasksReducer, []);
@@ -18,10 +20,11 @@ export default function TasksPage() {
 
   useEffect(() => {
     dispatch({ type: "initialized" });
-    const largestIndexInitial = getNextIndex(
+
+    const nextIndexInitial = getNextIndex(
       JSON.parse(localStorage.tasks ?? "[]"),
     );
-    setNextIndex(largestIndexInitial);
+    setNextIndex(nextIndexInitial);
 
     const savedCurrentTask = localStorage.currentTask
       ? Number(localStorage.currentTask)
@@ -29,41 +32,33 @@ export default function TasksPage() {
     setCurrentTask(savedCurrentTask);
   }, []);
 
-  function handleAddTask(title: string) {
+  const handleAddTask: HandleAddTask = (title) => {
     dispatch({
       type: "added",
       originalIndex: nextIndex,
       title,
     });
     setNextIndex(nextIndex + 1);
-  }
+  };
 
-  function handleChangeTask(task: Task) {
+  const handleChangeTask: HandleChangeTask = (task) => {
     dispatch({
       type: "changed",
       task,
     });
-  }
+  };
 
-  function handleDeleteTask(originalIndex: number) {
+  const handleDeleteTask: HandleDeleteTask = (originalIndex) => {
     dispatch({
       type: "deleted",
       originalIndex,
     });
-  }
+  };
 
-  function handleAddTag(originalIndex: number, tag: string) {
-    dispatch({
-      type: "tagAdded",
-      originalIndex,
-      tag,
-    });
-  }
-
-  function handleCurrentTaskChange(originalIndex: number) {
+  const handleCurrentTaskChange: HandleCurrentTaskChange = (originalIndex) => {
     setCurrentTask(originalIndex);
     localStorage.currentTask = originalIndex;
-  }
+  };
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
@@ -77,97 +72,11 @@ export default function TasksPage() {
       <Tasks
         tasks={tasks}
         currentTask={currentTask}
-        handleCurrentTaskChange={handleCurrentTaskChange}
         onChangeTask={handleChangeTask}
         onDeleteTask={handleDeleteTask}
-        onAddTag={handleAddTag}
+        onCurrentTaskChange={handleCurrentTaskChange}
       />
     </section>
-  );
-}
-
-type TasksAction =
-  | {
-      type: "initialized";
-    }
-  | {
-      type: "added";
-      originalIndex: number;
-      title: string;
-    }
-  | {
-      type: "changed";
-      task: Task;
-    }
-  | {
-      type: "deleted";
-      originalIndex: number;
-    }
-  | {
-      type: "tagAdded";
-      originalIndex: number;
-      tag: string;
-    };
-
-function tasksReducer(tasks: Task[], action: TasksAction) {
-  switch (action.type) {
-    case "initialized": {
-      const savedTasks: string | undefined = localStorage.tasks;
-      const initialTasks: Task[] = savedTasks ? JSON.parse(savedTasks) : [];
-      return initialTasks;
-    }
-    case "added": {
-      const addedTasks = [
-        ...tasks,
-        {
-          originalIndex: action.originalIndex,
-          title: action.title,
-          checked: false,
-        },
-      ];
-      localStorage.tasks = JSON.stringify(addedTasks);
-      return addedTasks;
-    }
-    case "changed": {
-      const changedTasks = tasks.map((task) => {
-        if (task.originalIndex === action.task.originalIndex) {
-          return action.task;
-        } else {
-          return task;
-        }
-      });
-      localStorage.tasks = JSON.stringify(changedTasks);
-      return changedTasks;
-    }
-    case "deleted": {
-      const deletedTasks = tasks.filter(
-        (task) => task.originalIndex !== action.originalIndex,
-      );
-      localStorage.tasks = JSON.stringify(deletedTasks);
-      return deletedTasks;
-    }
-    case "tagAdded": {
-      const tasksWithTagAdded = tasks.map((task) => {
-        if (task.originalIndex === action.originalIndex) {
-          return {
-            ...task,
-            tags: task.tags ? [...task.tags, action.tag] : [action.tag],
-          };
-        } else {
-          return task;
-        }
-      });
-      localStorage.tasks = JSON.stringify(tasksWithTagAdded);
-      return tasksWithTagAdded;
-    }
-  }
-}
-
-function getNextIndex(tasks: Task[]) {
-  if (!tasks.length) return 0;
-
-  return (
-    tasks.sort((a, b) => b.originalIndex - a.originalIndex)[0].originalIndex + 1
   );
 }
 

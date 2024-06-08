@@ -1,29 +1,30 @@
-import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Label } from "./label";
-import type { Task } from "../tasks";
-import { tags } from "@/app/tasks/page";
+import type { Task } from "@/lib/tasks";
+import {
+  HandleChangeTask,
+  HandleCurrentTaskChange,
+  HandleDeleteTask,
+  tags,
+} from "@/app/tasks/page";
 import TaskTags from "../taskTags";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import TaskControls from "../taskControls";
+import TasksSelector from "../tasksSelector";
 
-// TODO: reduce duplication in props
 interface TaskProps {
   task: Task;
   current: boolean;
-  handleCurrentTaskChange: (originalIndex: number) => void;
-  onChange: (task: Task) => void;
-  onDelete: (originalIndex: number) => void;
-  onAddTag: (originalIndex: number, tag: string) => void;
+  onCurrentTaskChange: HandleCurrentTaskChange;
+  onChange: HandleChangeTask;
+  onDelete: HandleDeleteTask;
 }
-// TODO: refactor this component
 
 export default function Task({
   task,
   current,
-  handleCurrentTaskChange,
+  onCurrentTaskChange,
   onChange,
   onDelete,
-  onAddTag,
 }: TaskProps) {
   return (
     <article>
@@ -52,49 +53,19 @@ export default function Task({
             />
             <ul className="flex gap-1">
               {task.tags && <TaskTags tags={task.tags} />}
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="py-0 px-4 size-6 rounded-full"
-                  >
-                    +
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <ul className="flex flex-wrap gap-2">
-                    <TaskTags
-                      onTagClick={onAddTag}
-                      originalIndex={task.originalIndex}
-                      tags={tags.slice(1)}
-                    />
-                  </ul>
-                </PopoverContent>
-              </Popover>
+              <TasksSelector tags={tags} />
             </ul>
           </div>
         </div>
         <Label className="sr-only" htmlFor={String(task.originalIndex)}>
           {task.title}
         </Label>
-        <div className="flex gap-2">
-          {!current && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => handleCurrentTaskChange(task.originalIndex)}
-            >
-              start working on
-            </Button>
-          )}
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => onDelete(task.originalIndex)}
-          >
-            delete
-          </Button>
-        </div>
+        <TaskControls
+          task={task}
+          current={current}
+          onCurrentTaskChange={onCurrentTaskChange}
+          onDelete={onDelete}
+        />
       </div>
     </article>
   );
