@@ -1,5 +1,6 @@
 import { type HandleChangeTask, type HandleDeleteTask } from "@/app/tasks/page";
 import Task from "./ui/task";
+import { Dispatch, SetStateAction } from "react";
 
 export interface Task {
   originalIndex: number;
@@ -10,6 +11,8 @@ export interface Task {
 interface TasksProps {
   tasks: Task[];
   currentTask: number | null;
+  // TODO: refactor type
+  handleCurrentTaskChange: (originalIndex: number) => void;
   onChangeTask: HandleChangeTask;
   onDeleteTask: HandleDeleteTask;
 }
@@ -17,6 +20,7 @@ interface TasksProps {
 export default function Tasks({
   tasks,
   currentTask,
+  handleCurrentTaskChange,
   onChangeTask,
   onDeleteTask,
 }: TasksProps) {
@@ -24,6 +28,7 @@ export default function Tasks({
     <Task
       key={task.originalIndex}
       current={currentTask === task.originalIndex}
+      handleCurrentTaskChange={handleCurrentTaskChange}
       task={task}
       onChange={onChangeTask}
       onDelete={onDeleteTask}

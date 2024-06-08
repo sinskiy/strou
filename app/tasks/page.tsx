@@ -25,7 +25,6 @@ export default function TasksPage() {
     const savedCurrentTask = localStorage.currentTask
       ? Number(localStorage.currentTask)
       : null;
-    console.log(savedCurrentTask);
     setCurrentTask(savedCurrentTask);
   }, []);
 
@@ -52,6 +51,11 @@ export default function TasksPage() {
     });
   }
 
+  function handleCurrentTaskChange(originalIndex: number) {
+    setCurrentTask(originalIndex);
+    localStorage.currentTask = originalIndex;
+  }
+
   const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
     <section className="card space-y-4">
@@ -64,6 +68,7 @@ export default function TasksPage() {
       <Tasks
         tasks={tasks}
         currentTask={currentTask}
+        handleCurrentTaskChange={handleCurrentTaskChange}
         onChangeTask={handleChangeTask}
         onDeleteTask={handleDeleteTask}
       />

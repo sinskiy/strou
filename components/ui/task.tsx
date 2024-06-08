@@ -2,16 +2,24 @@ import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Label } from "./label";
 import type { Task } from "../tasks";
+import { Dispatch, SetStateAction } from "react";
 
 interface TaskProps {
   task: Task;
   current: boolean;
+  handleCurrentTaskChange: (originalIndex: number) => void;
   onChange: (task: Task) => void;
   onDelete: (originalIndex: number) => void;
 }
 // TODO: refactor this
 
-export default function Task({ task, current, onChange, onDelete }: TaskProps) {
+export default function Task({
+  task,
+  current,
+  handleCurrentTaskChange,
+  onChange,
+  onDelete,
+}: TaskProps) {
   return (
     <div className="flex gap-4 items-center py-4 justify-between w-full">
       <div className="flex gap-2 items-center">
@@ -41,7 +49,11 @@ export default function Task({ task, current, onChange, onDelete }: TaskProps) {
       </Label>
       <div className="flex gap-2">
         {!current && (
-          <Button variant="secondary" size="sm">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => handleCurrentTaskChange(task.originalIndex)}
+          >
             start working on
           </Button>
         )}
