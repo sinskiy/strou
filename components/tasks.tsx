@@ -9,6 +9,7 @@ import type { Task as ITask } from "@/lib/tasks";
 interface TasksProps {
   tasks: ITask[];
   currentTask: number | null;
+  selectedTags: string[];
   onChangeTask: HandleChangeTask;
   onDeleteTask: HandleDeleteTask;
   onCurrentTaskChange: HandleCurrentTaskChange;
@@ -17,11 +18,17 @@ interface TasksProps {
 export default function Tasks({
   tasks,
   currentTask,
+  selectedTags,
   onCurrentTaskChange,
   onChangeTask,
   onDeleteTask,
 }: TasksProps) {
-  const tasksList = tasks.map((task) => (
+  const filteredTasks = tasks.filter((task) =>
+    selectedTags.length
+      ? task.tags?.some((tag) => selectedTags.includes(tag))
+      : task,
+  );
+  const tasksList = filteredTasks.map((task) => (
     <Task
       key={task.originalIndex}
       task={task}

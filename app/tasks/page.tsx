@@ -14,6 +14,8 @@ export type HandleDeleteTask = (originalIndex: number) => void;
 export type HandleCurrentTaskChange = (originalIndex: number) => void;
 
 export default function TasksPage() {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const [tasks, dispatch] = useReducer(tasksReducer, []);
   const [nextIndex, setNextIndex] = useState(0);
 
@@ -64,7 +66,11 @@ export default function TasksPage() {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
     <section className="card space-y-4">
-      <Tags tags={tags} />
+      <Tags
+        tags={tags}
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
+      />
       <AddTask
         newTaskTitle={newTaskTitle}
         setNewTaskTitle={setNewTaskTitle}
@@ -73,6 +79,7 @@ export default function TasksPage() {
       <Tasks
         tasks={tasks}
         currentTask={currentTask}
+        selectedTags={selectedTags}
         onChangeTask={handleChangeTask}
         onDeleteTask={handleDeleteTask}
         onCurrentTaskChange={handleCurrentTaskChange}

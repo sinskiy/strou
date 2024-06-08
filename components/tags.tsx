@@ -1,12 +1,17 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Tag from "./ui/tag";
 
 interface TagsProps {
   tags: readonly string[];
+  selectedTags: string[];
+  setSelectedTags: Dispatch<SetStateAction<string[]>>;
 }
 
-export default function Tags({ tags }: TagsProps) {
-  const [selectedTags, setSelectedTags] = useState<typeof tags>([]);
+export default function Tags({
+  tags,
+  selectedTags,
+  setSelectedTags,
+}: TagsProps) {
   const tagsList = tags.map((tag, i) => {
     const checkedIfEmpty = i === 0;
     const checked = checkedIfEmpty
