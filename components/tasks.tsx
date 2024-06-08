@@ -1,11 +1,11 @@
 import { type HandleChangeTask, type HandleDeleteTask } from "@/app/tasks/page";
 import Task from "./ui/task";
-import { Dispatch, SetStateAction } from "react";
 
 export interface Task {
   originalIndex: number;
   title: string;
   checked: boolean;
+  tags?: string[];
 }
 
 interface TasksProps {

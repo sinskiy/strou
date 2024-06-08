@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Task } from "./tasks";
 
-interface Props {}
-export default function CurrentTask({}: Props) {
+export default function CurrentTask() {
   const [savedCurrentTask, setSavedCurrentTask] = useState<null | Task>(null);
   useEffect(() => {
     const savedCurrentTaskIndex = Number(localStorage.currentTask);

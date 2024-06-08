@@ -2,7 +2,6 @@ import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Label } from "./label";
 import type { Task } from "../tasks";
-import { Dispatch, SetStateAction } from "react";
 
 interface TaskProps {
   task: Task;
