@@ -2,6 +2,8 @@ import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Label } from "./label";
 import type { Task } from "../tasks";
+import Tags from "../tags";
+import { tags } from "@/app/tasks/page";
 
 interface TaskProps {
   task: Task;
@@ -10,7 +12,7 @@ interface TaskProps {
   onChange: (task: Task) => void;
   onDelete: (originalIndex: number) => void;
 }
-// TODO: refactor this
+// TODO: refactor this component
 
 export default function Task({
   task,
@@ -20,50 +22,58 @@ export default function Task({
   onDelete,
 }: TaskProps) {
   return (
-    <div className="flex gap-4 items-center py-4 justify-between w-full">
-      <div className="flex gap-2 items-center">
-        <Checkbox
-          checked={task.checked}
-          onCheckedChange={(checked) => {
-            onChange({
-              ...task,
-              checked: checked as boolean,
-            });
-          }}
-          id={String(task.originalIndex)}
-        />
-        <input
-          value={task.title}
-          aria-hidden={true}
-          onChange={(e) => {
-            onChange({
-              ...task,
-              title: e.target.value,
-            });
-          }}
-        />
-      </div>
-      <Label className="sr-only" htmlFor={String(task.originalIndex)}>
-        {task.title}
-      </Label>
-      <div className="flex gap-2">
-        {!current && (
+    <article>
+      <div className="flex gap-4 items-center py-4 justify-between w-full">
+        <div className="flex gap-2 items-center">
+          <Checkbox
+            checked={task.checked}
+            onCheckedChange={(checked) => {
+              onChange({
+                ...task,
+                checked: checked as boolean,
+              });
+            }}
+            id={String(task.originalIndex)}
+          />
+          <input
+            value={task.title}
+            aria-hidden={true}
+            onChange={(e) => {
+              onChange({
+                ...task,
+                title: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <Label className="sr-only" htmlFor={String(task.originalIndex)}>
+          {task.title}
+        </Label>
+        <div className="flex gap-2">
+          {!current && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleCurrentTaskChange(task.originalIndex)}
+            >
+              start working on
+            </Button>
+          )}
           <Button
-            variant="secondary"
+            variant="destructive"
             size="sm"
-            onClick={() => handleCurrentTaskChange(task.originalIndex)}
+            onClick={() => onDelete(task.originalIndex)}
           >
-            start working on
+            delete
           </Button>
-        )}
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() => onDelete(task.originalIndex)}
-        >
-          delete
+        </div>
+      </div>
+      <div>
+        {task.tags && <Tags tags={task.tags} />}
+        <Button variant="secondary" size="sm">
+          add tag
         </Button>
       </div>
-    </div>
+    </article>
   );
 }

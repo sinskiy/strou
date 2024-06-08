@@ -13,13 +13,18 @@ export default function Tags({ tags }: TagsProps) {
       ? !selectedTags.length
       : selectedTags.includes(tag);
     return (
-      <Tag key={tag} tag={tag} checked={checked} onChange={handleTagCheck} />
+      <Tag
+        key={tag}
+        tag={tag}
+        name="tags"
+        checked={checked}
+        onChange={handleTagCheck}
+      />
     );
   });
   function handleTagCheck(e: ChangeEvent<HTMLInputElement>) {
     if (e.currentTarget.id === tags[0]) {
-      setSelectedTags([]);
-      return;
+      return setSelectedTags([]);
     }
 
     if (e.currentTarget.checked) {

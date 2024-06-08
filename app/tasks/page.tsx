@@ -142,7 +142,7 @@ function getNextIndex(tasks: Task[]) {
   );
 }
 
-const tags = [
+export const tags = [
   "all",
   "purposeful",
   "necessary",

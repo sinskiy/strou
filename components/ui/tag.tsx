@@ -4,9 +4,10 @@ import { Label } from "./label";
 
 interface TagProps extends InputHTMLAttributes<HTMLInputElement> {
   tag: string;
+  name: string;
 }
 
-export default function Tag({ className, tag, ...props }: TagProps) {
+export default function Tag({ className, tag, name, ...props }: TagProps) {
   return (
     <li>
       <Label className="relative">
@@ -14,7 +15,7 @@ export default function Tag({ className, tag, ...props }: TagProps) {
           type="checkbox"
           className="absolute inset-0 peer opacity-0"
           id={tag}
-          name="tags"
+          name={name}
           {...props}
         />
         <span
