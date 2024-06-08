@@ -3,6 +3,7 @@
 import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
 import Tasks from "@/components/tasks";
+import { tags } from "@/lib/tags";
 import { Task, getNextIndex } from "@/lib/tasks";
 import tasksReducer from "@/lib/tasksReducer";
 import { useEffect, useReducer, useState } from "react";
@@ -79,11 +80,3 @@ export default function TasksPage() {
     </section>
   );
 }
-
-export const tags = [
-  "all",
-  "purposeful",
-  "necessary",
-  "distracting",
-  "unnecessary",
-] as const;

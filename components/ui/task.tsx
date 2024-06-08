@@ -5,11 +5,12 @@ import {
   HandleChangeTask,
   HandleCurrentTaskChange,
   HandleDeleteTask,
-  tags,
 } from "@/app/tasks/page";
 import TaskTags from "../taskTags";
 import TaskControls from "../taskControls";
-import TasksSelector from "../tasksSelector";
+import TagsSelector from "../tagsSelector";
+import TagsSelected from "../tagsSelected";
+import { tags } from "@/lib/tags";
 
 interface TaskProps {
   task: Task;
@@ -51,10 +52,10 @@ export default function Task({
                 });
               }}
             />
-            <ul className="flex gap-1">
-              {task.tags && <TaskTags tags={task.tags} />}
-              <TasksSelector task={task} tags={tags} onChange={onChange} />
-            </ul>
+            <div className="flex">
+              <TagsSelected task={task} onChange={onChange} />
+              <TagsSelector task={task} tags={tags} onChange={onChange} />
+            </div>
           </div>
         </div>
         <Label className="sr-only" htmlFor={String(task.originalIndex)}>
