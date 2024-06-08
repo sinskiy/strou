@@ -1,4 +1,4 @@
-import Tag from "./ui/tag";
+import TaskTag from "./ui/taskTag";
 
 interface TaskTagsProps {
   tags: readonly string[];
@@ -8,7 +8,7 @@ export default function TaskTags({ tags }: TaskTagsProps) {
   return (
     <>
       {tags.map((tag) => (
-        <Tag key={tag} tag={tag} name="task-tags" checked={false} />
+        <TaskTag key={tag}>{tag}</TaskTag>
       ))}
     </>
   );

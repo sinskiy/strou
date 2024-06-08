@@ -4,6 +4,8 @@ import { Label } from "./label";
 import type { Task } from "../tasks";
 import Tags from "../tags";
 import { tags } from "@/app/tasks/page";
+import TaskTag from "./taskTag";
+import TaskTags from "../taskTags";
 
 interface TaskProps {
   task: Task;
@@ -23,8 +25,8 @@ export default function Task({
 }: TaskProps) {
   return (
     <article>
-      <div className="flex gap-4 items-center py-4 justify-between w-full">
-        <div className="flex gap-2 items-center">
+      <div className="flex gap-4 py-4 justify-between w-full">
+        <div className="flex gap-2">
           <Checkbox
             checked={task.checked}
             onCheckedChange={(checked) => {
@@ -35,16 +37,22 @@ export default function Task({
             }}
             id={String(task.originalIndex)}
           />
-          <input
-            value={task.title}
-            aria-hidden={true}
-            onChange={(e) => {
-              onChange({
-                ...task,
-                title: e.target.value,
-              });
-            }}
-          />
+          <div className="space-y-2">
+            <input
+              value={task.title}
+              aria-hidden={true}
+              onChange={(e) => {
+                onChange({
+                  ...task,
+                  title: e.target.value,
+                });
+              }}
+            />
+            <ul className="flex gap-1">
+              {task.tags && <TaskTags tags={task.tags} />}
+              <TaskTag>+</TaskTag>
+            </ul>
+          </div>
         </div>
         <Label className="sr-only" htmlFor={String(task.originalIndex)}>
           {task.title}
@@ -67,12 +75,6 @@ export default function Task({
             delete
           </Button>
         </div>
-      </div>
-      <div>
-        {task.tags && <Tags tags={task.tags} />}
-        <Button variant="secondary" size="sm">
-          add tag
-        </Button>
       </div>
     </article>
   );
