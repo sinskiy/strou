@@ -20,8 +20,8 @@ export default function CurrentTask() {
   return (
     <>
       {savedCurrentTask && (
-        <section className="card flex items-center gap-4">
-          <Label className="flex gap-3">
+        <section className="card flex justify-between items-center gap-4">
+          <Label className="flex items-center gap-3">
             {/* TODO: add ability to check  */}
             <Checkbox checked={savedCurrentTask.checked} />
             <p>
