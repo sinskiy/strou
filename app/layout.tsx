@@ -12,14 +12,11 @@ export const metadata: Metadata = {
   description: "focus on what's important",
 };
 
-interface LayoutProps extends PropsWithChildren {
-  additionalCard: ReactNode;
-}
-
 export default function RootLayout({
   children,
-  additionalCard,
-}: Readonly<LayoutProps>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" className="size-full flex m-auto">
       <body className={twMerge("m-auto bg-background", inter.className)}>
