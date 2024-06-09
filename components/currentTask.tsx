@@ -3,7 +3,7 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Task } from "./tasks";
+import { type Task } from "@/lib/tasks";
 
 export default function CurrentTask() {
   const [savedCurrentTask, setSavedCurrentTask] = useState<null | Task>(null);
