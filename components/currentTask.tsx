@@ -6,26 +6,42 @@ import { useState, useEffect } from "react";
 import { type Task } from "@/lib/tasks";
 
 export default function CurrentTask() {
-  const [savedCurrentTask, setSavedCurrentTask] = useState<null | Task>(null);
+  const [currentTaskIndex, setCurrentTaskIndex] = useState<number>(-1);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const currentTask = tasks[currentTaskIndex];
   useEffect(() => {
-    const savedCurrentTaskIndex = Number(localStorage.currentTask);
     const tasks = JSON.parse(localStorage.tasks ?? "[]");
-    if (savedCurrentTaskIndex >= 0) {
-      const currentTask = tasks.find(
-        (task: Task) => task.originalIndex === savedCurrentTaskIndex,
+    setTasks(tasks);
+
+    const currentTaskOriginalIndex = Number(localStorage.currentTask);
+    if (currentTaskOriginalIndex >= 0) {
+      const currentTaskIndex = tasks.findIndex(
+        (task: Task) => task.originalIndex === currentTaskOriginalIndex,
       );
-      setSavedCurrentTask(currentTask);
+      setCurrentTaskIndex(currentTaskIndex);
     }
   }, []);
+  function handleTaskCheck(checked: boolean) {
+    const tasksWithChecked = tasks.map((task) =>
+      task.originalIndex === currentTask.originalIndex
+        ? { ...task, checked }
+        : task,
+    );
+    setTasks(tasksWithChecked);
+    localStorage.tasks = JSON.stringify(tasksWithChecked);
+  }
   return (
     <>
-      {savedCurrentTask && (
+      {currentTaskIndex !== -1 && (
         <section className="card flex justify-between items-center gap-4">
           <Label className="flex items-center gap-3">
             {/* TODO: add ability to check  */}
-            <Checkbox checked={savedCurrentTask.checked} />
+            <Checkbox
+              checked={currentTask.checked}
+              onCheckedChange={handleTaskCheck}
+            />
             <p>
-              <span>{savedCurrentTask.title} </span>
+              <span>{currentTask.title} </span>
               <span className="opacity-30">is current task</span>
             </p>
           </Label>

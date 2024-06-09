@@ -17,11 +17,6 @@ type TasksAction =
       type: "deleted";
       originalIndex: number;
     };
-// | {
-//     type: "tagAdded";
-//     originalIndex: number;
-//     tag: string;
-//   };
 
 export default function tasksReducer(tasks: Task[], action: TasksAction) {
   switch (action.type) {
@@ -60,19 +55,5 @@ export default function tasksReducer(tasks: Task[], action: TasksAction) {
       localStorage.tasks = JSON.stringify(deletedTasks);
       return deletedTasks;
     }
-    // case "tagAdded": {
-    //   const tasksWithTagAdded = tasks.map((task) => {
-    //     if (task.originalIndex === action.originalIndex) {
-    //       return {
-    //         ...task,
-    //         tags: task.tags ? [...task.tags, action.tag] : [action.tag],
-    //       };
-    //     } else {
-    //       return task;
-    //     }
-    //   });
-    //   localStorage.tasks = JSON.stringify(tasksWithTagAdded);
-    //   return tasksWithTagAdded;
-    // }
   }
 }
