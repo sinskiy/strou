@@ -139,7 +139,7 @@ export default function Timer() {
   }
   return (
     <>
-      <section className="card text-center">
+      <section className="card w-96 text-center">
         <p className="opacity-50">{timerMode}</p>
         <Timestamp timeObject={timeFromMs} />
         <TimerControls
