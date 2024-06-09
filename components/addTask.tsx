@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { HandleAddTask } from "@/app/tasks/page";
@@ -14,16 +14,21 @@ export default function AddTask({
   setNewTaskTitle,
   handleAddTask,
 }: AddTaskProps) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    handleAddTask(newTaskTitle);
+  }
   return (
-    <div className="flex gap-4">
+    <form method="get" className="flex gap-4" onSubmit={handleSubmit}>
       <Input
         type="text"
         value={newTaskTitle}
         onChange={(e) => setNewTaskTitle(e.target.value)}
       />
-      <Button variant="secondary" onClick={() => handleAddTask(newTaskTitle)}>
+      <Button variant="secondary" disabled={newTaskTitle.length <= 0}>
         add task
       </Button>
-    </div>
+    </form>
   );
 }
