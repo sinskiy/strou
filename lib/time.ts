@@ -8,18 +8,40 @@ export const SECOND = 1000;
 export const MINUTE_IN_MS = SECOND * 60;
 export const HOUR_IN_MS = MINUTE_IN_MS * 60;
 
-export const initialTimerModes = ["work", "break"] as const;
-export type TimerModesTime = {
-  [key: string]: number;
+export type TimerMode = {
+  id: number;
+  name: string;
+  time: number;
 };
-export const initialTimerModesTime: TimerModesTime = {
-  work: MINUTE_IN_MS * 50,
-  break: MINUTE_IN_MS * 5,
-};
+export const initialTimerModesTime: TimerMode[] = [
+  {
+    id: 0,
+    name: "work",
+    time: HOUR_IN_MS,
+  },
+  {
+    id: 1,
+    name: "break",
+    time: HOUR_IN_MS / 3,
+  },
+];
 
-export const msToHours = (ms: number) => (ms / HOUR_IN_MS) % 24;
-export const msToMinutes = (ms: number) => (ms / MINUTE_IN_MS) % 60;
-export const msToSeconds = (ms: number) => (ms / SECOND) % 60;
+export function getTimerModeID(timerMode: TimerMode) {
+  return `${timerMode.id}-${timerMode.name}-${timerMode.time}`;
+}
+
+export function getNextID(timerModes: TimerMode[]): number {
+  if (!timerModes.length) return 0;
+
+  return (
+    timerModes.reduce((biggest, curr) => Math.max(biggest, curr.id), 0) + 1
+  );
+}
+
+type MsToUnit = (ms: number) => number;
+export const msToHours: MsToUnit = (ms) => (ms / HOUR_IN_MS) % 24;
+export const msToMinutes: MsToUnit = (ms) => (ms / MINUTE_IN_MS) % 60;
+export const msToSeconds: MsToUnit = (ms) => (ms / SECOND) % 60;
 
 export const formatTimeUnit = (timeUnit: number) =>
   `${Math.floor(timeUnit)}`.padStart(2, "0");

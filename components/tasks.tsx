@@ -30,9 +30,9 @@ export default function Tasks({
   );
   const tasksList = filteredTasks.map((task) => (
     <Task
-      key={task.originalIndex}
+      key={task.id}
       task={task}
-      current={currentTask === task.originalIndex}
+      current={currentTask === task.id}
       onChange={onChangeTask}
       onDelete={onDeleteTask}
       onCurrentTaskChange={onCurrentTaskChange}

@@ -5,7 +5,7 @@ import Tags from "@/components/tags";
 import Tasks from "@/components/tasks";
 import { Skeleton } from "@/components/ui/skeleton";
 import { initialTags } from "@/lib/tags";
-import { Task, getNextIndex } from "@/lib/tasks";
+import { Task, getNextID } from "@/lib/tasks";
 import tasksReducer from "@/lib/tasksReducer";
 import { useEffect, useReducer, useState } from "react";
 
@@ -37,9 +37,7 @@ export default function TasksPage() {
 
     dispatch({ type: "initialized" });
 
-    const nextIndexInitial = getNextIndex(
-      JSON.parse(localStorage.tasks ?? "[]"),
-    );
+    const nextIndexInitial = getNextID(JSON.parse(localStorage.tasks ?? "[]"));
     setNextIndex(nextIndexInitial);
 
     const savedCurrentTask = localStorage.currentTask

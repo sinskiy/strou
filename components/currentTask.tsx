@@ -21,16 +21,14 @@ export default function CurrentTask() {
     const currentTaskOriginalIndex = Number(localStorage.currentTask);
     if (currentTaskOriginalIndex >= 0) {
       const currentTaskIndex = tasks.findIndex(
-        (task: Task) => task.originalIndex === currentTaskOriginalIndex,
+        (task: Task) => task.id === currentTaskOriginalIndex,
       );
       setCurrentTaskIndex(currentTaskIndex);
     }
   }, []);
   function handleTaskCheck(checked: boolean) {
     const tasksWithChecked = tasks.map((task) =>
-      task.originalIndex === currentTask.originalIndex
-        ? { ...task, checked }
-        : task,
+      task.id === currentTask.id ? { ...task, checked } : task,
     );
     setTasks(tasksWithChecked);
     localStorage.tasks = JSON.stringify(tasksWithChecked);

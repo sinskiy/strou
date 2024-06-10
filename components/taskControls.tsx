@@ -39,14 +39,14 @@ export default function TaskControls({
               variant="ghost"
               onClick={() =>
                 !current
-                  ? onCurrentTaskChange(task.originalIndex)
+                  ? onCurrentTaskChange(task.id)
                   : onCurrentTaskChange(null)
               }
             >
               {current ? "remove current" : "make current"}
             </Button>
           }
-          <Button variant="ghost" onClick={() => onDelete(task.originalIndex)}>
+          <Button variant="ghost" onClick={() => onDelete(task.id)}>
             delete
           </Button>
           {tags && <hr className="border-t-2 mb-2" />}

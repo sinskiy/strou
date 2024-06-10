@@ -6,8 +6,7 @@ import Timestamp from "@/components/timestamp";
 import { useEffect, useState } from "react";
 import {
   Timestamp as ITimestamp,
-  TimerModesTime,
-  initialTimerModes,
+  TimerMode,
   initialTimerModesTime,
   msToHours,
   msToMinutes,
@@ -28,18 +27,17 @@ export default function Timer() {
   const nextTimerState: TimerState =
     timerState === "paused" ? "unpaused" : "paused";
 
-  const [timerModesTime, setTimerModesTime] = useState<TimerModesTime>(
-    initialTimerModesTime,
-  );
-  const [timerMode, setTimerMode] = useState<string>(initialTimerModes[0]);
-  const nextTimerMode: string = timerMode === "work" ? "break" : "work";
+  const [timerModesTime, setTimerModesTime] = useState(initialTimerModesTime);
+  const [timerMode, setTimerMode] = useState(0);
+  const nextTimerMode: number =
+    timerMode === timerModesTime.length ? 0 : timerMode + 1;
   // TODO: change ^
 
   const [timeStarted, setTimeStarted] = useState<number | null>(null);
 
   const [pauses, setPauses] = useState<Pause[]>([]);
 
-  const [timeLeft, setTimeLeft] = useState(timerModesTime[timerMode]);
+  const [timeLeft, setTimeLeft] = useState(timerModesTime[0].time);
   const timeFromMs: ITimestamp = {
     hours: msToHours(timeLeft),
     minutes: msToMinutes(timeLeft),
@@ -93,7 +91,7 @@ export default function Timer() {
     setPauses([]);
     setTimeStarted(null);
 
-    setTimeLeft(timerModesTime[nextTimerMode]);
+    setTimeLeft(timerModesTime[nextTimerMode].time);
   }
 
   function startTimer() {
@@ -127,10 +125,11 @@ export default function Timer() {
     setTimeLeft(newTimeLeft);
   }
 
-  function getTimeLeft(newStarted: number, newTimerModesTime: TimerModesTime) {
+  function getTimeLeft(newStarted: number, newTimerModesTime: TimerMode[]) {
     const timePaused = getTimePaused();
 
-    const timerEndsAt = newStarted + newTimerModesTime[timerMode] + timePaused;
+    const timerEndsAt =
+      newStarted + newTimerModesTime[timerMode].time + timePaused;
 
     const newTimeLeft = timerEndsAt - Date.now();
     return newTimeLeft;
@@ -148,7 +147,7 @@ export default function Timer() {
     <>
       <section className="card w-96 text-center">
         <div className="flex justify-between items-center relative mb-4">
-          <p className="opacity-50 w-full">{timerMode}</p>
+          <p className="opacity-50 w-full">{timerModesTime[timerMode].name}</p>
           <TimerSettings
             timerModesTime={timerModesTime}
             setTimerModesTime={setTimerModesTime}

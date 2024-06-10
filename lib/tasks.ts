@@ -1,16 +1,14 @@
 export interface Task {
-  originalIndex: number;
+  id: number;
   title: string;
   checked: boolean;
   tags?: string[];
 }
 
-export function getNextIndex(tasks: Task[]) {
+export function getNextID(tasks: Task[]) {
   if (!tasks.length) return 0;
 
-  return (
-    tasks.sort((a, b) => b.originalIndex - a.originalIndex)[0].originalIndex + 1
-  );
+  return tasks.reduce((biggest, curr) => Math.max(biggest, curr.id), 0) + 1;
 }
 
 export function filterTasksTags(tasks: Task[], newTags: string[]) {

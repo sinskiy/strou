@@ -45,7 +45,7 @@ export default function Task({
               checked: checked as boolean,
             });
           }}
-          id={String(task.originalIndex)}
+          id={String(task.id)}
         />
         <div>
           <input
