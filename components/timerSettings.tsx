@@ -36,7 +36,7 @@ export default function TimerSettings({
       <Input
         className="mt-2"
         id={name}
-        value={time / 1000}
+        value={time / 1000 / 60}
         onChange={handleInputChange}
       />
     </li>
@@ -50,7 +50,7 @@ export default function TimerSettings({
     const newLocalModes: TimerModesTime = {};
     for (const name in localModesTime) {
       if (name === e.target.id) {
-        newLocalModes[name] = Number(e.target.value) * 1000;
+        newLocalModes[name] = Number(e.target.value) * 1000 * 60;
       } else {
         newLocalModes[name] = localModesTime[name];
       }
@@ -79,6 +79,7 @@ export default function TimerSettings({
             Save
           </Button>
           <DialogClose asChild>
+            {/* TODO: show new time after close */}
             <Button type="submit" variant="destructive">
               Close/Cancel
             </Button>

@@ -47,12 +47,13 @@ export default function Timer() {
   } as const;
 
   useEffect(() => {
-    const savedTimerModesTime = JSON.parse(
-      localStorage.timerModesTime ?? initialTimerModesTime,
-    );
-    setTimerModesTime(savedTimerModesTime);
+    const savedModesTime = localStorage.timerModesTime;
+    const parsedModesTime = savedModesTime
+      ? JSON.parse(savedModesTime)
+      : initialTimerModesTime;
+    setTimerModesTime(parsedModesTime);
 
-    setTimeLeft(getTimeLeft(Date.now(), savedTimerModesTime));
+    setTimeLeft(getTimeLeft(Date.now(), parsedModesTime));
   }, []);
   useEffect(() => {
     if (timeLeft < 0) {
