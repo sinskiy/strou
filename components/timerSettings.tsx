@@ -10,7 +10,13 @@ import {
 } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { TimerModesTime } from "@/lib/time";
 
 interface TimerSettingsProps {
@@ -30,17 +36,21 @@ export default function TimerSettings({
       <Input
         className="mt-2"
         id={name}
-        value={time}
+        value={time / 1000}
         onChange={handleInputChange}
       />
     </li>
   ));
 
+  useEffect(() => {
+    setLocalModesTime(timerModesTime);
+  }, [timerModesTime]);
+
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const newLocalModes: TimerModesTime = {};
     for (const name in localModesTime) {
       if (name === e.target.id) {
-        newLocalModes[name] = Number(e.target.value);
+        newLocalModes[name] = Number(e.target.value) * 1000;
       } else {
         newLocalModes[name] = localModesTime[name];
       }
@@ -61,7 +71,7 @@ export default function TimerSettings({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change timer modes time</DialogTitle>
+          <DialogTitle>Change timer modes time (in minutes)</DialogTitle>
         </DialogHeader>
         <ul className="space-y-8">{timerModesList}</ul>
         <DialogFooter>

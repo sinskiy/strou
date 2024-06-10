@@ -6,7 +6,6 @@ import Timestamp from "@/components/timestamp";
 import { useEffect, useState } from "react";
 import {
   Timestamp as ITimestamp,
-  MINUTE_IN_MS,
   TimerModesTime,
   initialTimerModes,
   initialTimerModesTime,
@@ -47,6 +46,14 @@ export default function Timer() {
     seconds: msToSeconds(timeLeft),
   } as const;
 
+  useEffect(() => {
+    const savedTimerModesTime = JSON.parse(
+      localStorage.timerModesTime ?? initialTimerModesTime,
+    );
+    setTimerModesTime(savedTimerModesTime);
+
+    setTimeLeft(getTimeLeft(Date.now(), savedTimerModesTime));
+  }, []);
   useEffect(() => {
     if (timeLeft < 0) {
       handleTimeModeSkip();
@@ -115,14 +122,14 @@ export default function Timer() {
   }
 
   function handleTimerInterval(newStarted: number) {
-    const newTimeLeft = getTimeLeft(newStarted);
+    const newTimeLeft = getTimeLeft(newStarted, timerModesTime);
     setTimeLeft(newTimeLeft);
   }
 
-  function getTimeLeft(newStarted: number) {
+  function getTimeLeft(newStarted: number, newTimerModesTime: TimerModesTime) {
     const timePaused = getTimePaused();
 
-    const timerEndsAt = newStarted + timerModesTime[timerMode] + timePaused;
+    const timerEndsAt = newStarted + newTimerModesTime[timerMode] + timePaused;
 
     const newTimeLeft = timerEndsAt - Date.now();
     return newTimeLeft;
