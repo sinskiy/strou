@@ -14,6 +14,7 @@ interface TagsProps {
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
 }
 
+// TODO: fix issue with multiple tags (and tasks, probably) with the same name
 export default function Tags({
   tasks,
   setTasks,
@@ -51,7 +52,7 @@ export default function Tags({
     }
   }
   return (
-    <div className="flex items-center  gap-2">
+    <div className="flex items-center justify-between gap-2">
       <ul className="flex gap-2">{tagsList}</ul>
       <AddTag tasks={tasks} setTasks={setTasks} tags={tags} setTags={setTags} />
     </div>

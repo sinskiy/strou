@@ -49,7 +49,6 @@ export default function Task({
         />
         <div>
           <input
-            aria-label="task title"
             value={task.title}
             onChange={(e) => {
               onChange({

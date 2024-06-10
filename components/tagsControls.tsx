@@ -59,7 +59,6 @@ export default function TagsControls({
   }
   function handleDeleteTag(e: MouseEvent<HTMLUListElement>) {
     const { innerText } = e.target as HTMLElement;
-    if (!localTags.includes(innerText)) return;
 
     setLocalTags(localTags.filter((tag) => tag !== innerText));
   }

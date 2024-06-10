@@ -22,6 +22,9 @@ export default function AddTask({
   return (
     <form method="get" className="flex gap-4" onSubmit={handleSubmit}>
       <Input
+        id="new-task-title"
+        name="new-task-title"
+        placeholder="new task title"
         type="text"
         value={newTaskTitle}
         onChange={(e) => setNewTaskTitle(e.target.value)}

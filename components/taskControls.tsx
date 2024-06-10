@@ -49,11 +49,7 @@ export default function TaskControls({
           <Button variant="ghost" onClick={() => onDelete(task.originalIndex)}>
             delete
           </Button>
-          {task.tags && task.tags.length ? (
-            <hr className="border-t-2 mb-2" />
-          ) : (
-            ""
-          )}
+          {tags && <hr className="border-t-2 mb-2" />}
           <TaskTagsSelector task={task} tags={tags} onChange={onChange} />
         </PopoverContent>
       </Popover>

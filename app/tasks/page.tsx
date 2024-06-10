@@ -3,6 +3,7 @@
 import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
 import Tasks from "@/components/tasks";
+import { Skeleton } from "@/components/ui/skeleton";
 import { initialTags } from "@/lib/tags";
 import { Task, getNextIndex } from "@/lib/tasks";
 import tasksReducer from "@/lib/tasksReducer";
@@ -15,6 +16,8 @@ export type HandleDeleteTask = (originalIndex: number) => void;
 export type HandleCurrentTaskChange = (originalIndex: number | null) => void;
 
 export default function TasksPage() {
+  const [mounted, setMounted] = useState(false);
+
   const [tags, setTags] = useState<string[]>([]);
 
   // TODO: fix bug with selectedTags having deleted tag
@@ -26,6 +29,8 @@ export default function TasksPage() {
   const [currentTask, setCurrentTask] = useState<null | number>(null);
 
   useEffect(() => {
+    setMounted(true);
+
     const savedTags = localStorage.tags;
     const parsedTags = savedTags ? JSON.parse(savedTags) : initialTags;
     setTags(parsedTags);
@@ -80,28 +85,40 @@ export default function TasksPage() {
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
-    <section className="card space-y-4">
-      <Tags
-        tasks={tasks}
-        setTasks={handleChangeTasks}
-        tags={tags}
-        setTags={setTags}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
+    <section className="card space-y-4 min-w-[32rem]">
+      {mounted ? (
+        <Tags
+          tasks={tasks}
+          setTasks={handleChangeTasks}
+          tags={tags}
+          setTags={setTags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
+      ) : (
+        <Skeleton className="w-full h-7" />
+      )}
       <AddTask
         newTaskTitle={newTaskTitle}
         setNewTaskTitle={setNewTaskTitle}
         handleAddTask={handleAddTask}
       />
-      <Tasks
-        tasks={tasks}
-        currentTask={currentTask}
-        selectedTags={selectedTags}
-        onChangeTask={handleChangeTask}
-        onDeleteTask={handleDeleteTask}
-        onCurrentTaskChange={handleCurrentTaskChange}
-      />
+      {mounted ? (
+        <Tasks
+          tasks={tasks}
+          currentTask={currentTask}
+          selectedTags={selectedTags}
+          onChangeTask={handleChangeTask}
+          onDeleteTask={handleDeleteTask}
+          onCurrentTaskChange={handleCurrentTaskChange}
+        />
+      ) : (
+        <>
+          <Skeleton className="w-full h-16" />
+          <Skeleton className="w-full h-16" />
+          <Skeleton className="w-full h-16" />
+        </>
+      )}
     </section>
   );
 }

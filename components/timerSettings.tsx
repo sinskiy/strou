@@ -36,6 +36,7 @@ export default function TimerSettings({
       <Input
         className="mt-2"
         id={name}
+        type="number"
         value={time / 1000 / 60}
         onChange={handleInputChange}
       />
@@ -81,7 +82,7 @@ export default function TimerSettings({
           <DialogClose asChild>
             {/* TODO: show new time after close */}
             <Button type="submit" variant="destructive">
-              Close/Cancel
+              Close
             </Button>
           </DialogClose>
         </DialogFooter>
