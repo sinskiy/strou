@@ -6,7 +6,7 @@ type TasksAction =
     }
   | {
       type: "added";
-      originalIndex: number;
+      id: number;
       title: string;
     }
   | {
@@ -19,7 +19,7 @@ type TasksAction =
     }
   | {
       type: "deleted";
-      originalIndex: number;
+      id: number;
     };
 
 export default function tasksReducer(
@@ -36,7 +36,7 @@ export default function tasksReducer(
       const addedTasks = [
         ...tasks,
         {
-          originalIndex: action.originalIndex,
+          id: action.id,
           title: action.title,
           checked: false,
         },
@@ -50,7 +50,7 @@ export default function tasksReducer(
     }
     case "changed": {
       const changedTasks = tasks.map((task) => {
-        if (task.originalIndex === action.task.originalIndex) {
+        if (task.id === action.task.id) {
           return action.task;
         } else {
           return task;
@@ -60,9 +60,7 @@ export default function tasksReducer(
       return changedTasks;
     }
     case "deleted": {
-      const deletedTasks = tasks.filter(
-        (task) => task.originalIndex !== action.originalIndex,
-      );
+      const deletedTasks = tasks.filter((task) => task.id !== action.id);
       localStorage.tasks = JSON.stringify(deletedTasks);
       return deletedTasks;
     }

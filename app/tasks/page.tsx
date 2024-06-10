@@ -24,7 +24,7 @@ export default function TasksPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const [tasks, dispatch] = useReducer(tasksReducer, []);
-  const [nextIndex, setNextIndex] = useState(0);
+  const [nextID, setNextID] = useState(0);
 
   const [currentTask, setCurrentTask] = useState<null | number>(null);
 
@@ -37,8 +37,8 @@ export default function TasksPage() {
 
     dispatch({ type: "initialized" });
 
-    const nextIndexInitial = getNextID(JSON.parse(localStorage.tasks ?? "[]"));
-    setNextIndex(nextIndexInitial);
+    const nextIDInitial = getNextID(JSON.parse(localStorage.tasks ?? "[]"));
+    setNextID(nextIDInitial);
 
     const savedCurrentTask = localStorage.currentTask
       ? Number(localStorage.currentTask)
@@ -49,10 +49,10 @@ export default function TasksPage() {
   const handleAddTask: HandleAddTask = (title) => {
     dispatch({
       type: "added",
-      originalIndex: nextIndex,
+      id: nextID,
       title,
     });
-    setNextIndex(nextIndex + 1);
+    setNextID(nextID + 1);
   };
 
   const handleChangeTasks: HandleChangeTasks = (tasks) => {
@@ -69,16 +69,16 @@ export default function TasksPage() {
     });
   };
 
-  const handleDeleteTask: HandleDeleteTask = (originalIndex) => {
+  const handleDeleteTask: HandleDeleteTask = (id) => {
     dispatch({
       type: "deleted",
-      originalIndex,
+      id,
     });
   };
 
-  const handleCurrentTaskChange: HandleCurrentTaskChange = (originalIndex) => {
-    setCurrentTask(originalIndex);
-    localStorage.currentTask = originalIndex;
+  const handleCurrentTaskChange: HandleCurrentTaskChange = (id) => {
+    setCurrentTask(id);
+    localStorage.currentTask = id;
   };
 
   const [newTaskTitle, setNewTaskTitle] = useState("");

@@ -13,11 +13,12 @@ import { Input } from "./ui/input";
 import {
   ChangeEvent,
   Dispatch,
+  FormEvent,
   SetStateAction,
   useEffect,
   useState,
 } from "react";
-import { MINUTE_IN_MS, TimerMode, getTimerModeID } from "@/lib/time";
+import { MINUTE_IN_MS, TimerMode, getNextID, getTimerModeID } from "@/lib/time";
 
 interface TimerSettingsProps {
   timerModesTime: TimerMode[];
@@ -29,6 +30,7 @@ export default function TimerSettings({
   timerModesTime,
   setTimerModesTime,
 }: TimerSettingsProps) {
+  const [newTimerModeTime, setNewTimerModeTime] = useState(0);
   const [localModesTime, setLocalModesTime] = useState(timerModesTime);
   const timerModesList = localModesTime.map((timerMode) => {
     const timerModeID = getTimerModeID(timerMode);
@@ -67,6 +69,18 @@ export default function TimerSettings({
 
     localStorage.timerModesTime = JSON.stringify(localModesTime);
   }
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const newMode: TimerMode = {
+      id: getNextID(localModesTime),
+      name: "default name",
+      time: newTimerModeTime * MINUTE_IN_MS,
+    };
+    const newLocalModes: TimerMode[] = [...localModesTime, newMode];
+
+    setLocalModesTime(newLocalModes);
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -78,10 +92,20 @@ export default function TimerSettings({
         <DialogHeader>
           <DialogTitle>Change timer modes time (in minutes)</DialogTitle>
         </DialogHeader>
-        <div>
-          <ul className="space-y-4 mb-8">{timerModesList}</ul>
-          <Button variant="secondary">+ Add</Button>
-        </div>
+        <ul className="space-y-4 mb-8">{timerModesList}</ul>
+        <Label htmlFor="new-timer-mode">Enter new timer mode time</Label>
+        <form method="get" onSubmit={handleSubmit} className="flex gap-4">
+          <Input
+            value={newTimerModeTime}
+            onChange={(e) => setNewTimerModeTime(Number(e.target.value))}
+            type="number"
+            id="new-timer-mode"
+            name="new-timer-mode"
+          />
+          <Button variant="secondary" type="submit">
+            Add
+          </Button>
+        </form>
         <DialogFooter>
           <Button type="submit" onClick={handleSave}>
             Save
