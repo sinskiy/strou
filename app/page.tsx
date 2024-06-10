@@ -7,19 +7,18 @@ import { useEffect, useState } from "react";
 import {
   Timestamp as ITimestamp,
   MINUTE_IN_MS,
+  TimerModesTime,
+  initialTimerModes,
+  initialTimerModesTime,
   msToHours,
   msToMinutes,
   msToSeconds,
 } from "@/lib/time";
+import TimerSettings from "@/components/timerSettings";
 
 const timerStates = ["paused", "unpaused", "finished"] as const;
 export type TimerState = (typeof timerStates)[number];
 
-const timerModes = ["work", "break"] as const;
-type TimerMode = (typeof timerModes)[number];
-type TimerModesTime = {
-  [Key in TimerMode]: number;
-};
 interface Pause {
   start: number;
   end?: number;
@@ -30,12 +29,12 @@ export default function Timer() {
   const nextTimerState: TimerState =
     timerState === "paused" ? "unpaused" : "paused";
 
-  const [timerModesTime, setTimerModesTime] = useState<TimerModesTime>({
-    work: MINUTE_IN_MS * 50,
-    break: MINUTE_IN_MS * 5,
-  });
-  const [timerMode, setTimerMode] = useState<TimerMode>("work");
-  const nextTimerMode: TimerMode = timerMode === "work" ? "break" : "work";
+  const [timerModesTime, setTimerModesTime] = useState<TimerModesTime>(
+    initialTimerModesTime,
+  );
+  const [timerMode, setTimerMode] = useState<string>(initialTimerModes[0]);
+  const nextTimerMode: string = timerMode === "work" ? "break" : "work";
+  // TODO: change ^
 
   const [timeStarted, setTimeStarted] = useState<number | null>(null);
 
@@ -140,7 +139,13 @@ export default function Timer() {
   return (
     <>
       <section className="card w-96 text-center">
-        <p className="opacity-50">{timerMode}</p>
+        <div className="flex justify-between items-center relative mb-4">
+          <p className="opacity-50 w-full">{timerMode}</p>
+          <TimerSettings
+            timerModesTime={timerModesTime}
+            setTimerModesTime={setTimerModesTime}
+          />
+        </div>
         <Timestamp timeObject={timeFromMs} />
         <TimerControls
           handleTimerStart={handleTimerStart}
