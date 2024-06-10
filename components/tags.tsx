@@ -1,8 +1,13 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Tag from "./ui/tag";
-import AddTag from "./addTag";
+import AddTag from "./handleTags";
+import { Task } from "@/lib/tasks";
+import { HandleChangeTasks } from "@/app/tasks/page";
 
 interface TagsProps {
+  // TODO: reduce duplication
+  tasks: Task[];
+  setTasks: HandleChangeTasks;
   tags: string[];
   setTags: Dispatch<SetStateAction<string[]>>;
   selectedTags: string[];
@@ -10,6 +15,8 @@ interface TagsProps {
 }
 
 export default function Tags({
+  tasks,
+  setTasks,
   tags,
   setTags,
   selectedTags,
@@ -46,7 +53,7 @@ export default function Tags({
   return (
     <div className="flex items-center  gap-2">
       <ul className="flex gap-2">{tagsList}</ul>
-      <AddTag tags={tags} setTags={setTags} />
+      <AddTag tasks={tasks} setTasks={setTasks} tags={tags} setTags={setTags} />
     </div>
   );
 }

@@ -10,6 +10,10 @@ type TasksAction =
       title: string;
     }
   | {
+      type: "changedAll";
+      tasks: Task[];
+    }
+  | {
       type: "changed";
       task: Task;
     }
@@ -18,7 +22,10 @@ type TasksAction =
       originalIndex: number;
     };
 
-export default function tasksReducer(tasks: Task[], action: TasksAction) {
+export default function tasksReducer(
+  tasks: Task[],
+  action: TasksAction,
+): Task[] {
   switch (action.type) {
     case "initialized": {
       const savedTasks: string | undefined = localStorage.tasks;
@@ -36,6 +43,10 @@ export default function tasksReducer(tasks: Task[], action: TasksAction) {
       ];
       localStorage.tasks = JSON.stringify(addedTasks);
       return addedTasks;
+    }
+    case "changedAll": {
+      localStorage.tasks = JSON.stringify(action.tasks);
+      return action.tasks;
     }
     case "changed": {
       const changedTasks = tasks.map((task) => {

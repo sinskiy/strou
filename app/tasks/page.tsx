@@ -9,6 +9,7 @@ import tasksReducer from "@/lib/tasksReducer";
 import { useEffect, useReducer, useState } from "react";
 
 export type HandleAddTask = (title: string) => void;
+export type HandleChangeTasks = (tasks: Task[]) => void;
 export type HandleChangeTask = (task: Task) => void;
 export type HandleDeleteTask = (originalIndex: number) => void;
 export type HandleCurrentTaskChange = (originalIndex: number) => void;
@@ -16,6 +17,7 @@ export type HandleCurrentTaskChange = (originalIndex: number) => void;
 export default function TasksPage() {
   const [tags, setTags] = useState<string[]>([]);
 
+  // TODO: fix bug with selectedTags having deleted tag
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const [tasks, dispatch] = useReducer(tasksReducer, []);
@@ -50,6 +52,13 @@ export default function TasksPage() {
     setNextIndex(nextIndex + 1);
   };
 
+  const handleChangeTasks: HandleChangeTasks = (tasks) => {
+    dispatch({
+      type: "changedAll",
+      tasks,
+    });
+  };
+
   const handleChangeTask: HandleChangeTask = (task) => {
     dispatch({
       type: "changed",
@@ -73,6 +82,8 @@ export default function TasksPage() {
   return (
     <section className="card space-y-4">
       <Tags
+        tasks={tasks}
+        setTasks={handleChangeTasks}
         tags={tags}
         setTags={setTags}
         selectedTags={selectedTags}

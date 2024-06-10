@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Task } from "@/lib/tasks";
 import { MouseEvent } from "react";
-import { initialTags } from "@/lib/tags";
 
 interface TasksSelectorProps {
   task: Task;

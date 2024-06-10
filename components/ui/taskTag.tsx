@@ -1,4 +1,4 @@
-import { LiHTMLAttributes, PropsWithChildren } from "react";
+import { LiHTMLAttributes } from "react";
 
 export default function TaskTag({
   children,
