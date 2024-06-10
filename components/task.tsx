@@ -1,14 +1,16 @@
-import { Checkbox } from "./checkbox";
-import { Label } from "./label";
+import { Checkbox } from "./ui/checkbox";
+import { Label } from "./ui/label";
 import type { Task } from "@/lib/tasks";
 import {
   HandleChangeTask,
   HandleCurrentTaskChange,
   HandleDeleteTask,
 } from "@/app/tasks/page";
-import TaskControls from "../taskControls";
+import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
+import TaskTag from "./taskTag";
+import TaskTags from "./taskTags";
 
 interface TaskProps {
   task: Task;
@@ -33,7 +35,7 @@ export default function Task({
     setTags(parsedTags);
   }, []);
   return (
-    <li className="flex py-4 justify-between items-center w-full">
+    <article className="flex py-4 justify-between items-center w-full">
       <div className="flex gap-4">
         <Checkbox
           checked={task.checked}
@@ -47,8 +49,8 @@ export default function Task({
         />
         <div>
           <input
+            aria-label="task title"
             value={task.title}
-            aria-hidden={true}
             onChange={(e) => {
               onChange({
                 ...task,
@@ -56,11 +58,8 @@ export default function Task({
               });
             }}
           />
-          {/* {task.tags?.map((tag) => tag)} */}
+          {task.tags && <TaskTags tags={task.tags} />}
         </div>
-        <Label className="sr-only" htmlFor={String(task.originalIndex)}>
-          {task.title}
-        </Label>
       </div>
       <TaskControls
         task={task}
@@ -70,6 +69,6 @@ export default function Task({
         onCurrentTaskChange={onCurrentTaskChange}
         onDelete={onDelete}
       />
-    </li>
+    </article>
   );
 }

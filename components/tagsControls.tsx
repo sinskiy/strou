@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
-import TaskTag from "./ui/taskTag";
+import TaskTag from "./taskTagInSelector";
 import { Task, filterTasksTags } from "@/lib/tasks";
 import { HandleChangeTasks } from "@/app/tasks/page";
 

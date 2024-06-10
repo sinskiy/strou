@@ -6,7 +6,7 @@ import {
 import { Task } from "@/lib/tasks";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import TagsSelector from "./tagsSelector";
+import TaskTagsSelector from "./taskTagsSelector";
 
 interface TaskControlsProps {
   task: Task;
@@ -50,7 +50,7 @@ export default function TaskControls({
             delete
           </Button>
           <hr className="border-t-2 mb-2" />
-          <TagsSelector task={task} tags={tags} onChange={onChange} />
+          <TaskTagsSelector task={task} tags={tags} onChange={onChange} />
         </PopoverContent>
       </Popover>
     </>

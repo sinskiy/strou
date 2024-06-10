@@ -1,5 +1,5 @@
-import { Button } from "./button";
-import { HandleTagCheck } from "../tagsSelector";
+import { Button } from "./ui/button";
+import { HandleTagCheck } from "./taskTagsSelector";
 
 interface TaskTagProps {
   checked: boolean;

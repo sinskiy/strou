@@ -3,7 +3,7 @@ import {
   type HandleChangeTask,
   type HandleDeleteTask,
 } from "@/app/tasks/page";
-import Task from "./ui/task";
+import Task from "./task";
 import type { Task as ITask } from "@/lib/tasks";
 
 interface TasksProps {

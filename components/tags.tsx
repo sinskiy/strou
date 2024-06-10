@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Tag from "./ui/tag";
-import AddTag from "./handleTags";
+import AddTag from "./tagsControls";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTasks } from "@/app/tasks/page";
 

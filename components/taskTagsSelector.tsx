@@ -1,5 +1,5 @@
 import { HandleChangeTask } from "@/app/tasks/page";
-import TaskTags from "./taskTags";
+import TaskTagsInSelector from "./taskTagsInSelector";
 import { Task } from "@/lib/tasks";
 import { ChangeEvent } from "react";
 
@@ -35,7 +35,7 @@ export default function TasksSelector({
     <>
       {tags.length ? (
         <ul className="flex flex-col w-full">
-          <TaskTags
+          <TaskTagsInSelector
             task={task}
             tags={tags.slice(1)}
             onTagCheck={handleTagCheck}

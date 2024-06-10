@@ -1,27 +1,15 @@
-import { Task } from "@/lib/tasks";
-import { HandleTagCheck } from "./tagsSelector";
-import TaskTag from "./ui/taskTag";
+import TaskTag from "./taskTag";
 
 interface TaskTagsProps {
-  task: Task;
   tags: string[];
-  onTagCheck: HandleTagCheck;
 }
 
-export default function TaskTags({ task, tags, onTagCheck }: TaskTagsProps) {
+export default function TaskTags({ tags }: TaskTagsProps) {
   return (
-    <>
+    <ul className="flex flex-wrap gap-1 mt-1 w-full">
       {tags.map((tag) => (
-        <>
-          <TaskTag
-            key={`${tag}-TaskTags`}
-            checked={Boolean(task.tags?.includes(tag))}
-            onTagCheck={onTagCheck}
-          >
-            {tag}
-          </TaskTag>
-        </>
+        <TaskTag key={`${tag}-TaskTag`}>{tag}</TaskTag>
       ))}
-    </>
+    </ul>
   );
 }
