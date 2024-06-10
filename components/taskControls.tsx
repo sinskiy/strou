@@ -1,38 +1,58 @@
-import { HandleCurrentTaskChange, HandleDeleteTask } from "@/app/tasks/page";
+import {
+  HandleChangeTask,
+  HandleCurrentTaskChange,
+  HandleDeleteTask,
+} from "@/app/tasks/page";
 import { Task } from "@/lib/tasks";
 import { Button } from "./ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import TagsSelector from "./tagsSelector";
 
 interface TaskControlsProps {
   task: Task;
+  tags: string[];
   current: boolean;
+  onChange: HandleChangeTask;
   onDelete: HandleDeleteTask;
   onCurrentTaskChange: HandleCurrentTaskChange;
 }
 
 export default function TaskControls({
   task,
+  tags,
   current,
+  onChange,
   onDelete,
   onCurrentTaskChange,
 }: TaskControlsProps) {
   return (
-    <div className="flex gap-2">
-      {!current && (
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => onCurrentTaskChange(task.originalIndex)}
-        >
-          start working on
-        </Button>
-      )}
-      <Button
-        variant="destructive"
-        size="sm"
-        onClick={() => onDelete(task.originalIndex)}
-      >
-        delete
-      </Button>
-    </div>
+    <>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" size="icon">
+            ⋮
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="flex flex-col w-fit p-0">
+          {
+            <Button
+              variant="ghost"
+              onClick={() =>
+                !current
+                  ? onCurrentTaskChange(task.originalIndex)
+                  : onCurrentTaskChange(null)
+              }
+            >
+              {current ? "remove current" : "make current"}
+            </Button>
+          }
+          <Button variant="ghost" onClick={() => onDelete(task.originalIndex)}>
+            delete
+          </Button>
+          <hr className="border-t-2 mb-2" />
+          <TagsSelector task={task} tags={tags} onChange={onChange} />
+        </PopoverContent>
+      </Popover>
+    </>
   );
 }

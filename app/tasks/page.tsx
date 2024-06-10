@@ -12,7 +12,7 @@ export type HandleAddTask = (title: string) => void;
 export type HandleChangeTasks = (tasks: Task[]) => void;
 export type HandleChangeTask = (task: Task) => void;
 export type HandleDeleteTask = (originalIndex: number) => void;
-export type HandleCurrentTaskChange = (originalIndex: number) => void;
+export type HandleCurrentTaskChange = (originalIndex: number | null) => void;
 
 export default function TasksPage() {
   const [tags, setTags] = useState<string[]>([]);

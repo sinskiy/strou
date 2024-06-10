@@ -35,6 +35,7 @@ export default function HandleTags({
   setTags,
 }: AddTagProps) {
   const [localTags, setLocalTags] = useState(tags);
+  // TODO: fix
   const tagsList = localTags
     .slice(1)
     .map((tag) => <TaskTag key={tag}>{tag}</TaskTag>);

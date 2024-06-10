@@ -1,9 +1,7 @@
 import { HandleChangeTask } from "@/app/tasks/page";
 import TaskTags from "./taskTags";
-import { Button } from "./ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Task } from "@/lib/tasks";
-import { MouseEvent } from "react";
+import { ChangeEvent } from "react";
 
 interface TasksSelectorProps {
   task: Task;
@@ -11,37 +9,38 @@ interface TasksSelectorProps {
   onChange: HandleChangeTask;
 }
 
+export type HandleTagCheck = (e: ChangeEvent<HTMLInputElement>) => void;
+
 export default function TasksSelector({
   task,
   tags,
   onChange,
 }: TasksSelectorProps) {
-  const filteredTags = tags.slice(1).filter((tag) => !task.tags?.includes(tag));
-  function handleAddTag(e: MouseEvent<HTMLUListElement>) {
-    const { innerText } = e.target as HTMLElement;
-    // @ts-ignore by tags.includes(innerText) we check if target is tag element
-    const tag = tags.includes(innerText) ? innerText : null;
-    tag &&
+  const handleTagCheck: HandleTagCheck = (e) => {
+    const { id, checked } = e.currentTarget;
+    if (checked) {
       onChange({
         ...task,
-        tags: task.tags ? [...task.tags, tag] : [tag],
+        tags: task.tags ? [...task.tags, id] : [id],
       });
-  }
+    } else {
+      onChange({
+        ...task,
+        // return undefined to keep task.tags as-is
+        tags: task.tags ? task.tags.filter((tag) => tag !== id) : undefined,
+      });
+    }
+  };
   return (
     <>
-      {filteredTags.length ? (
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="p-0 size-6 rounded-full">
-              +
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <ul className="flex flex-wrap gap-2" onClick={handleAddTag}>
-              <TaskTags tags={filteredTags} />
-            </ul>
-          </PopoverContent>
-        </Popover>
+      {tags.length ? (
+        <ul className="flex flex-col w-full">
+          <TaskTags
+            task={task}
+            tags={tags.slice(1)}
+            onTagCheck={handleTagCheck}
+          />
+        </ul>
       ) : (
         ""
       )}

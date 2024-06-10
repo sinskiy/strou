@@ -7,8 +7,6 @@ import {
   HandleDeleteTask,
 } from "@/app/tasks/page";
 import TaskControls from "../taskControls";
-import TagsSelector from "../tagsSelector";
-import TagsSelected from "../tagsSelected";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 
@@ -35,46 +33,43 @@ export default function Task({
     setTags(parsedTags);
   }, []);
   return (
-    <article>
-      <div className="flex gap-4 py-4 justify-between w-full">
-        <div className="flex gap-2">
-          <Checkbox
-            checked={task.checked}
-            onCheckedChange={(checked) => {
+    <li className="flex py-4 justify-between items-center w-full">
+      <div className="flex gap-4">
+        <Checkbox
+          checked={task.checked}
+          onCheckedChange={(checked) => {
+            onChange({
+              ...task,
+              checked: checked as boolean,
+            });
+          }}
+          id={String(task.originalIndex)}
+        />
+        <div>
+          <input
+            value={task.title}
+            aria-hidden={true}
+            onChange={(e) => {
               onChange({
                 ...task,
-                checked: checked as boolean,
+                title: e.target.value,
               });
             }}
-            id={String(task.originalIndex)}
           />
-          <div className="space-y-2">
-            <input
-              value={task.title}
-              aria-hidden={true}
-              onChange={(e) => {
-                onChange({
-                  ...task,
-                  title: e.target.value,
-                });
-              }}
-            />
-            <div className="flex">
-              <TagsSelected task={task} onChange={onChange} />
-              <TagsSelector task={task} tags={tags} onChange={onChange} />
-            </div>
-          </div>
+          {/* {task.tags?.map((tag) => tag)} */}
         </div>
         <Label className="sr-only" htmlFor={String(task.originalIndex)}>
           {task.title}
         </Label>
-        <TaskControls
-          task={task}
-          current={current}
-          onCurrentTaskChange={onCurrentTaskChange}
-          onDelete={onDelete}
-        />
       </div>
-    </article>
+      <TaskControls
+        task={task}
+        tags={tags}
+        current={current}
+        onChange={onChange}
+        onCurrentTaskChange={onCurrentTaskChange}
+        onDelete={onDelete}
+      />
+    </li>
   );
 }
