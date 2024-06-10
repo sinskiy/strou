@@ -26,7 +26,7 @@ export default function AddTask({
         value={newTaskTitle}
         onChange={(e) => setNewTaskTitle(e.target.value)}
       />
-      <Button variant="secondary" disabled={newTaskTitle.length <= 0}>
+      <Button variant="secondary" disabled={newTaskTitle.length === 0}>
         add task
       </Button>
     </form>
