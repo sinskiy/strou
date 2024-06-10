@@ -20,7 +20,7 @@ import TaskTag from "./taskTagInSelector";
 import { Task, filterTasksTags } from "@/lib/tasks";
 import { HandleChangeTasks } from "@/app/tasks/page";
 
-interface AddTagProps {
+interface TagsControlsProps {
   // TODO: reduce duplication
   tasks: Task[];
   setTasks: HandleChangeTasks;
@@ -28,12 +28,12 @@ interface AddTagProps {
   setTags: Dispatch<SetStateAction<string[]>>;
 }
 
-export default function HandleTags({
+export default function TagsControls({
   tasks,
   setTasks,
   tags,
   setTags,
-}: AddTagProps) {
+}: TagsControlsProps) {
   const [localTags, setLocalTags] = useState(tags);
   // TODO: fix
   const tagsList = localTags

@@ -2,13 +2,17 @@ import { Task } from "@/lib/tasks";
 import { HandleTagCheck } from "./taskTagsSelector";
 import TaskTagInSelector from "./taskTagInSelector";
 
-interface TaskTagsProps {
+interface TaskTagsInSelectorProps {
   task: Task;
   tags: string[];
   onTagCheck: HandleTagCheck;
 }
 
-export default function TaskTags({ task, tags, onTagCheck }: TaskTagsProps) {
+export default function TaskTagsInSelector({
+  task,
+  tags,
+  onTagCheck,
+}: TaskTagsInSelectorProps) {
   return (
     <>
       {tags.map((tag) => (

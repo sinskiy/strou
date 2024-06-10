@@ -3,7 +3,7 @@ import TaskTagsInSelector from "./taskTagsInSelector";
 import { Task } from "@/lib/tasks";
 import { ChangeEvent } from "react";
 
-interface TasksSelectorProps {
+interface TaskTagsSelectorProps {
   task: Task;
   tags: string[];
   onChange: HandleChangeTask;
@@ -11,11 +11,11 @@ interface TasksSelectorProps {
 
 export type HandleTagCheck = (e: ChangeEvent<HTMLInputElement>) => void;
 
-export default function TasksSelector({
+export default function TaskTagsSelector({
   task,
   tags,
   onChange,
-}: TasksSelectorProps) {
+}: TaskTagsSelectorProps) {
   const handleTagCheck: HandleTagCheck = (e) => {
     const { id, checked } = e.currentTarget;
     if (checked) {
