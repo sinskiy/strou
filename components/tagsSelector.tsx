@@ -4,11 +4,11 @@ import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Task } from "@/lib/tasks";
 import { MouseEvent } from "react";
-import { tags } from "@/lib/tags";
+import { initialTags } from "@/lib/tags";
 
 interface TasksSelectorProps {
   task: Task;
-  tags: typeof tags;
+  tags: string[];
   onChange: HandleChangeTask;
 }
 

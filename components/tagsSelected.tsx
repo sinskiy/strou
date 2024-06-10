@@ -2,7 +2,6 @@ import { HandleChangeTask } from "@/app/tasks/page";
 import TaskTags from "./taskTags";
 import { Task } from "@/lib/tasks";
 import { MouseEvent } from "react";
-import { isRealTag, tags } from "@/lib/tags";
 
 interface TagsSelectedProps {
   task: Task;
@@ -11,12 +10,14 @@ interface TagsSelectedProps {
 
 export default function TagsSelected({ task, onChange }: TagsSelectedProps) {
   function handleDeleteTag(e: MouseEvent<HTMLUListElement>) {
-    const { innerText } = e.target as HTMLElement;
-    if (!isRealTag(innerText)) return;
+    const target = e.target as HTMLUListElement | HTMLLIElement;
+    if (target.getAttribute("aria-label")) return;
 
     onChange({
       ...task,
-      tags: task.tags ? task.tags.filter((tag) => tag !== innerText) : [],
+      tags: task.tags
+        ? task.tags.filter((tag) => tag !== target.innerText)
+        : [],
     });
   }
   return (

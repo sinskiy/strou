@@ -6,11 +6,11 @@ import {
   HandleCurrentTaskChange,
   HandleDeleteTask,
 } from "@/app/tasks/page";
-import TaskTags from "../taskTags";
 import TaskControls from "../taskControls";
 import TagsSelector from "../tagsSelector";
 import TagsSelected from "../tagsSelected";
-import { tags } from "@/lib/tags";
+import { initialTags } from "@/lib/tags";
+import { useEffect, useState } from "react";
 
 interface TaskProps {
   task: Task;
@@ -27,6 +27,13 @@ export default function Task({
   onChange,
   onDelete,
 }: TaskProps) {
+  const [tags, setTags] = useState<string[]>([]);
+  useEffect(() => {
+    // reduce duplication
+    const savedTags = localStorage.tags;
+    const parsedTags = savedTags ? JSON.parse(savedTags) : initialTags;
+    setTags(parsedTags);
+  }, []);
   return (
     <article>
       <div className="flex gap-4 py-4 justify-between w-full">

@@ -1,14 +1,17 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Tag from "./ui/tag";
+import AddTag from "./addTag";
 
 interface TagsProps {
-  tags: readonly string[];
+  tags: string[];
+  setTags: Dispatch<SetStateAction<string[]>>;
   selectedTags: string[];
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
 }
 
 export default function Tags({
   tags,
+  setTags,
   selectedTags,
   setSelectedTags,
 }: TagsProps) {
@@ -40,5 +43,10 @@ export default function Tags({
       ]);
     }
   }
-  return <ul className="flex gap-2">{tagsList}</ul>;
+  return (
+    <div className="flex items-center  gap-2">
+      <ul className="flex gap-2">{tagsList}</ul>
+      <AddTag tags={tags} setTags={setTags} />
+    </div>
+  );
 }

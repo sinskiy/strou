@@ -3,7 +3,7 @@
 import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
 import Tasks from "@/components/tasks";
-import { tags } from "@/lib/tags";
+import { initialTags } from "@/lib/tags";
 import { Task, getNextIndex } from "@/lib/tasks";
 import tasksReducer from "@/lib/tasksReducer";
 import { useEffect, useReducer, useState } from "react";
@@ -14,6 +14,8 @@ export type HandleDeleteTask = (originalIndex: number) => void;
 export type HandleCurrentTaskChange = (originalIndex: number) => void;
 
 export default function TasksPage() {
+  const [tags, setTags] = useState<string[]>([]);
+
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const [tasks, dispatch] = useReducer(tasksReducer, []);
@@ -22,6 +24,10 @@ export default function TasksPage() {
   const [currentTask, setCurrentTask] = useState<null | number>(null);
 
   useEffect(() => {
+    const savedTags = localStorage.tags;
+    const parsedTags = savedTags ? JSON.parse(savedTags) : initialTags;
+    setTags(parsedTags);
+
     dispatch({ type: "initialized" });
 
     const nextIndexInitial = getNextIndex(
@@ -68,6 +74,7 @@ export default function TasksPage() {
     <section className="card space-y-4">
       <Tags
         tags={tags}
+        setTags={setTags}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
