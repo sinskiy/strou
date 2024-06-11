@@ -11,7 +11,7 @@ import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import TaskTags from "./taskTags";
 import { format } from "date-fns";
-import TaskTag from "./taskTag";
+import { getFormattedDate } from "@/lib/time";
 
 interface TaskProps {
   task: Task;
@@ -28,9 +28,7 @@ export default function Task({
   onChange,
   onDelete,
 }: TaskProps) {
-  const formattedDate = task.dateTime ? format(task.dateTime, "PPP") : null;
-  const simplifiedDate =
-    format(new Date(), "PPP") === formattedDate ? "today" : formattedDate;
+  const formattedDate = getFormattedDate(task.dateTime);
 
   const [tags, setTags] = useState<string[]>([]);
   useEffect(() => {
@@ -64,10 +62,10 @@ export default function Task({
           />
           {task.tags ? (
             <TaskTags
-              tags={simplifiedDate ? [simplifiedDate, ...task.tags] : task.tags}
+              tags={formattedDate ? [formattedDate, ...task.tags] : task.tags}
             />
           ) : (
-            simplifiedDate && <TaskTags tags={[simplifiedDate]} />
+            formattedDate && <TaskTags tags={[formattedDate]} />
           )}
         </div>
       </div>

@@ -2,7 +2,7 @@ export interface Task {
   id: number;
   title: string;
   checked: boolean;
-  dateTime?: Date;
+  dateTime?: Date | string;
   tags?: string[];
 }
 

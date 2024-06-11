@@ -3,9 +3,10 @@ import { TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { HandleChangeTask } from "@/app/tasks/page";
 import { Task } from "@/lib/tasks";
+import { TimePicker } from "./timePicker";
 
 interface TaskDatePicker {
   task: Task;
@@ -13,17 +14,16 @@ interface TaskDatePicker {
 }
 
 export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
-  const [date, setDate] = useState<Date | undefined>(task.dateTime);
+  const [date, setDate] = useState<Date | undefined>(
+    task.dateTime ? new Date(task.dateTime) : undefined,
+  );
 
-  function handleSelect(date: Date | undefined) {
-    setDate(date);
-
+  useEffect(() => {
     onChange({ ...task, dateTime: date });
-  }
-  function handleDelete() {
-    setDate(undefined);
+  }, [date]);
 
-    onChange({ ...task, dateTime: undefined });
+  function handleDateChange(date: Date | undefined = undefined) {
+    setDate(date);
   }
   return (
     <Popover>
@@ -36,17 +36,20 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
         <Calendar
           mode="single"
           selected={date ? date : undefined}
-          onSelect={handleSelect}
+          onSelect={handleDateChange}
           initialFocus
         />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground ml-3 mb-3"
-          onClick={handleDelete}
-        >
-          <TrashIcon />
-        </Button>
+        <div className="m-3">
+          <TimePicker date={date} setDate={setDate} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground"
+            onClick={() => handleDateChange}
+          >
+            <TrashIcon />
+          </Button>
+        </div>
       </PopoverContent>
     </Popover>
   );

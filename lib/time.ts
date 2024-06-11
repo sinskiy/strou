@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export interface Timestamp {
   hours: number;
   minutes: number;
@@ -36,6 +38,22 @@ export function getNextID(timerModes: TimerMode[]): number {
   return (
     timerModes.reduce((biggest, curr) => Math.max(biggest, curr.id), 0) + 1
   );
+}
+
+export function getFormattedDate(date: string | Date | undefined) {
+  if (!date) return null;
+
+  const realDate = new Date(date);
+  const today = isToday(realDate);
+  const formattedDate = today ? "today" : format(date, "PPP").slice(0, -8);
+  const formattedTime = realDate.toTimeString().slice(0, 5);
+  const formattedDateTime = `${formattedDate} ${formattedTime}`;
+  return formattedDateTime;
+
+  function isToday(date: Date): boolean {
+    const today = new Date().toDateString();
+    return today === date.toDateString();
+  }
 }
 
 type MsToUnit = (ms: number) => number;
