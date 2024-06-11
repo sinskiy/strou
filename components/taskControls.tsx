@@ -7,6 +7,7 @@ import { Task } from "@/lib/tasks";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import TaskTagsSelector from "./taskTagsSelector";
+import TaskDatePicker from "./taskDatePicker";
 
 interface TaskControlsProps {
   task: Task;
@@ -46,8 +47,9 @@ export default function TaskControls({
               {current ? "remove current" : "make current"}
             </Button>
           }
+          <TaskDatePicker task={task} onChange={onChange} />
           <Button variant="ghost" onClick={() => onDelete(task.id)}>
-            delete
+            delete task
           </Button>
           {tags && <hr className="border-t-2 mb-2" />}
           <TaskTagsSelector task={task} tags={tags} onChange={onChange} />

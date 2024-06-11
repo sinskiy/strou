@@ -9,8 +9,8 @@ import {
 import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
-import TaskTag from "./taskTag";
 import TaskTags from "./taskTags";
+import { format } from "date-fns";
 
 interface TaskProps {
   task: Task;
@@ -27,13 +27,9 @@ export default function Task({
   onChange,
   onDelete,
 }: TaskProps) {
-  const todayDate = new Date().toDateString();
-
-  const date: Date | null = task.dateTime ? new Date(task.dateTime) : null;
-  const time = // get hours and minutes, without seconds
-    date && date.toLocaleTimeString().split(":").slice(0, 2).join(":");
-  const formattedDate =
-    date && (date.toDateString() === todayDate ? "today" : date.toDateString());
+  const formattedDate = format(task.dateTime, "PPP");
+  const simplifiedDate =
+    format(new Date(), "PPP") === formattedDate ? "today" : formattedDate;
 
   const [tags, setTags] = useState<string[]>([]);
   useEffect(() => {
@@ -65,9 +61,7 @@ export default function Task({
               });
             }}
           />
-          {task.tags && (
-            <TaskTags tags={[`${formattedDate} ${time}`, ...task.tags]} />
-          )}
+          {task.tags && <TaskTags tags={[simplifiedDate, ...task.tags]} />}
         </div>
       </div>
       <TaskControls
