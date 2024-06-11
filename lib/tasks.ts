@@ -1,8 +1,8 @@
 export interface Task {
   id: number;
   title: string;
-  dateTime: Date;
   checked: boolean;
+  dateTime?: Date;
   tags?: string[];
 }
 

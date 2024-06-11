@@ -8,7 +8,6 @@ type TasksAction =
       type: "added";
       id: number;
       title: string;
-      dateTime: Date;
     }
   | {
       type: "changedAll";
@@ -38,7 +37,6 @@ export default function tasksReducer(
         ...tasks,
         {
           id: action.id,
-          dateTime: action.dateTime,
           title: action.title,
           checked: false,
         },

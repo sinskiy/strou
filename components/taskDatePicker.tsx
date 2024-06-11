@@ -1,9 +1,8 @@
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 import type { HandleChangeTask } from "@/app/tasks/page";
 import { Task } from "@/lib/tasks";
@@ -14,14 +13,17 @@ interface TaskDatePicker {
 }
 
 export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
-  const [date, setDate] = useState<Date>(task.dateTime);
+  const [date, setDate] = useState<Date | undefined>(task.dateTime);
 
   function handleSelect(date: Date | undefined) {
-    if (!date) return;
-
     setDate(date);
 
     onChange({ ...task, dateTime: date });
+  }
+  function handleDelete() {
+    setDate(undefined);
+
+    onChange({ ...task, dateTime: undefined });
   }
   return (
     <Popover>
@@ -33,10 +35,18 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={date}
+          selected={date ? date : undefined}
           onSelect={handleSelect}
           initialFocus
         />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-muted-foreground ml-3 mb-3"
+          onClick={handleDelete}
+        >
+          <TrashIcon />
+        </Button>
       </PopoverContent>
     </Popover>
   );
