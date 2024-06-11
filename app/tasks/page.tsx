@@ -50,7 +50,6 @@ export default function TasksPage() {
     dispatch({
       type: "added",
       id: nextID,
-      dateTime: new Date(),
       title,
     });
     setNextID(nextID + 1);
