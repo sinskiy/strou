@@ -30,20 +30,30 @@ export default function TimerSettings({
   timerModesTime,
   setTimerModesTime,
 }: TimerSettingsProps) {
-  const [newTimerModeTime, setNewTimerModeTime] = useState(0);
+  const [newTimerModeTime, setNewTimerModeTime] = useState<number>(0);
   const [localModesTime, setLocalModesTime] = useState(timerModesTime);
   const timerModesList = localModesTime.map((timerMode) => {
     const timerModeID = getTimerModeID(timerMode);
     return (
       <li key={timerModeID}>
         <Label htmlFor={timerModeID}>{timerMode.name}</Label>
-        <Input
-          className="mt-2"
-          id={timerModeID}
-          type="number"
-          value={timerMode.time / 1000 / 60}
-          onChange={handleInputChange}
-        />
+        <div className="flex items-end gap-4">
+          <Input
+            className="mt-2"
+            id={timerModeID}
+            type="number"
+            value={timerMode.time / 1000 / 60}
+            onChange={handleInputChange}
+          />
+          <Button
+            variant="secondary"
+            className="h-full"
+            onClick={() => handleDelete(timerMode.id)}
+            disabled={localModesTime.length === 1}
+          >
+            Delete
+          </Button>
+        </div>
       </li>
     );
   });
@@ -57,7 +67,10 @@ export default function TimerSettings({
       const changedTimerMode = getTimerModeID(timerMode) === e.target.id;
 
       if (changedTimerMode) {
-        return { ...timerMode, time: Number(e.target.value) * MINUTE_IN_MS };
+        return {
+          ...timerMode,
+          time: Number(e.target.value) * MINUTE_IN_MS,
+        };
       } else {
         return timerMode;
       }
@@ -69,12 +82,17 @@ export default function TimerSettings({
 
     localStorage.timerModesTime = JSON.stringify(localModesTime);
   }
+  function handleDelete(id: number) {
+    const filteredModes = localModesTime.filter((mode) => mode.id !== id);
+
+    setLocalModesTime(filteredModes);
+  }
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const newMode: TimerMode = {
       id: getNextID(localModesTime),
-      name: "default name",
+      name: `mode ${getNextID(localModesTime)}`,
       time: newTimerModeTime * MINUTE_IN_MS,
     };
     const newLocalModes: TimerMode[] = [...localModesTime, newMode];
