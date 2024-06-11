@@ -51,8 +51,8 @@ export default function Task({
         />
         <div>
           <input
-            name="new-task-title"
-            id="new-task-title"
+            name={`${task.title}-input`}
+            id={`${task.title}-input`}
             type="text"
             value={task.title}
             onChange={(e) => {
