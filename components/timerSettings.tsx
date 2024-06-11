@@ -36,15 +36,20 @@ export default function TimerSettings({
     const timerModeID = getTimerModeID(timerMode);
     return (
       <li key={timerModeID}>
-        <Label htmlFor={timerModeID}>{timerMode.name}</Label>
-        <div className="flex items-end gap-4">
+        <div className="flex items-end gap-4 mt-6">
           <Input
-            className="mt-2"
-            id={timerModeID}
+            type="text"
+            name={timerModeID}
+            id={`${timerModeID}-name`}
+            value={timerMode.name}
+            onChange={handleNameChange}
+          />
+          <Input
+            id={`${timerModeID}-time`}
             name={timerModeID}
             type="number"
             value={timerMode.time / 1000 / 60}
-            onChange={handleInputChange}
+            onChange={handleTimeChange}
           />
           <Button
             variant="secondary"
@@ -63,9 +68,28 @@ export default function TimerSettings({
     setLocalModesTime(timerModesTime);
   }, [timerModesTime]);
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
     const newLocalModes: TimerMode[] = localModesTime.map((timerMode) => {
-      const changedTimerMode = getTimerModeID(timerMode) === e.target.id;
+      const changedTimerMode =
+        `${getTimerModeID(timerMode)}-name` === e.target.id;
+
+      if (changedTimerMode) {
+        return {
+          ...timerMode,
+          name: e.target.value,
+        };
+      } else {
+        return timerMode;
+      }
+    });
+    setLocalModesTime(newLocalModes);
+
+    e.target.focus();
+  }
+  function handleTimeChange(e: ChangeEvent<HTMLInputElement>) {
+    const newLocalModes: TimerMode[] = localModesTime.map((timerMode) => {
+      const changedTimerMode =
+        `${getTimerModeID(timerMode)}-time` === e.target.id;
 
       if (changedTimerMode) {
         return {
