@@ -1,9 +1,11 @@
 import {
+  ChangeEvent,
   Dispatch,
   FormEvent,
   MouseEvent,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { Button } from "./ui/button";
@@ -36,6 +38,8 @@ export default function TagsControls({
   tags,
   setTags,
 }: TagsControlsProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [localTags, setLocalTags] = useState(tags);
   const tagsList = localTags
     .slice(1)
@@ -44,6 +48,8 @@ export default function TagsControls({
   const [newTag, setNewTag] = useState("");
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    setNewTag("");
 
     const newTags = newTag ? [...localTags, newTag] : localTags;
     setLocalTags(newTags);
@@ -80,9 +86,17 @@ export default function TagsControls({
             name="new-tag-title"
             type="text"
             value={newTag}
+            // TODO: change to own function and check for individuality
+            ref={inputRef}
             onChange={(e) => setNewTag(e.currentTarget.value)}
           />
-          <Button variant="secondary" disabled={newTag.length === 0}>
+          <Button
+            variant="secondary"
+            disabled={
+              !inputRef?.current?.value ||
+              localTags.includes(inputRef.current.value)
+            }
+          >
             Add tag
           </Button>
         </form>
