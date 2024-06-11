@@ -18,7 +18,7 @@ export default function TaskTagsInSelector({
       {tags.map((tag) => (
         <>
           <TaskTagInSelector
-            key={`${tag}-TaskTagInSelector`}
+            key={tag}
             checked={Boolean(task.tags?.includes(tag))}
             onTagCheck={onTagCheck}
           >
