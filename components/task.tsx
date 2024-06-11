@@ -11,7 +11,6 @@ import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import TaskTag from "./taskTag";
 import TaskTags from "./taskTags";
-import Tag from "./ui/tag";
 
 interface TaskProps {
   task: Task;
@@ -66,12 +65,9 @@ export default function Task({
               });
             }}
           />
-          {date && (
-            <TaskTag>
-              {formattedDate} {time}
-            </TaskTag>
+          {task.tags && (
+            <TaskTags tags={[`${formattedDate} ${time}`, ...task.tags]} />
           )}
-          {task.tags && <TaskTags tags={task.tags} />}
         </div>
       </div>
       <TaskControls
