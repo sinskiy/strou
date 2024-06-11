@@ -30,7 +30,7 @@ export default function Tags({
       : selectedTags.includes(tag);
     return (
       <Tag
-        key={`${tag}-Tags`}
+        key={tag}
         tag={tag}
         name="tags"
         checked={checked}
