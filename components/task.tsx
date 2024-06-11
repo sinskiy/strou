@@ -11,6 +11,7 @@ import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import TaskTag from "./taskTag";
 import TaskTags from "./taskTags";
+import Tag from "./ui/tag";
 
 interface TaskProps {
   task: Task;
@@ -27,6 +28,14 @@ export default function Task({
   onChange,
   onDelete,
 }: TaskProps) {
+  const todayDate = new Date().toDateString();
+
+  const date: Date | null = task.dateTime ? new Date(task.dateTime) : null;
+  const time = // get hours and minutes, without seconds
+    date && date.toLocaleTimeString().split(":").slice(0, 2).join(":");
+  const formattedDate =
+    date && (date.toDateString() === todayDate ? "today" : date.toDateString());
+
   const [tags, setTags] = useState<string[]>([]);
   useEffect(() => {
     // reduce duplication
@@ -57,6 +66,11 @@ export default function Task({
               });
             }}
           />
+          {date && (
+            <TaskTag>
+              {formattedDate} {time}
+            </TaskTag>
+          )}
           {task.tags && <TaskTags tags={task.tags} />}
         </div>
       </div>
