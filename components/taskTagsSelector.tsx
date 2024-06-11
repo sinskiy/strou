@@ -17,17 +17,21 @@ export default function TaskTagsSelector({
   onChange,
 }: TaskTagsSelectorProps) {
   const handleTagCheck: HandleTagCheck = (e) => {
-    const { id, checked } = e.currentTarget;
+    const { dataset, checked } = e.currentTarget;
+    if (typeof dataset.tag !== "string") return;
+
     if (checked) {
       onChange({
         ...task,
-        tags: task.tags ? [...task.tags, id] : [id],
+        tags: task.tags ? [...task.tags, dataset.tag] : [dataset.tag],
       });
     } else {
       onChange({
         ...task,
         // return undefined to keep task.tags as-is
-        tags: task.tags ? task.tags.filter((tag) => tag !== id) : undefined,
+        tags: task.tags
+          ? task.tags.filter((tag) => tag !== dataset.tag)
+          : undefined,
       });
     }
   };

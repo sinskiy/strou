@@ -20,7 +20,7 @@ export default function TaskTagInSelector({
           className="absolute opacity-0 size-full peer"
           checked={checked}
           onChange={onTagCheck}
-          id={children}
+          data-tag={children}
         />
         <span className="absolute left-2 hidden peer-checked:inline">✓</span>
         {children}
