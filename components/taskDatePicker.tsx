@@ -45,7 +45,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
             variant="ghost"
             size="icon"
             className="text-muted-foreground"
-            onClick={() => handleDateChange}
+            onClick={() => handleDateChange()}
           >
             <TrashIcon />
           </Button>
