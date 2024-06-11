@@ -41,6 +41,7 @@ export default function TimerSettings({
           <Input
             className="mt-2"
             id={timerModeID}
+            name={timerModeID}
             type="number"
             value={timerMode.time / 1000 / 60}
             onChange={handleInputChange}

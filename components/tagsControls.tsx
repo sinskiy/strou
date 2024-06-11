@@ -76,6 +76,8 @@ export default function TagsControls({
         </DialogHeader>
         <form method="get" className="flex gap-4" onSubmit={handleSubmit}>
           <Input
+            id="new-tag-title"
+            name="new-tag-title"
             type="text"
             value={newTag}
             onChange={(e) => setNewTag(e.currentTarget.value)}
