@@ -46,10 +46,9 @@ export function getFormattedDate(date: string | Date | undefined) {
   const realDate = new Date(date);
   const today = isToday(realDate);
   const formattedDate = today ? "today" : format(date, "PPP").slice(0, -8);
-  const formattedTime =
-    realDate.getHours() === 0 && realDate.getMinutes() === 0
-      ? ""
-      : realDate.toTimeString().slice(0, 5);
+  const formattedTime = isTimeNotSet(realDate)
+    ? ""
+    : realDate.toTimeString().slice(0, 5);
   const formattedDateTime = `${formattedDate} ${formattedTime}`;
   return formattedDateTime;
 
@@ -57,6 +56,20 @@ export function getFormattedDate(date: string | Date | undefined) {
     const today = new Date().toDateString();
     return today === date.toDateString();
   }
+}
+
+export function isBeforeNow(date: string) {
+  const realDate = new Date(date);
+  const today = new Date();
+  if (isTimeNotSet(realDate)) {
+    realDate.setHours(23, 59);
+  }
+
+  return today > realDate;
+}
+
+function isTimeNotSet(date: Date) {
+  return date.getHours() === 0 && date.getMinutes() === 0;
 }
 
 type MsToUnit = (ms: number) => number;

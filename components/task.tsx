@@ -1,5 +1,4 @@
 import { Checkbox } from "./ui/checkbox";
-import { Label } from "./ui/label";
 import type { Task } from "@/lib/tasks";
 import {
   HandleChangeTask,
@@ -10,8 +9,8 @@ import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import TaskTags from "./taskTags";
-import { format } from "date-fns";
-import { getFormattedDate } from "@/lib/time";
+import { getFormattedDate, isBeforeNow } from "@/lib/time";
+import { cn } from "@/lib/utils";
 
 interface TaskProps {
   task: Task;
@@ -61,8 +60,16 @@ export default function Task({
             }}
           />
           <div className="flex gap-1 mt-1 w-full">
-            {formattedDate && (
-              <time dateTime={task.dateTime?.toString()} className="task-tag">
+            {task.dateTime && formattedDate && (
+              <time
+                dateTime={task.dateTime.toString()}
+                className={cn(
+                  {
+                    "border-destructive": isBeforeNow(task.dateTime.toString()),
+                  },
+                  "task-tag",
+                )}
+              >
                 {formattedDate}
               </time>
             )}
