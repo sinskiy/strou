@@ -90,3 +90,9 @@
     @apply bg-card text-card-foreground p-8 rounded-lg my-4;
   }
 }
+
+@layer components {
+  .task-tag {
+    @apply h-6 w-fit px-4 border rounded-full border-border text-sm;
+  }
+}

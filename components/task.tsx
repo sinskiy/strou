@@ -60,13 +60,14 @@ export default function Task({
               });
             }}
           />
-          {task.tags ? (
-            <TaskTags
-              tags={formattedDate ? [formattedDate, ...task.tags] : task.tags}
-            />
-          ) : (
-            formattedDate && <TaskTags tags={[formattedDate]} />
-          )}
+          <div className="flex gap-1 mt-1 w-full">
+            {formattedDate && (
+              <time dateTime={task.dateTime?.toString()} className="task-tag">
+                {formattedDate}
+              </time>
+            )}
+            {task.tags && <TaskTags tags={task.tags} />}
+          </div>
         </div>
       </div>
       <TaskControls

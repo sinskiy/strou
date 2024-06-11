@@ -46,7 +46,10 @@ export function getFormattedDate(date: string | Date | undefined) {
   const realDate = new Date(date);
   const today = isToday(realDate);
   const formattedDate = today ? "today" : format(date, "PPP").slice(0, -8);
-  const formattedTime = realDate.toTimeString().slice(0, 5);
+  const formattedTime =
+    realDate.getHours() === 0 && realDate.getMinutes() === 0
+      ? ""
+      : realDate.toTimeString().slice(0, 5);
   const formattedDateTime = `${formattedDate} ${formattedTime}`;
   return formattedDateTime;
 
