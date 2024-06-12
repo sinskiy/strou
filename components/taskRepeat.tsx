@@ -5,7 +5,7 @@ import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTask } from "@/app/tasks/page";
-import { HOUR_IN_MS } from "@/lib/time";
+import { getDefaultTime } from "@/lib/time";
 
 interface TaskRepeatProps {
   task: Task;
@@ -23,6 +23,7 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
     onChange({
       ...task,
       repeatInterval: newRepeat ? newRepeat : undefined,
+      dateTime: task.dateTime ? task.dateTime : getDefaultTime(),
     });
   }
   return (

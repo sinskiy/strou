@@ -13,6 +13,13 @@ export function getFormattedDate(date: number): string {
   return formattedDateTime;
 }
 
+export function getDefaultTime(): number {
+  const defaultDate = new Date();
+  defaultDate.setHours(23, 59);
+  const defaultTime = defaultDate.getTime();
+  return defaultTime;
+}
+
 function getRelativeDate(
   date: Date,
 ): "yesterday" | "today" | "tomorrow" | null {
@@ -45,10 +52,6 @@ export function isBeforeNow(date: string): boolean {
   const today = new Date();
 
   return today > realDate;
-}
-
-function isAtStart(date: Date): boolean {
-  return date.getHours() === 0 && date.getMinutes() === 0;
 }
 
 function isAtLastMinute(date: Date): boolean {
