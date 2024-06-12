@@ -23,7 +23,8 @@ export default function Tasks({
   onChangeTask,
   onDeleteTask,
 }: TasksProps) {
-  const filteredTasks = tasks.filter((task) =>
+  const sortedTasks = tasks.sort((task) => (task.checked ? 1 : -1));
+  const filteredTasks = sortedTasks.filter((task) =>
     selectedTags.length
       ? task.tags?.some((tag) => selectedTags.includes(tag))
       : task,
