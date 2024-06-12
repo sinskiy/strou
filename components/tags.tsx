@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Tag from "./ui/tag";
-import AddTag from "./tagsControls";
+import TagsSettings from "./tagsSettings";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTasks } from "@/app/tasks/page";
 
@@ -54,7 +54,12 @@ export default function Tags({
   return (
     <div className="flex items-center justify-between gap-2">
       <ul className="flex gap-2">{tagsList}</ul>
-      <AddTag tasks={tasks} setTasks={setTasks} tags={tags} setTags={setTags} />
+      <TagsSettings
+        tasks={tasks}
+        setTasks={setTasks}
+        tags={tags}
+        setTags={setTags}
+      />
     </div>
   );
 }
