@@ -5,6 +5,8 @@ import {
 } from "@/app/tasks/page";
 import Task from "./task";
 import type { Task as ITask } from "@/lib/tasks";
+import { RefObject, createRef } from "react";
+import { useFlip } from "@/lib/useFlip";
 
 interface TasksProps {
   tasks: ITask[];
@@ -23,8 +25,15 @@ export default function Tasks({
   onChangeTask,
   onDeleteTask,
 }: TasksProps) {
-  const sortedTasks = tasks.sort((task) => (task.checked ? 1 : -1));
-  const filteredTasks = sortedTasks.filter((task) =>
+  // const listRef = createRef<HTMLUListElement>();
+  // useFlip(listRef);
+
+  /* const sortedTasks = tasks.sort((a, b) => {
+    if (a.checked && b.checked) return 0;
+    else if (a.checked && !b.checked) return 1;
+    else return -1;
+  }); */
+  const filteredTasks = tasks.filter((task) =>
     selectedTags.length
       ? task.tags?.some((tag) => selectedTags.includes(tag))
       : task,
