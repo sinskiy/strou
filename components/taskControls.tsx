@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import TagsSelector from "./tagsSelector";
 import TaskDatePicker from "./taskDatePicker";
+import TaskRepeat from "./taskRepeat";
 
 interface TaskControlsProps {
   task: Task;
@@ -35,18 +36,17 @@ export default function TaskControls({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="flex flex-col w-fit p-0">
-          {
-            <Button
-              variant="ghost"
-              onClick={() =>
-                !current
-                  ? onCurrentTaskChange(task.id)
-                  : onCurrentTaskChange(null)
-              }
-            >
-              {current ? "remove current" : "make current"}
-            </Button>
-          }
+          <Button
+            variant="ghost"
+            onClick={() =>
+              !current
+                ? onCurrentTaskChange(task.id)
+                : onCurrentTaskChange(null)
+            }
+          >
+            {current ? "remove current" : "make current"}
+          </Button>
+          <TaskRepeat />
           <TaskDatePicker task={task} onChange={onChange} />
           <Button variant="ghost" onClick={() => onDelete(task.id)}>
             delete task
