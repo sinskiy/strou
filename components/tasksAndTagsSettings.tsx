@@ -14,6 +14,7 @@ import { Task, filterTasksTags } from "@/lib/tasks";
 import { HandleChangeTasks } from "@/app/tasks/page";
 import AddTag from "./addTag";
 import DeleteTag from "./deleteTag";
+import DeleteCompletedTasks from "./deleteCompletedTasks";
 
 interface TagsControlsProps {
   // TODO: reduce duplication
@@ -29,14 +30,23 @@ export default function TagsControls({
   tags,
   setTags,
 }: TagsControlsProps) {
+  const [deleteCompletedTasks, setDeleteCompletedTasks] = useState(false);
   const [localTags, setLocalTags] = useState(tags);
 
   function handleSaveClick() {
     setTags(localTags);
     localStorage.tags = JSON.stringify(localTags);
 
-    const tasksWithoutDeletedTags = filterTasksTags(tasks, localTags);
+    const tasksWithoutCompleted = deleteCompletedTasks
+      ? tasks.filter((task) => !task.checked || task.repeatInterval)
+      : tasks;
+    const tasksWithoutDeletedTags = filterTasksTags(
+      tasksWithoutCompleted,
+      localTags,
+    );
     setTasks(tasksWithoutDeletedTags);
+
+    setDeleteCompletedTasks(false);
   }
   useEffect(() => setLocalTags(tags), [tags]);
   return (
@@ -58,6 +68,10 @@ export default function TagsControls({
           </DialogDescription>
         </DialogHeader>
         <DeleteTag localTags={localTags} setLocalTags={setLocalTags} />
+        <DeleteCompletedTasks
+          deleteCompletedTasks={deleteCompletedTasks}
+          setDeleteCompletedTasks={setDeleteCompletedTasks}
+        />
         <DialogFooter>
           <Button type="submit" onClick={handleSaveClick}>
             Save
