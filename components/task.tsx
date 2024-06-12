@@ -9,7 +9,12 @@ import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import TaskTags from "./taskTags";
-import { getFormattedDate, isBeforeNow } from "@/lib/time";
+import {
+  getFormattedDate,
+  getFormattedNextDate,
+  getNextDate,
+  isBeforeNow,
+} from "@/lib/time";
 import { cn } from "@/lib/utils";
 
 interface TaskProps {
@@ -28,6 +33,20 @@ export default function Task({
   onDelete,
 }: TaskProps) {
   const formattedDate = getFormattedDate(task.dateTime);
+
+  if (
+    task.dateTime &&
+    task.repeatInterval &&
+    task.lastRepeated &&
+    getNextDate(task.dateTime, task.repeatInterval, task.lastRepeated) <
+      new Date()
+  ) {
+    onChange({
+      ...task,
+      checked: false,
+      lastRepeated: Date.now(),
+    });
+  }
 
   const [tags, setTags] = useState<string[]>([]);
   useEffect(() => {
@@ -79,6 +98,16 @@ export default function Task({
               >
                 {formattedDate}
               </time>
+            )}
+            {task.dateTime && task.repeatInterval && task.lastRepeated && (
+              <div className="task-tag">
+                next:{" "}
+                {getFormattedNextDate(
+                  task.dateTime,
+                  task.repeatInterval,
+                  task.checked ? Date.now() : task.lastRepeated,
+                )}
+              </div>
             )}
             {task.tags && <TaskTags tags={task.tags} />}
           </div>

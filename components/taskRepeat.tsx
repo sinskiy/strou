@@ -5,6 +5,7 @@ import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTask } from "@/app/tasks/page";
+import { HOUR_IN_MS } from "@/lib/time";
 
 interface TaskRepeatProps {
   task: Task;
@@ -12,13 +13,19 @@ interface TaskRepeatProps {
 }
 
 export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
-  const [repeat, setRepeat] = useState(0);
+  const [repeat, setRepeat] = useState(task.repeatInterval);
   function handleRepeatChange(e: ChangeEvent<HTMLInputElement>) {
     const newRepeat = Number(e.target.value);
 
     setRepeat(newRepeat);
 
-    onChange({ ...task, repeatInterval: newRepeat, lastRepeated: Date.now() });
+    onChange({
+      ...task,
+      repeatInterval: newRepeat ? newRepeat : undefined,
+      lastRepeated: newRepeat
+        ? Date.now() - newRepeat * 24 * HOUR_IN_MS
+        : undefined,
+    });
   }
   return (
     <Popover>

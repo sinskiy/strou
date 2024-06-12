@@ -3,8 +3,7 @@ export interface Task {
   title: string;
   checked: boolean;
   tags?: string[];
-  // TODO: change to string only
-  dateTime?: Date | string;
+  dateTime?: string;
   repeatInterval?: number;
   lastRepeated?: number;
 }
