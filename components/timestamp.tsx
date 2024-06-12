@@ -5,6 +5,8 @@ interface TimestampProps {
   timeObject: ITimestamp;
 }
 
+const LAST_POSITION = 2;
+
 export default function Timestamp({ timeObject }: TimestampProps) {
   return (
     <p className="font-bold text-6xl mt-2 mb-6">
@@ -12,7 +14,11 @@ export default function Timestamp({ timeObject }: TimestampProps) {
         return label === "hours" && value < 1 ? (
           ""
         ) : (
-          <FormattedTimeUnit key={label} timeUnit={value} separator={i !== 2} />
+          <FormattedTimeUnit
+            key={label}
+            timeUnit={value}
+            separator={i !== LAST_POSITION}
+          />
         );
       })}
     </p>
