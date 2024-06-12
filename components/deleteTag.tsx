@@ -1,10 +1,9 @@
-import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { MouseEvent } from "react";
 import TaskTag from "./taskTag";
 
 interface DeleteTagProps {
   localTags: string[];
-  // TODO: reduce duplication
-  setLocalTags: Dispatch<SetStateAction<string[]>>;
+  setLocalTags: SetState<string[]>;
 }
 
 export default function DeleteTag({ localTags, setLocalTags }: DeleteTagProps) {

@@ -30,7 +30,6 @@ export default function Timer() {
   const [timerMode, setTimerMode] = useState(0);
   const nextTimerMode: number =
     timerMode === timerModesTime.length - 1 ? 0 : timerMode + 1;
-  // TODO: change ^
 
   const [timeStarted, setTimeStarted] = useState<number | null>(null);
 

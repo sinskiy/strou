@@ -8,24 +8,14 @@ import {
   DialogFooter,
   DialogClose,
 } from "./ui/dialog";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { MINUTE_IN_MS } from "@/lib/time";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TimerMode, getNextID } from "@/lib/timerModes";
 import { TimerSettingsModesList } from "./timerSettingsModesList";
 import TimerSettingsAddMode from "./timerSettingsAddMode";
 
 interface TimerSettingsProps {
   timerModesTime: TimerMode[];
-  //TODO: reduce duplication
-  setTimerModesTime: Dispatch<SetStateAction<TimerMode[]>>;
+  setTimerModesTime: SetState<TimerMode[]>;
 }
 
 export default function TimerSettings({

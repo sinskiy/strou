@@ -3,7 +3,6 @@
 import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
 import Tasks from "@/components/tasks";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { initialTags } from "@/lib/tags";
 import { Task, getNextID } from "@/lib/tasks";

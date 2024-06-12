@@ -1,17 +1,14 @@
 import { TimerMode, getTimerModeID } from "@/lib/timerModes";
-import { ChangeEvent, ChangeEventHandler, SetStateAction } from "react";
 import { MINUTE_IN_MS } from "@/lib/time";
 import TimerSettingsMode from "./timerSettingsMode";
 
 interface TimerSettingsModesList {
-  // TODO: reduce duplication
-  setLocalModesTime: (value: SetStateAction<TimerMode[]>) => void;
+  setLocalModesTime: SetState<TimerMode[]>;
   localModesTime: TimerMode[];
 }
 
-// TODO: make global types for events like these
-export type HandleNameChange = ChangeEventHandler<HTMLInputElement>;
-export type HandleTimeChange = ChangeEventHandler<HTMLInputElement>;
+export type HandleNameChange = HandleInputChange;
+export type HandleTimeChange = HandleInputChange;
 export type HandleDelete = (id: number) => void;
 
 export function TimerSettingsModesList({

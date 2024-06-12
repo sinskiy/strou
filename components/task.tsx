@@ -29,12 +29,16 @@ export default function Task({
 }: TaskProps) {
   const formattedDate = task.dateTime ? getFormattedDate(task.dateTime) : null;
 
-  if (task.dateTime && task.repeatInterval && task.dateTime < Date.now()) {
+  if (
+    task.checked &&
+    task.dateTime &&
+    task.repeatInterval &&
+    task.dateTime < Date.now()
+  ) {
     onChange({
       ...task,
       checked: false,
-      // TODO: reduce repetition
-      dateTime: task.dateTime + task.repeatInterval * 24 * HOUR_IN_MS,
+      dateTime: getNextDate(task, true),
     });
   }
 
@@ -53,7 +57,6 @@ export default function Task({
             onChange({
               ...task,
               checked: checked as boolean,
-              // TODO: reduce repetition
               dateTime: getNextDate(task),
             });
           }}

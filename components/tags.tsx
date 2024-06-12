@@ -1,20 +1,18 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent } from "react";
 import Tag from "./ui/tag";
 import TasksAndTagsSettings from "./tasksAndTagsSettings";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTasks } from "@/app/tasks/page";
 
 interface TagsProps {
-  // TODO: reduce duplication
   tasks: Task[];
   setTasks: HandleChangeTasks;
   tags: string[];
-  setTags: Dispatch<SetStateAction<string[]>>;
+  setTags: SetState<string[]>;
   selectedTags: string[];
-  setSelectedTags: Dispatch<SetStateAction<string[]>>;
+  setSelectedTags: SetState<string[]>;
 }
 
-// TODO: fix issue with multiple tags (and tasks, probably) with the same name
 export default function Tags({
   tasks,
   setTasks,

@@ -1,10 +1,9 @@
-import { FormEvent, SetStateAction, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 interface AddTagProps {
-  // TODO: reduce duplication
-  setLocalTags: (value: SetStateAction<string[]>) => void;
+  setLocalTags: SetState<string[]>;
   localTags: string[];
 }
 

@@ -5,8 +5,6 @@ import {
 } from "@/app/tasks/page";
 import Task from "./task";
 import type { Task as ITask } from "@/lib/tasks";
-import { RefObject, createRef } from "react";
-import { useFlip } from "@/lib/useFlip";
 
 interface TasksProps {
   tasks: ITask[];

@@ -9,7 +9,10 @@ export interface Task {
   repeatInterval?: number;
 }
 
-export function getNextDate(task: Task): number | undefined {
+export function getNextDate(
+  task: Task,
+  addDifference?: boolean,
+): number | undefined {
   if (!task.dateTime) {
     return;
   }
@@ -19,8 +22,8 @@ export function getNextDate(task: Task): number | undefined {
   }
 
   const difference = task.repeatInterval * 24 * HOUR_IN_MS;
-  const nextChecked = !task.checked;
-  if (nextChecked) {
+  const add = addDifference ?? !task.checked;
+  if (add) {
     return task.dateTime + difference;
   } else {
     return task.dateTime - difference;

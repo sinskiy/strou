@@ -17,11 +17,10 @@ import DeleteTag from "./deleteTag";
 import DeleteCompletedTasks from "./deleteCompletedTasks";
 
 interface TagsControlsProps {
-  // TODO: reduce duplication
   tasks: Task[];
   setTasks: HandleChangeTasks;
   tags: string[];
-  setTags: Dispatch<SetStateAction<string[]>>;
+  setTags: SetState<string[]>;
 }
 
 export default function TagsControls({

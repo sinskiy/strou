@@ -1,4 +1,4 @@
-import { FormEvent, SetStateAction, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -6,8 +6,7 @@ import { TimerMode, getNextID } from "@/lib/timerModes";
 import { MINUTE_IN_MS } from "@/lib/time";
 
 interface TimerSettingsAddModeProps {
-  // TODO: reduce duplication
-  setLocalModesTime: (value: SetStateAction<TimerMode[]>) => void;
+  setLocalModesTime: SetState<TimerMode[]>;
   localModesTime: TimerMode[];
 }
 

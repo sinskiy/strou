@@ -1,11 +1,9 @@
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
-import { Dispatch, SetStateAction } from "react";
 
 interface DeleteCompletedTasksProps {
   deleteCompletedTasks: boolean;
-  // TODO: remove duplication
-  setDeleteCompletedTasks: Dispatch<SetStateAction<boolean>>;
+  setDeleteCompletedTasks: SetState<boolean>;
 }
 
 export default function DeleteCompletedTasks({
