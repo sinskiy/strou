@@ -22,8 +22,12 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
     onChange({ ...task, dateTime: date });
   }, [date]);
 
-  function handleDateChange(date: Date | undefined = undefined) {
-    setDate(date);
+  function handleDateChange(newDate: Date | undefined = undefined) {
+    if (!date) {
+      newDate?.setHours(23, 59);
+    }
+
+    setDate(newDate);
   }
   return (
     <Popover>
@@ -39,17 +43,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           onSelect={handleDateChange}
           initialFocus
         />
-        <div className="m-3">
-          <TimePicker date={date} setDate={setDate} />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground"
-            onClick={() => handleDateChange()}
-          >
-            <TrashIcon />
-          </Button>
-        </div>
+        <TimePicker date={date} setDate={setDate} />
       </PopoverContent>
     </Popover>
   );

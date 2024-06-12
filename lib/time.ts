@@ -23,15 +23,12 @@ export function getFormattedDate(
 export function isBeforeNow(date: string): boolean {
   const realDate = new Date(date);
   const today = new Date();
-  if (isTimeNotSet(realDate)) {
-    realDate.setHours(23, 59);
-  }
 
   return today > realDate;
 }
 
 function isTimeNotSet(date: Date): boolean {
-  return date.getHours() === 0 && date.getMinutes() === 0;
+  return date.getHours() === 23 && date.getMinutes() === 59;
 }
 
 export interface Timestamp {
