@@ -1,17 +1,17 @@
 import { Button } from "./ui/button";
-import { HandleTagCheck } from "./taskTagsSelector";
+import { HandleTagCheck } from "./tagsSelector";
 
-interface TaskTagInSelectorProps {
+interface SelectorTagProps {
   checked: boolean;
   onTagCheck: HandleTagCheck;
   children: string;
 }
 
-export default function TaskTagInSelector({
+export default function SelectorTag({
   checked,
   onTagCheck,
   children,
-}: TaskTagInSelectorProps) {
+}: SelectorTagProps) {
   return (
     <Button variant="ghost" asChild>
       <li className="relative flex gap-2">

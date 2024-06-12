@@ -1,29 +1,29 @@
 import { Task } from "@/lib/tasks";
-import { HandleTagCheck } from "./taskTagsSelector";
-import TaskTagInSelector from "./taskTagInSelector";
+import { HandleTagCheck } from "./tagsSelector";
+import SelectorTag from "./selectorTag";
 
-interface TaskTagsInSelectorProps {
+interface SelectorTagsProps {
   task: Task;
   tags: string[];
   onTagCheck: HandleTagCheck;
 }
 
-export default function TaskTagsInSelector({
+export default function SelectorTags({
   task,
   tags,
   onTagCheck,
-}: TaskTagsInSelectorProps) {
+}: SelectorTagsProps) {
   return (
     <>
       {tags.map((tag) => (
         <>
-          <TaskTagInSelector
+          <SelectorTag
             key={tag}
             checked={Boolean(task.tags?.includes(tag))}
             onTagCheck={onTagCheck}
           >
             {tag}
-          </TaskTagInSelector>
+          </SelectorTag>
         </>
       ))}
     </>

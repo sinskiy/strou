@@ -1,9 +1,9 @@
 import { HandleChangeTask } from "@/app/tasks/page";
-import TaskTagsInSelector from "./taskTagsInSelector";
+import SelectorTags from "./selectorTags";
 import { Task } from "@/lib/tasks";
 import { ChangeEvent } from "react";
 
-interface TaskTagsSelectorProps {
+interface TagsSelectorProps {
   task: Task;
   tags: string[];
   onChange: HandleChangeTask;
@@ -11,11 +11,11 @@ interface TaskTagsSelectorProps {
 
 export type HandleTagCheck = (e: ChangeEvent<HTMLInputElement>) => void;
 
-export default function TaskTagsSelector({
+export default function TagsSelector({
   task,
   tags,
   onChange,
-}: TaskTagsSelectorProps) {
+}: TagsSelectorProps) {
   const handleTagCheck: HandleTagCheck = (e) => {
     const { dataset, checked } = e.currentTarget;
     if (typeof dataset.tag !== "string") return;
@@ -39,7 +39,7 @@ export default function TaskTagsSelector({
     <>
       {tags.length ? (
         <ul className="flex flex-col w-full">
-          <TaskTagsInSelector
+          <SelectorTags
             task={task}
             tags={tags.slice(1)}
             onTagCheck={handleTagCheck}
