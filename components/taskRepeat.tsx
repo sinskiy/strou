@@ -16,15 +16,13 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
   const [repeat, setRepeat] = useState(task.repeatInterval);
   function handleRepeatChange(e: ChangeEvent<HTMLInputElement>) {
     const newRepeat = Number(e.target.value);
+    if (newRepeat < 0) return;
 
     setRepeat(newRepeat);
 
     onChange({
       ...task,
       repeatInterval: newRepeat ? newRepeat : undefined,
-      lastRepeated: newRepeat
-        ? Date.now() - newRepeat * 24 * HOUR_IN_MS
-        : undefined,
     });
   }
   return (
@@ -38,7 +36,6 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           <div className="flex items-center mt-2 gap-2">
             <Input
               type="number"
-              min={0}
               name="repeat-every"
               id="repeat-every"
               value={repeat}

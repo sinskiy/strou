@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { useEffect, useState } from "react";
 import type { HandleChangeTask } from "@/app/tasks/page";
-import { Task } from "@/lib/tasks";
+import { Task, getNextDate } from "@/lib/tasks";
 import { TimePicker } from "./timePicker";
 
 interface TaskDatePicker {
@@ -19,7 +19,10 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
   );
 
   useEffect(() => {
-    onChange({ ...task, dateTime: date });
+    onChange({
+      ...task,
+      dateTime: date?.getTime(),
+    });
   }, [date]);
 
   function handleDateChange(newDate: Date | undefined = undefined) {
@@ -45,6 +48,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           mode="single"
           selected={date ? date : undefined}
           onSelect={handleDateChange}
+          fromDate={new Date()}
           initialFocus
         />
         <TimePicker date={date} setDate={setDate} />

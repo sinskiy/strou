@@ -1,55 +1,16 @@
 import { format } from "date-fns";
 
-export function getFormattedDate(date: string | undefined): string | null {
-  if (!date) return null;
-
+export function getFormattedDate(date: number): string {
   const realDate = new Date(date);
   const relative = getRelativeDate(realDate);
-  if (relative) return relative;
 
-  const formattedDate = format(date, "PPP").slice(0, -8);
+  const formattedDate = relative ? relative : format(date, "PPP").slice(0, -8);
 
   if (isAtLastMinute(realDate)) return formattedDate;
 
   const formattedTime = realDate.toTimeString().slice(0, 5);
   const formattedDateTime = `${formattedDate} ${formattedTime}`;
   return formattedDateTime;
-}
-
-export function getFormattedNextDate(
-  dateTime: string,
-  repeatIntervalInDays: number,
-  lastRepeated: number,
-) {
-  const nextDate = getNextDate(dateTime, repeatIntervalInDays, lastRepeated);
-
-  const relative = getRelativeDate(nextDate);
-  const formattedDate = relative
-    ? relative
-    : format(nextDate, "PPP").slice(0, -8);
-  if (isAtStart(nextDate)) return formattedDate;
-
-  const formattedTime = nextDate.toTimeString().slice(0, 5);
-  const formattedDateTime = `${formattedDate} ${formattedTime}`;
-  return formattedDateTime;
-}
-
-export function getNextDate(
-  dateTime: string,
-  repeatIntervalInDays: number,
-  lastRepeated: number,
-) {
-  const realDate = new Date(dateTime);
-  console.log(realDate);
-
-  const nextTime = lastRepeated + repeatIntervalInDays * 24 * HOUR_IN_MS;
-  const nextDate = new Date(nextTime);
-  if (isAtLastMinute(realDate)) {
-    nextDate.setHours(0, 0);
-  } else {
-    nextDate.setHours(realDate.getHours(), realDate.getMinutes());
-  }
-  return nextDate;
 }
 
 function getRelativeDate(

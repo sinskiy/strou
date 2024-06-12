@@ -1,11 +1,30 @@
+import { HOUR_IN_MS } from "./time";
+
 export interface Task {
   id: number;
   title: string;
   checked: boolean;
   tags?: string[];
-  dateTime?: string;
+  dateTime?: number;
   repeatInterval?: number;
-  lastRepeated?: number;
+}
+
+export function getNextDate(task: Task): number | undefined {
+  if (!task.dateTime) {
+    return;
+  }
+
+  if (!task.repeatInterval) {
+    return task.dateTime;
+  }
+
+  const difference = task.repeatInterval * 24 * HOUR_IN_MS;
+  const nextChecked = !task.checked;
+  if (nextChecked) {
+    return task.dateTime + difference;
+  } else {
+    return task.dateTime - difference;
+  }
 }
 
 export function getNextID(tasks: Task[]): number {

@@ -1,5 +1,5 @@
 import { Checkbox } from "./ui/checkbox";
-import type { Task } from "@/lib/tasks";
+import { getNextDate, type Task } from "@/lib/tasks";
 import {
   HandleChangeTask,
   HandleCurrentTaskChange,
@@ -9,12 +9,7 @@ import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import TaskTags from "./taskTags";
-import {
-  getFormattedDate,
-  getFormattedNextDate,
-  getNextDate,
-  isBeforeNow,
-} from "@/lib/time";
+import { HOUR_IN_MS, getFormattedDate, isBeforeNow } from "@/lib/time";
 import { cn } from "@/lib/utils";
 
 interface TaskProps {
@@ -32,19 +27,14 @@ export default function Task({
   onChange,
   onDelete,
 }: TaskProps) {
-  const formattedDate = getFormattedDate(task.dateTime);
+  const formattedDate = task.dateTime ? getFormattedDate(task.dateTime) : null;
 
-  if (
-    task.dateTime &&
-    task.repeatInterval &&
-    task.lastRepeated &&
-    getNextDate(task.dateTime, task.repeatInterval, task.lastRepeated) <
-      new Date()
-  ) {
+  if (task.dateTime && task.repeatInterval && task.dateTime < Date.now()) {
     onChange({
       ...task,
       checked: false,
-      lastRepeated: Date.now(),
+      // TODO: reduce repetition
+      dateTime: task.dateTime + task.repeatInterval * 24 * HOUR_IN_MS,
     });
   }
 
@@ -63,6 +53,8 @@ export default function Task({
             onChange({
               ...task,
               checked: checked as boolean,
+              // TODO: reduce repetition
+              dateTime: getNextDate(task),
             });
           }}
           id={String(task.id)}
@@ -85,30 +77,26 @@ export default function Task({
           />
           {/* TODO: refactor this component */}
           <div className="flex gap-1 mt-1 w-full">
-            {task.dateTime && formattedDate && (
-              <time
-                dateTime={task.dateTime.toString()}
-                className={cn(
-                  {
-                    "border-destructive":
-                      isBeforeNow(task.dateTime.toString()) && !task.checked,
-                  },
-                  "task-tag",
-                )}
-              >
-                {formattedDate}
-              </time>
-            )}
-            {task.dateTime && task.repeatInterval && task.lastRepeated && (
-              <div className="task-tag">
-                next:{" "}
-                {getFormattedNextDate(
-                  task.dateTime,
-                  task.repeatInterval,
-                  task.checked ? Date.now() : task.lastRepeated,
-                )}
-              </div>
-            )}
+            {task.dateTime &&
+              formattedDate &&
+              (task.checked && task.repeatInterval ? (
+                <div className="task-tag">
+                  next: {getFormattedDate(task.dateTime)}
+                </div>
+              ) : (
+                <time
+                  dateTime={new Date(task.dateTime).toString()}
+                  className={cn(
+                    {
+                      "border-destructive":
+                        isBeforeNow(task.dateTime.toString()) && !task.checked,
+                    },
+                    "task-tag",
+                  )}
+                >
+                  {formattedDate}
+                </time>
+              ))}
             {task.tags && <TaskTags tags={task.tags} />}
           </div>
         </div>
