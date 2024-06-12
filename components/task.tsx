@@ -31,14 +31,13 @@ export default function Task({
 
   const [tags, setTags] = useState<string[]>([]);
   useEffect(() => {
-    // reduce duplication
     const savedTags = localStorage.tags;
     const parsedTags = savedTags ? JSON.parse(savedTags) : initialTags;
     setTags(parsedTags);
   }, []);
   return (
     <article className="flex py-4 justify-between items-center w-full">
-      <div className="flex gap-4">
+      <div className={cn("flex gap-4", { "opacity-50": task.checked })}>
         <Checkbox
           checked={task.checked}
           onCheckedChange={(checked) => {
@@ -51,6 +50,9 @@ export default function Task({
         />
         <div>
           <input
+            className={cn({
+              "line-through": task.checked,
+            })}
             name={`${task.title}-input`}
             id={`${task.title}-input`}
             type="text"
@@ -62,13 +64,15 @@ export default function Task({
               });
             }}
           />
+          {/* TODO: refactor this component */}
           <div className="flex gap-1 mt-1 w-full">
             {task.dateTime && formattedDate && (
               <time
                 dateTime={task.dateTime.toString()}
                 className={cn(
                   {
-                    "border-destructive": isBeforeNow(task.dateTime.toString()),
+                    "border-destructive":
+                      isBeforeNow(task.dateTime.toString()) && !task.checked,
                   },
                   "task-tag",
                 )}
