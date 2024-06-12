@@ -18,6 +18,7 @@ export default function AddTask({
     e.preventDefault();
 
     handleAddTask(newTaskTitle);
+    setNewTaskTitle("");
   }
   return (
     <form method="get" className="flex gap-4" onSubmit={handleSubmit}>
