@@ -6,13 +6,13 @@ export interface Task {
   tags?: string[];
 }
 
-export function getNextID(tasks: Task[]) {
+export function getNextID(tasks: Task[]): number {
   if (!tasks.length) return 0;
 
   return tasks.reduce((biggest, curr) => Math.max(biggest, curr.id), 0) + 1;
 }
 
-export function filterTasksTags(tasks: Task[], newTags: string[]) {
+export function filterTasksTags(tasks: Task[], newTags: string[]): Task[] {
   return tasks.map((task) => {
     if (!task.tags) return task;
 

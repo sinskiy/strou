@@ -18,7 +18,7 @@ export const initialTimerModesTime: TimerMode[] = [
   },
 ];
 
-export function getTimerModeID(timerMode: TimerMode) {
+export function getTimerModeID(timerMode: TimerMode): string {
   return `${timerMode.id}-${timerMode.name}-${timerMode.time}`;
 }
 
