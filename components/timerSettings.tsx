@@ -18,7 +18,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { MINUTE_IN_MS, TimerMode, getNextID, getTimerModeID } from "@/lib/time";
+import { MINUTE_IN_MS } from "@/lib/time";
+import { TimerMode, getNextID, getTimerModeID } from "@/lib/timerModes";
 
 interface TimerSettingsProps {
   timerModesTime: TimerMode[];

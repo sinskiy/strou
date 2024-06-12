@@ -6,13 +6,12 @@ import Timestamp from "@/components/timestamp";
 import { useEffect, useState } from "react";
 import {
   Timestamp as ITimestamp,
-  TimerMode,
-  initialTimerModesTime,
   msToHours,
   msToMinutes,
   msToSeconds,
 } from "@/lib/time";
 import TimerSettings from "@/components/timerSettings";
+import { initialTimerModesTime, TimerMode } from "@/lib/timerModes";
 
 const timerStates = ["paused", "unpaused", "finished"] as const;
 export type TimerState = (typeof timerStates)[number];
