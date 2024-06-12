@@ -46,7 +46,7 @@ export default function TaskControls({
           >
             {current ? "remove current" : "make current"}
           </Button>
-          <TaskRepeat />
+          <TaskRepeat task={task} onChange={onChange} />
           <TaskDatePicker task={task} onChange={onChange} />
           <Button variant="ghost" onClick={() => onDelete(task.id)}>
             delete task

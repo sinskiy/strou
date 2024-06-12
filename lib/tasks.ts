@@ -2,8 +2,11 @@ export interface Task {
   id: number;
   title: string;
   checked: boolean;
-  dateTime?: Date | string;
   tags?: string[];
+  // TODO: change to string only
+  dateTime?: Date | string;
+  repeatInterval?: number;
+  lastRepeated?: number;
 }
 
 export function getNextID(tasks: Task[]): number {
