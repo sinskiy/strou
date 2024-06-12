@@ -14,8 +14,8 @@ export function TimePicker({ date, setDate }: TimePickerProps) {
   const hourRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="flex items-end gap-2 m-3">
-      <div className="grid gap-1 text-center">
+    <div className="flex items-end gap-2 m-3 text-center">
+      <div className="flex flex-col gap-1">
         <Label htmlFor="hours" className="text-xs">
           Hours
         </Label>
@@ -27,7 +27,7 @@ export function TimePicker({ date, setDate }: TimePickerProps) {
           onRightFocus={() => minuteRef.current?.focus()}
         />
       </div>
-      <div className="grid gap-1 text-center">
+      <div className="flex flex-col gap-1">
         <Label htmlFor="minutes" className="text-xs">
           Minutes
         </Label>

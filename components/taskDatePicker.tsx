@@ -25,8 +25,12 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
   function handleDateChange(newDate: Date | undefined = undefined) {
     if (!date) {
       newDate?.setHours(23, 59);
+    } else {
+      const prevHours = date.getHours();
+      const prevMinutes = date.getMinutes();
+      newDate?.setHours(prevHours);
+      newDate?.setMinutes(prevMinutes);
     }
-
     setDate(newDate);
   }
   return (
@@ -36,7 +40,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           {date ? format(date, "PPP") : <span>pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-min p-0">
         <Calendar
           mode="single"
           selected={date ? date : undefined}
