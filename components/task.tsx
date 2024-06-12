@@ -8,9 +8,9 @@ import {
 import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
-import TaskTags from "./taskTags";
-import { HOUR_IN_MS, getFormattedDate, isBeforeNow } from "@/lib/time";
+import { getFormattedDate } from "@/lib/time";
 import { cn } from "@/lib/utils";
+import TimeAndTags from "./timeAndTags";
 
 interface TaskProps {
   task: Task;
@@ -79,29 +79,7 @@ export default function Task({
             }}
           />
           {/* TODO: refactor this component */}
-          <div className="flex gap-1 mt-1 w-full">
-            {task.dateTime &&
-              formattedDate &&
-              (task.checked && task.repeatInterval ? (
-                <div className="task-tag">
-                  next: {getFormattedDate(task.dateTime)}
-                </div>
-              ) : (
-                <time
-                  dateTime={new Date(task.dateTime).toString()}
-                  className={cn(
-                    {
-                      "border-destructive":
-                        isBeforeNow(task.dateTime.toString()) && !task.checked,
-                    },
-                    "task-tag",
-                  )}
-                >
-                  {formattedDate}
-                </time>
-              ))}
-            {task.tags && <TaskTags tags={task.tags} />}
-          </div>
+          <TimeAndTags task={task} formattedDate={formattedDate} />
         </div>
       </div>
       <TaskControls
