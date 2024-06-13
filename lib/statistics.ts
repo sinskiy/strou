@@ -3,6 +3,7 @@ import { Task } from "./tasks";
 export interface Statistic {
   type: "added" | "deleted" | "checked" | "changedTitle";
   id: number;
+  date: number;
   originalTitle?: string;
   originalChecked?: boolean;
   title: string;
@@ -34,12 +35,12 @@ export function handleTaskChangeStatisticCollection(
   const oldTask = tasks.find((task) => task.id === newTask.id);
   if (!oldTask) return;
 
+  const ID = getLastStatisticID(statistics);
   if (newTask.checked !== oldTask.checked) {
-    const ID = getLastStatisticID(statistics);
-
     statistics.push({
       type: "checked",
-      id: getLastStatisticID(statistics),
+      id: ID,
+      date: Date.now(),
       title: newTask.title,
       originalChecked: oldTask.checked,
       checked: newTask.checked,
@@ -48,7 +49,8 @@ export function handleTaskChangeStatisticCollection(
   if (newTask.title !== oldTask.title) {
     statistics.push({
       type: "changedTitle",
-      id: getLastStatisticID(statistics),
+      id: ID,
+      date: Date.now(),
       title: newTask.title,
       originalTitle: oldTask.title,
     });

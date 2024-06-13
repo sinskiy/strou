@@ -1,30 +1,34 @@
 "use client";
 
-import { Statistic } from "@/lib/statistics";
+import StatisticsInterval from "@/components/statisticsInterval";
+import { Statistic as StatisticI } from "@/lib/statistics";
+import { getFormattedDate } from "@/lib/time";
 import { useEffect, useState } from "react";
 
 export default function Statistics() {
-  const [statistics, setStatistics] = useState<null | Statistic[]>(null);
-  const statisticTitle = (statistic: Statistic) => {
-    if (statistic.checked) {
-      return `${statistic.title} was ${statistic.checked ? "checked" : "unchecked"}`;
-    } else if (statistic.originalTitle) {
-      return `${statistic.originalTitle}'s title was changed ${statistic.title}`;
-    }
-  };
+  const [statistics, setStatistics] = useState<null | StatisticI[]>(null);
+  const todayStatistics: StatisticI[] | undefined = statistics?.filter(
+    (statistic) => getFormattedDate(statistic.date).includes("today"),
+  );
+  const yesterdayStatistics: StatisticI[] | undefined = statistics?.filter(
+    (statistic) => getFormattedDate(statistic.date).includes("yesterday"),
+  );
+  const otherStatistics: StatisticI[] | undefined = statistics?.filter(
+    (statistic) =>
+      !todayStatistics?.includes(statistic) &&
+      !yesterdayStatistics?.includes(statistic),
+  );
   useEffect(() => {
-    const savedStatistics: Statistic[] = JSON.parse(
+    const savedStatistics: StatisticI[] = JSON.parse(
       localStorage.statistics ?? "[]",
     );
     setStatistics(savedStatistics);
   }, []);
   return (
     <section className="card">
-      {statistics
-        ? statistics.map((statistic) => (
-            <p key={statistic.id}>{statisticTitle(statistic)}</p>
-          ))
-        : "there is no statistics"}
+      <StatisticsInterval title="today" statistics={todayStatistics} />
+      <StatisticsInterval title="yesterday" statistics={yesterdayStatistics} />
+      <StatisticsInterval title="other date" statistics={otherStatistics} />
     </section>
   );
 }

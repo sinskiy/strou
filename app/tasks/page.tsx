@@ -72,6 +72,7 @@ export default function TasksPage() {
       const newStatistic: Statistic = {
         id: statisticID,
         type: "added",
+        date: Date.now(),
         title: title,
       };
       const newStatistics = saveStatistic(statistics, newStatistic);
@@ -109,6 +110,7 @@ export default function TasksPage() {
         const newStatistic: Statistic = {
           id: statisticID,
           type: "deleted",
+          date: Date.now(),
           title: task.title,
         };
         const newStatistics = saveStatistic(statistics, newStatistic);
