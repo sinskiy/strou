@@ -1,5 +1,5 @@
 import { Task } from "@/lib/tasks";
-import { getFormattedDate, isBeforeNow } from "@/lib/time";
+import { isBeforeNow } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import TaskTags from "./taskTags";
 

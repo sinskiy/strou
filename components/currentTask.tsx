@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { type Task } from "@/lib/tasks";
 import { Skeleton } from "./ui/skeleton";
+import { cn } from "@/lib/utils";
 
 export default function CurrentTask() {
   const [mounted, setMounted] = useState(false);
@@ -38,14 +39,23 @@ export default function CurrentTask() {
       <section className="card flex justify-between items-center gap-4">
         {mounted ? (
           <>
-            <Label className="flex items-center gap-3">
+            <Label
+              className={cn(
+                { "opacity-50": currentTask && currentTask.checked },
+                "flex items-center gap-3",
+              )}
+            >
               <Checkbox
                 checked={currentTask ? currentTask.checked : false}
                 disabled={!currentTask}
                 onCheckedChange={handleTaskCheck}
               />
               {currentTask ? (
-                <p>
+                <p
+                  className={cn({
+                    "line-through": currentTask && currentTask.checked,
+                  })}
+                >
                   <span>{currentTask.title} </span>
                   <span className="opacity-30">is current task</span>
                 </p>

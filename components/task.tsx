@@ -78,7 +78,6 @@ export default function Task({
               });
             }}
           />
-          {/* TODO: refactor this component */}
           <TimeAndTags task={task} formattedDate={formattedDate} />
         </div>
       </div>
