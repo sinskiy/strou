@@ -4,6 +4,12 @@ import AddTask from "@/components/addTask";
 import Tags from "@/components/tags";
 import Tasks from "@/components/tasks";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Statistic,
+  getLastStatisticID,
+  handleTaskChangeStatisticCollection,
+  saveStatistic,
+} from "@/lib/statistics";
 import { initialTags } from "@/lib/tags";
 import { Task, getNextID } from "@/lib/tasks";
 import tasksReducer from "@/lib/tasksReducer";
@@ -28,6 +34,8 @@ export default function TasksPage() {
 
   const [currentTask, setCurrentTask] = useState<null | number>(null);
 
+  const [statistics, setStatistics] = useState<null | Statistic[]>(null);
+
   useEffect(() => {
     setMounted(true);
 
@@ -44,6 +52,11 @@ export default function TasksPage() {
       ? Number(localStorage.currentTask)
       : null;
     setCurrentTask(savedCurrentTask);
+
+    const savedStatistics: Statistic[] = JSON.parse(
+      localStorage.statistics ?? "[]",
+    );
+    setStatistics(savedStatistics);
   }, []);
 
   const handleAddTask: HandleAddTask = (title) => {
@@ -53,6 +66,17 @@ export default function TasksPage() {
       title,
     });
     setNextID(nextID + 1);
+
+    if (statistics) {
+      const statisticID = getLastStatisticID(statistics);
+      const newStatistic: Statistic = {
+        id: statisticID,
+        type: "added",
+        title: title,
+      };
+      const newStatistics = saveStatistic(statistics, newStatistic);
+      newStatistics && setStatistics(newStatistics);
+    }
   };
 
   const handleChangeTasks: HandleChangeTasks = (tasks) => {
@@ -67,9 +91,31 @@ export default function TasksPage() {
       type: "changed",
       task,
     });
+    if (statistics) {
+      const newStatistics = handleTaskChangeStatisticCollection(
+        tasks,
+        task,
+        statistics,
+      );
+      newStatistics && setStatistics(newStatistics);
+    }
   };
 
   const handleDeleteTask: HandleDeleteTask = (id) => {
+    if (statistics) {
+      const task = tasks.find((task) => task.id === id);
+      if (task) {
+        const statisticID = getLastStatisticID(statistics);
+        const newStatistic: Statistic = {
+          id: statisticID,
+          type: "deleted",
+          title: task.title,
+        };
+        const newStatistics = saveStatistic(statistics, newStatistic);
+        newStatistics && setStatistics(newStatistics);
+      }
+    }
+
     dispatch({
       type: "deleted",
       id,

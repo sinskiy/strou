@@ -33,15 +33,14 @@ export default function tasksReducer(
       return initialTasks;
     }
     case "added": {
-      const addedTasks = [
-        ...tasks,
-        {
-          id: action.id,
-          title: action.title,
-          checked: false,
-        },
-      ];
+      const newTask: Task = {
+        id: action.id,
+        title: action.title,
+        checked: false,
+      };
+      const addedTasks = [...tasks, newTask];
       localStorage.tasks = JSON.stringify(addedTasks);
+
       return addedTasks;
     }
     case "changedAll": {
