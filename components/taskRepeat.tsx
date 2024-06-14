@@ -4,6 +4,13 @@ import { Label } from "./ui/label";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTask } from "@/app/tasks/page";
 import { getDefaultTime } from "@/lib/time";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface TaskRepeatProps {
   task: Task;
@@ -12,6 +19,7 @@ interface TaskRepeatProps {
 
 export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
   const [repeat, setRepeat] = useState(task.repeatInterval);
+  const [multiplier, setMultiplier] = useState(1);
   useEffect(() => {
     !task.dateTime && setRepeat(undefined);
   }, [task]);
@@ -23,10 +31,16 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
 
     onChange({
       ...task,
-      repeatInterval: newRepeat ? newRepeat : undefined,
+      repeatInterval: newRepeat ? newRepeat * multiplier : undefined,
       dateTime: task.dateTime ? task.dateTime : getDefaultTime(),
     });
   }
+  function handleMultiplierChange(value: string) {
+    const newMultiplier = Number(value);
+    setMultiplier(newMultiplier);
+    setRepeat(newMultiplier);
+  }
+  const plural = repeat && repeat / multiplier === 1 ? "" : "s";
   return (
     <div className="m-3">
       <Label htmlFor="repeat-every">repeat every</Label>
@@ -35,12 +49,20 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           type="number"
           name="repeat-every"
           id="repeat-every"
-          value={repeat ?? ""}
+          value={Number(repeat) / multiplier ?? ""}
           onChange={handleRepeatChange}
-          className="max-w-24"
+          className="w-24"
           min={0}
         />
-        {repeat === 1 ? "day" : "days"}
+        <Select onValueChange={handleMultiplierChange}>
+          <SelectTrigger>
+            <SelectValue defaultValue="1" placeholder="day" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">day{plural}</SelectItem>
+            <SelectItem value="7">week{plural}</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
