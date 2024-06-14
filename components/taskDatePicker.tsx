@@ -14,16 +14,21 @@ interface TaskDatePicker {
 }
 
 export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
-  const [date, setDate] = useState<Date | undefined>(
-    task.dateTime ? new Date(task.dateTime) : undefined,
-  );
-
-  useEffect(() => {
+  const [date, setDate] = useState<Date | undefined>();
+  function getTaskDate(task: Task) {
+    return task.dateTime ? new Date(task.dateTime) : undefined;
+  }
+  function changeTaskDate(date: Date | undefined) {
+    const dateTime = date?.getTime();
     onChange({
       ...task,
-      dateTime: date?.getTime(),
+      dateTime: dateTime,
+      repeatInterval: dateTime ? task.repeatInterval : undefined,
     });
-  }, [date]);
+  }
+  useEffect(() => {
+    setDate(getTaskDate(task));
+  }, [task]);
 
   function handleDateChange(newDate: Date | undefined = undefined) {
     if (!date) {
@@ -34,7 +39,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
       newDate?.setHours(prevHours);
       newDate?.setMinutes(prevMinutes);
     }
-    setDate(newDate);
+    changeTaskDate(newDate);
   }
   return (
     <Popover>
@@ -51,7 +56,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           fromDate={new Date()}
           initialFocus
         />
-        <TimePicker date={date} setDate={setDate} />
+        <TimePicker date={date} setDate={changeTaskDate} />
         <TaskRepeat task={task} onChange={onChange} />
       </PopoverContent>
     </Popover>

@@ -1,8 +1,6 @@
-import { ChangeEvent, useState } from "react";
-import { Button } from "./ui/button";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Task } from "@/lib/tasks";
 import { HandleChangeTask } from "@/app/tasks/page";
 import { getDefaultTime } from "@/lib/time";
@@ -14,6 +12,9 @@ interface TaskRepeatProps {
 
 export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
   const [repeat, setRepeat] = useState(task.repeatInterval);
+  useEffect(() => {
+    !task.dateTime && setRepeat(undefined);
+  }, [task]);
   function handleRepeatChange(e: ChangeEvent<HTMLInputElement>) {
     const newRepeat = Number(e.target.value);
     if (newRepeat < 0) return;
@@ -34,7 +35,7 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           type="number"
           name="repeat-every"
           id="repeat-every"
-          value={repeat}
+          value={repeat ?? ""}
           onChange={handleRepeatChange}
           className="w-24"
           min={0}
