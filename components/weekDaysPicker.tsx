@@ -1,6 +1,6 @@
 import { HandleChangeTask } from "@/app/tasks/page";
 import { Task } from "@/lib/tasks";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface WeekDaysPickerProps {
   task: Task;
@@ -38,6 +38,7 @@ export default function WeekDaysPicker({
               id={day}
               value={i + 1}
               onChange={handleWeekDaysChange}
+              checked={task.weekDays?.includes(i + 1)}
               className="absolute inset-0 opacity-0 peer"
             />
             <label
