@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import NavLink from "./ui/navLink";
 
-export const links = ["timer", "tasks", "statistics"] as const;
+export const links = ["timer", "tasks"] as const;
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,6 +16,6 @@ export default function Header() {
     );
   });
   return (
-    <header className="flex justify-between w-full">{navLinksList}</header>
+    <header className="flex justify-center gap-8 w-full">{navLinksList}</header>
   );
 }
