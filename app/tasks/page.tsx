@@ -83,7 +83,7 @@ export default function TasksPage() {
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
-    <section className="card space-y-4 min-w-[32rem]">
+    <section className="card space-y-4 w-fit">
       {mounted ? (
         <Tags
           tasks={tasks}

@@ -37,7 +37,7 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           id="repeat-every"
           value={repeat ?? ""}
           onChange={handleRepeatChange}
-          className="w-24"
+          className="max-w-24"
           min={0}
         />
         {repeat === 1 ? "day" : "days"}

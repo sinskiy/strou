@@ -177,7 +177,7 @@ export default function Timer() {
   }
   return (
     <>
-      <section className="card w-96 text-center">
+      <section className="card w-fit text-center">
         <div className="flex justify-between items-center relative mb-4">
           <p className="opacity-50 w-full">{timerModesTime[timerMode].name}</p>
           <TimerSettings
