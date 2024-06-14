@@ -44,6 +44,7 @@ export default function Timer() {
 
   useEffect(() => {
     const savedModesTime = localStorage.timerModesTime;
+    console.log(savedModesTime);
     const parsedModesTime = savedModesTime
       ? JSON.parse(savedModesTime)
       : initialTimerModesTime;
@@ -55,16 +56,23 @@ export default function Timer() {
     localStorage.started && setTimeStarted(Number(localStorage.started));
     const savedTimerMode = localStorage.timerMode;
     savedTimerMode && setTimerMode(Number(savedTimerMode));
-    savedTimerMode && setTimerState("paused");
+    const savedTimerState = localStorage.timerState;
+    savedTimerState && setTimerState(savedTimerState);
     const savedPauses = JSON.parse(localStorage.pauses ?? "[]");
     setPauses(savedPauses);
-    const timeLeft = getTimeLeft(
-      savedStarted,
-      parsedModesTime,
-      savedTimerMode,
-      savedPauses,
-    );
-    setTimeLeft(timeLeft);
+    const getSavedTimeLeft = () =>
+      getTimeLeft(savedStarted, parsedModesTime, savedTimerMode, savedPauses);
+    setTimeLeft(getSavedTimeLeft());
+
+    const newInterval =
+      savedStarted &&
+      savedTimerState === "unpaused" &&
+      setInterval(() => setTimeLeft(getSavedTimeLeft()), 1000);
+    newInterval && setIntervalVar(newInterval);
+    return () => {
+      interval && clearInterval(interval);
+      newInterval && clearInterval(newInterval);
+    };
   }, []);
   useEffect(() => {
     if (timeLeft < 0) {
@@ -86,6 +94,7 @@ export default function Timer() {
     }
 
     setTimerState(nextTimerState);
+    localStorage.timerState = nextTimerState;
   }
 
   function handleTimeModeSkip() {
@@ -95,6 +104,7 @@ export default function Timer() {
     setTimerMode(nextTimerMode);
 
     setTimerState("notStarted");
+    localStorage.timerState = "notStarted";
 
     setPauses([]);
     delete localStorage.pauses;
