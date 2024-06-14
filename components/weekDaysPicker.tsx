@@ -3,7 +3,7 @@ interface WeekDaysPickerProps {}
 export default function WeekDaysPicker({}: WeekDaysPickerProps) {
   return (
     <fieldset>
-      <legend className="mb-1 text-sm font-medium">week days</legend>
+      <legend className="mb-2 text-sm font-medium">week days</legend>
       <ul className="flex gap-2">
         {weekDays.map((day) => (
           <li key={day} className="relative flex-1">

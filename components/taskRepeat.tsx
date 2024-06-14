@@ -19,10 +19,14 @@ interface TaskRepeatProps {
 }
 
 export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
-  const [repeat, setRepeat] = useState(task.repeatInterval);
-  const [multiplier, setMultiplier] = useState(1);
+  const [multiplier, setMultiplier] = useState(
+    task.repeatInterval && task.repeatInterval >= 7 ? 7 : 1,
+  );
+  const [repeat, setRepeat] = useState(
+    task.repeatInterval && task.repeatInterval / multiplier,
+  );
   useEffect(() => {
-    !task.dateTime && setRepeat(undefined);
+    !task.repeatInterval && setRepeat(undefined);
   }, [task]);
   function handleRepeatChange(e: ChangeEvent<HTMLInputElement>) {
     const newRepeat = Number(e.target.value);
@@ -56,7 +60,12 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           />
           <Select onValueChange={handleMultiplierChange}>
             <SelectTrigger>
-              <SelectValue defaultValue="1" placeholder="day" />
+              <SelectValue
+                defaultValue="1"
+                placeholder={
+                  multiplier === 7 ? `week${plural}` : `day${plural}`
+                }
+              />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="1">day{plural}</SelectItem>
