@@ -74,7 +74,7 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           </Select>
         </div>
       </div>
-      {multiplier === 7 && <WeekDaysPicker />}
+      {multiplier === 7 && <WeekDaysPicker task={task} onChange={onChange} />}
     </>
   );
 }

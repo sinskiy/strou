@@ -7,6 +7,7 @@ export interface Task {
   tags?: string[];
   dateTime?: number;
   repeatInterval?: number;
+  weekDays?: number[];
 }
 
 export function getNextDate(

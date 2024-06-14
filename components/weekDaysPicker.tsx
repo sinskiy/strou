@@ -1,16 +1,43 @@
-interface WeekDaysPickerProps {}
+import { HandleChangeTask } from "@/app/tasks/page";
+import { Task } from "@/lib/tasks";
+import { ChangeEvent } from "react";
 
-export default function WeekDaysPicker({}: WeekDaysPickerProps) {
+interface WeekDaysPickerProps {
+  task: Task;
+  onChange: HandleChangeTask;
+}
+
+export default function WeekDaysPicker({
+  task,
+  onChange,
+}: WeekDaysPickerProps) {
+  function handleWeekDaysChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value, checked } = e.currentTarget;
+    const weekDay = Number(value);
+    if (checked) {
+      onChange({
+        ...task,
+        weekDays: task.weekDays ? [...task.weekDays, weekDay] : [weekDay],
+      });
+    } else {
+      onChange({
+        ...task,
+        weekDays: task.weekDays?.filter((day) => day !== weekDay),
+      });
+    }
+  }
   return (
     <fieldset>
       <legend className="mb-2 text-sm font-medium">week days</legend>
       <ul className="flex gap-2">
-        {weekDays.map((day) => (
+        {weekDays.map((day, i) => (
           <li key={day} className="relative flex-1">
             <input
               type="checkbox"
               name={day}
               id={day}
+              value={i + 1}
+              onChange={handleWeekDaysChange}
               className="absolute inset-0 opacity-0 peer"
             />
             <label
