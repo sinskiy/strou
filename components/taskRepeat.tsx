@@ -41,29 +41,31 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
   }
   const plural = repeat && repeat === 1 ? "" : "s";
   return (
-    <div className="space-y-1">
-      <Label htmlFor="repeat-every">repeat every</Label>
-      <div className="flex">
-        <Input
-          type="number"
-          name="repeat-every"
-          id="repeat-every"
-          value={repeat ?? ""}
-          onChange={handleRepeatChange}
-          className="w-24"
-          min={0}
-        />
-        <Select onValueChange={handleMultiplierChange}>
-          <SelectTrigger>
-            <SelectValue defaultValue="1" placeholder="day" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">day{plural}</SelectItem>
-            <SelectItem value="7">week{plural}</SelectItem>
-          </SelectContent>
-        </Select>
+    <>
+      <div className="space-y-1">
+        <Label htmlFor="repeat-every">repeat every</Label>
+        <div className="flex gap-2">
+          <Input
+            type="number"
+            name="repeat-every"
+            id="repeat-every"
+            value={repeat ?? ""}
+            onChange={handleRepeatChange}
+            className="w-24"
+            min={0}
+          />
+          <Select onValueChange={handleMultiplierChange}>
+            <SelectTrigger>
+              <SelectValue defaultValue="1" placeholder="day" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">day{plural}</SelectItem>
+              <SelectItem value="7">week{plural}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       {multiplier === 7 && <WeekDaysPicker />}
-    </div>
+    </>
   );
 }
