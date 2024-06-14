@@ -24,6 +24,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
       ...task,
       dateTime: dateTime,
       repeatInterval: dateTime ? task.repeatInterval : undefined,
+      weekDays: dateTime ? task.weekDays : undefined,
     });
   }
   useEffect(() => {

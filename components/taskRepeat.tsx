@@ -40,8 +40,14 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
       dateTime: task.dateTime ? task.dateTime : getDefaultTime(),
     });
   }
-  function handleMultiplierChange(multiplier: string) {
-    setMultiplier(Number(multiplier));
+  function handleMultiplierChange(value: string) {
+    const multiplier = Number(value);
+    setMultiplier(multiplier);
+
+    onChange({
+      ...task,
+      repeatInterval: repeat && multiplier * repeat,
+    });
   }
   const plural = repeat && repeat === 1 ? "" : "s";
   return (

@@ -76,3 +76,13 @@ export const formatTimeUnit: UnitToFormatted = (timeUnit) =>
 export const SECOND = 1000;
 export const MINUTE_IN_MS = SECOND * 60;
 export const HOUR_IN_MS = MINUTE_IN_MS * 60;
+
+export const WEEK_DAYS = [
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+  "sun",
+] as const;

@@ -1,4 +1,4 @@
-import { HOUR_IN_MS } from "./time";
+import { HOUR_IN_MS, getFormattedDate } from "./time";
 
 export interface Task {
   id: number;
@@ -8,6 +8,16 @@ export interface Task {
   dateTime?: number;
   repeatInterval?: number;
   weekDays?: number[];
+}
+
+export function getNeededDate(task: Task): null | string {
+  if (!task.dateTime) return null;
+
+  if (task.weekDays && task.weekDays.length && task.repeatInterval) {
+    return getFormattedDate(getNextDate(task, true) ?? task.dateTime);
+  } else {
+    return getFormattedDate(task.dateTime);
+  }
 }
 
 export function getNextDate(
@@ -22,12 +32,43 @@ export function getNextDate(
     return task.dateTime;
   }
 
-  const difference = task.repeatInterval * 24 * HOUR_IN_MS;
   const add = addDifference ?? !task.checked;
-  if (add) {
-    return task.dateTime + difference;
-  } else {
-    return task.dateTime - difference;
+  return task.dateTime + getDifference(add);
+
+  function getDifference(add: boolean): number {
+    if (!task.dateTime || !task.repeatInterval) return 0;
+
+    if (task.weekDays && task.weekDays.length) {
+      const taskDate = new Date(task.dateTime);
+      const taskWeekDay = taskDate.getDay();
+      const nextWeekDays = task.weekDays.filter((day) =>
+        add ? day > taskWeekDay : day < taskWeekDay,
+      );
+      if (add) {
+        const nextWeekDay = nextWeekDays.length
+          ? Math.min(...nextWeekDays)
+          : Math.min(...task.weekDays);
+        const weekDayDistance = nextWeekDays.length
+          ? nextWeekDay - taskWeekDay
+          : 7 - taskWeekDay + nextWeekDay;
+        const intervalInMs =
+          (weekDayDistance + task.repeatInterval - 7) * 24 * HOUR_IN_MS;
+        return intervalInMs;
+      } else {
+        const prevWeekDay = nextWeekDays.length
+          ? Math.max(...nextWeekDays)
+          : Math.max(...task.weekDays);
+        const weekDayDistance = nextWeekDays.length
+          ? taskWeekDay - prevWeekDay
+          : 7 + taskWeekDay - prevWeekDay;
+        const intervalInMs =
+          (weekDayDistance + task.repeatInterval - 7) * 24 * HOUR_IN_MS;
+        return -intervalInMs;
+      }
+    } else {
+      const intervalInMs = task.repeatInterval * 24 * HOUR_IN_MS;
+      return add ? intervalInMs : -intervalInMs;
+    }
   }
 }
 

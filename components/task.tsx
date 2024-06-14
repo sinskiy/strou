@@ -1,5 +1,5 @@
 import { Checkbox } from "./ui/checkbox";
-import { getNextDate, type Task } from "@/lib/tasks";
+import { getNeededDate, getNextDate, type Task } from "@/lib/tasks";
 import {
   HandleChangeTask,
   HandleCurrentTaskChange,
@@ -27,7 +27,7 @@ export default function Task({
   onChange,
   onDelete,
 }: TaskProps) {
-  const formattedDate = task.dateTime ? getFormattedDate(task.dateTime) : null;
+  const formattedDate = getNeededDate(task);
 
   if (
     task.checked &&
