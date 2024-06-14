@@ -27,26 +27,20 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
     });
   }
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost">repeat every</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-fit">
-        <Label>
-          repeat every
-          <div className="flex items-center mt-2 gap-2">
-            <Input
-              type="number"
-              name="repeat-every"
-              id="repeat-every"
-              value={repeat}
-              onChange={handleRepeatChange}
-              className="w-24"
-            />
-            day
-          </div>
-        </Label>
-      </PopoverContent>
-    </Popover>
+    <div className="m-3">
+      <Label htmlFor="repeat-every">repeat every</Label>
+      <div className="flex items-center mt-2 gap-2">
+        <Input
+          type="number"
+          name="repeat-every"
+          id="repeat-every"
+          value={repeat}
+          onChange={handleRepeatChange}
+          className="w-24"
+          min={0}
+        />
+        {repeat === 1 ? "day" : "days"}
+      </div>
+    </div>
   );
 }

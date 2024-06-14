@@ -1,12 +1,12 @@
 import { format } from "date-fns";
-import { TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { useEffect, useState } from "react";
 import type { HandleChangeTask } from "@/app/tasks/page";
-import { Task, getNextDate } from "@/lib/tasks";
+import { Task } from "@/lib/tasks";
 import { TimePicker } from "./timePicker";
+import TaskRepeat from "./taskRepeat";
 
 interface TaskDatePicker {
   task: Task;
@@ -52,6 +52,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           initialFocus
         />
         <TimePicker date={date} setDate={setDate} />
+        <TaskRepeat task={task} onChange={onChange} />
       </PopoverContent>
     </Popover>
   );
