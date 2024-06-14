@@ -44,7 +44,6 @@ export default function Timer() {
 
   useEffect(() => {
     const savedModesTime = localStorage.timerModesTime;
-    console.log(savedModesTime);
     const parsedModesTime = savedModesTime
       ? JSON.parse(savedModesTime)
       : initialTimerModesTime;

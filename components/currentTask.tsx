@@ -34,6 +34,10 @@ export default function CurrentTask() {
     setTasks(tasksWithChecked);
     localStorage.tasks = JSON.stringify(tasksWithChecked);
   }
+  function handleRemoveCurrentTask() {
+    delete localStorage.currentTask;
+    setCurrentTaskIndex(-1);
+  }
   return (
     <>
       <section className="card flex justify-between items-center gap-4">
@@ -45,11 +49,13 @@ export default function CurrentTask() {
                 "flex items-center gap-3",
               )}
             >
-              <Checkbox
-                checked={currentTask ? currentTask.checked : false}
-                disabled={!currentTask}
-                onCheckedChange={handleTaskCheck}
-              />
+              {currentTask && (
+                <Checkbox
+                  checked={currentTask ? currentTask.checked : false}
+                  disabled={!currentTask}
+                  onCheckedChange={handleTaskCheck}
+                />
+              )}
               {currentTask ? (
                 <p
                   className={cn({
@@ -64,8 +70,17 @@ export default function CurrentTask() {
               )}
             </Label>
             <Button variant="secondary" size="sm" asChild>
-              <Link href="/tasks">change</Link>
+              <Link href="/tasks">{currentTask ? "change" : "select"}</Link>
             </Button>
+            {currentTask && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleRemoveCurrentTask}
+              >
+                remove
+              </Button>
+            )}
           </>
         ) : (
           <Skeleton className="w-full h-9" />
