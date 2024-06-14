@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import WeekDaysPicker from "./weekDaysPicker";
 
 interface TaskRepeatProps {
   task: Task;
@@ -35,21 +36,19 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
       dateTime: task.dateTime ? task.dateTime : getDefaultTime(),
     });
   }
-  function handleMultiplierChange(value: string) {
-    const newMultiplier = Number(value);
-    setMultiplier(newMultiplier);
-    setRepeat(newMultiplier);
+  function handleMultiplierChange(multiplier: string) {
+    setMultiplier(Number(multiplier));
   }
-  const plural = repeat && repeat / multiplier === 1 ? "" : "s";
+  const plural = repeat && repeat === 1 ? "" : "s";
   return (
-    <div className="m-3">
+    <div className="space-y-1">
       <Label htmlFor="repeat-every">repeat every</Label>
-      <div className="flex items-center mt-2 gap-2">
+      <div className="flex">
         <Input
           type="number"
           name="repeat-every"
           id="repeat-every"
-          value={Number(repeat) / multiplier ?? ""}
+          value={repeat ?? ""}
           onChange={handleRepeatChange}
           className="w-24"
           min={0}
@@ -64,6 +63,7 @@ export default function TaskRepeat({ task, onChange }: TaskRepeatProps) {
           </SelectContent>
         </Select>
       </div>
+      {multiplier === 7 && <WeekDaysPicker />}
     </div>
   );
 }

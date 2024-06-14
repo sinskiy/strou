@@ -48,7 +48,7 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           {date ? format(date, "PPP") : <span>pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-min p-0">
+      <PopoverContent className="w-min">
         <Calendar
           mode="single"
           selected={date ? date : undefined}
@@ -56,8 +56,10 @@ export default function TaskDatePicker({ task, onChange }: TaskDatePicker) {
           fromDate={new Date()}
           initialFocus
         />
-        <TimePicker date={date} setDate={changeTaskDate} />
-        <TaskRepeat task={task} onChange={onChange} />
+        <div className="p-3 space-y-3">
+          <TimePicker date={date} setDate={changeTaskDate} />
+          <TaskRepeat task={task} onChange={onChange} />
+        </div>
       </PopoverContent>
     </Popover>
   );
