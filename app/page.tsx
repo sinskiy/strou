@@ -13,7 +13,7 @@ import {
 import TimerSettings from "@/components/timerSettings";
 import { initialTimerModesTime, TimerMode } from "@/lib/timerModes";
 
-const timerStates = ["paused", "unpaused", "finished"] as const;
+const timerStates = ["notStarted", "paused", "unpaused"] as const;
 export type TimerState = (typeof timerStates)[number];
 
 interface Pause {
@@ -22,9 +22,9 @@ interface Pause {
 }
 
 export default function Timer() {
-  const [timerState, setTimerState] = useState<TimerState>("paused");
+  const [timerState, setTimerState] = useState<TimerState>("notStarted");
   const nextTimerState: TimerState =
-    timerState === "paused" ? "unpaused" : "paused";
+    timerState !== "unpaused" ? "unpaused" : "paused";
 
   const [timerModesTime, setTimerModesTime] = useState(initialTimerModesTime);
   const [timerMode, setTimerMode] = useState(0);
@@ -49,7 +49,22 @@ export default function Timer() {
       : initialTimerModesTime;
     setTimerModesTime(parsedModesTime);
 
-    setTimeLeft(getTimeLeft(Date.now(), parsedModesTime));
+    const savedStarted = localStorage.started
+      ? Number(localStorage.started)
+      : Date.now();
+    localStorage.started && setTimeStarted(Number(localStorage.started));
+    const savedTimerMode = localStorage.timerMode;
+    savedTimerMode && setTimerMode(Number(savedTimerMode));
+    savedTimerMode && setTimerState("paused");
+    const savedPauses = JSON.parse(localStorage.pauses ?? "[]");
+    setPauses(savedPauses);
+    const timeLeft = getTimeLeft(
+      savedStarted,
+      parsedModesTime,
+      savedTimerMode,
+      savedPauses,
+    );
+    setTimeLeft(timeLeft);
   }, []);
   useEffect(() => {
     if (timeLeft < 0) {
@@ -60,12 +75,6 @@ export default function Timer() {
   const [interval, setIntervalVar] = useState<null | NodeJS.Timeout>(null);
   function handleTimerStart() {
     interval && clearInterval(interval);
-
-    if (timerState === "finished") {
-      setTimeStarted(null);
-
-      setTimerMode(nextTimerMode);
-    }
 
     if (nextTimerState === "unpaused") {
       startTimer();
@@ -82,12 +91,15 @@ export default function Timer() {
   function handleTimeModeSkip() {
     interval && clearInterval(interval);
 
+    localStorage.timerMode = nextTimerMode;
     setTimerMode(nextTimerMode);
 
-    setTimerState("paused");
+    setTimerState("notStarted");
 
     setPauses([]);
+    delete localStorage.pauses;
     setTimeStarted(null);
+    delete localStorage.started;
 
     setTimeLeft(timerModesTime[nextTimerMode].time);
   }
@@ -95,6 +107,7 @@ export default function Timer() {
   function startTimer() {
     const newStarted = timeStarted === null ? Date.now() : timeStarted;
     setTimeStarted(newStarted);
+    localStorage.started = newStarted;
 
     const newInterval = setInterval(
       () => handleTimerInterval(newStarted),
@@ -104,37 +117,49 @@ export default function Timer() {
   }
 
   function addPause() {
-    const newPause = {
-      start: Date.now(),
-      end: undefined,
-    };
-    setPauses([...pauses, newPause]);
+    const newPauses = [
+      ...pauses,
+      {
+        start: Date.now(),
+        end: undefined,
+      },
+    ];
+    setPauses(newPauses);
+    localStorage.pauses = JSON.stringify(newPauses);
   }
   function setLastPauseEnd() {
     const lastPause = pauses.at(-1);
     if (!lastPause) return;
 
-    lastPause.end = Date.now();
+    lastPause.end = lastPause.end ?? Date.now();
     setPauses(pauses);
+    localStorage.pauses = JSON.stringify(pauses);
   }
 
-  function handleTimerInterval(newStarted: number) {
-    const newTimeLeft = getTimeLeft(newStarted, timerModesTime);
+  function handleTimerInterval(newStarted: number, newModesTime?: TimerMode[]) {
+    const newTimeLeft = getTimeLeft(newStarted, newModesTime ?? timerModesTime);
     setTimeLeft(newTimeLeft);
   }
 
-  function getTimeLeft(newStarted: number, newTimerModesTime: TimerMode[]) {
-    const timePaused = getTimePaused();
+  function getTimeLeft(
+    newStarted: number,
+    newTimerModesTime: TimerMode[],
+    newTimerMode?: number,
+    newPauses?: Pause[],
+  ) {
+    const timePaused = getTimePaused(newPauses);
 
     const timerEndsAt =
-      newStarted + newTimerModesTime[timerMode].time + timePaused;
+      newStarted +
+      newTimerModesTime[newTimerMode ?? timerMode].time +
+      timePaused;
 
     const newTimeLeft = timerEndsAt - Date.now();
     return newTimeLeft;
   }
 
-  function getTimePaused() {
-    const pausesTime = pauses.reduce(
+  function getTimePaused(newPauses?: Pause[]) {
+    const pausesTime = (newPauses ?? pauses).reduce(
       (acc, curr) =>
         curr.end ? acc + curr.end - curr.start : acc + Date.now() - curr.start,
       0,
