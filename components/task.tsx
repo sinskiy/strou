@@ -1,5 +1,5 @@
 import { Checkbox } from "./ui/checkbox";
-import { getNeededDate, getNextDate, type Task } from "@/lib/tasks";
+import { getNeededDate, getNextDate, type Task as TaskI } from "@/lib/tasks";
 import {
   HandleChangeTask,
   HandleCurrentTaskChange,
@@ -12,17 +12,17 @@ import { cn } from "@/lib/utils";
 import TimeAndTags from "./timeAndTags";
 
 interface TaskProps {
-  task: Task;
-  current: boolean;
+  task: TaskI;
+  currentTask: number | null;
   onCurrentTaskChange: HandleCurrentTaskChange;
   onChange: HandleChangeTask;
   onDelete: HandleDeleteTask;
-  childrenTasks: Task[];
+  childrenTasks: TaskI[];
 }
 
 export default function Task({
   task,
-  current,
+  currentTask,
   onCurrentTaskChange,
   onChange,
   onDelete,
@@ -86,7 +86,7 @@ export default function Task({
         <TaskControls
           task={task}
           tags={tags}
-          current={current}
+          current={currentTask === task.id}
           onChange={onChange}
           onCurrentTaskChange={onCurrentTaskChange}
           onDelete={onDelete}
@@ -97,8 +97,7 @@ export default function Task({
           <li key={childrenTask.id}>
             <Task
               task={childrenTask}
-              // TODO: fix current
-              current={false}
+              currentTask={currentTask}
               childrenTasks={[]}
               onChange={onChange}
               onCurrentTaskChange={onCurrentTaskChange}

@@ -42,7 +42,7 @@ export default function Tasks({
     <Task
       key={task.id}
       task={task}
-      current={currentTask === task.id}
+      currentTask={currentTask}
       onChange={onChangeTask}
       onDelete={onDeleteTask}
       onCurrentTaskChange={onCurrentTaskChange}
