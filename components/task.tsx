@@ -17,6 +17,7 @@ interface TaskProps {
   onCurrentTaskChange: HandleCurrentTaskChange;
   onChange: HandleChangeTask;
   onDelete: HandleDeleteTask;
+  childrenTasks: Task[];
 }
 
 export default function Task({
@@ -25,6 +26,7 @@ export default function Task({
   onCurrentTaskChange,
   onChange,
   onDelete,
+  childrenTasks,
 }: TaskProps) {
   const formattedDate = getNeededDate(task);
 
@@ -48,46 +50,63 @@ export default function Task({
     setTags(parsedTags);
   }, []);
   return (
-    <article className="flex py-4 justify-between items-center w-full">
-      <div className={cn("flex gap-4", { "opacity-50": task.checked })}>
-        <Checkbox
-          checked={task.checked}
-          onCheckedChange={(checked) => {
-            onChange({
-              ...task,
-              checked: checked as boolean,
-              dateTime: getNextDate(task),
-            });
-          }}
-          id={String(task.id)}
-        />
-        <div>
-          <input
-            className={cn({
-              "line-through": task.checked,
-            })}
-            name={`${task.title}-input`}
-            id={`${task.title}-input`}
-            type="text"
-            value={task.title}
-            onChange={(e) => {
+    <>
+      <article className="flex py-4 justify-between items-center w-full">
+        <div className={cn("flex gap-4", { "opacity-50": task.checked })}>
+          <Checkbox
+            checked={task.checked}
+            onCheckedChange={(checked) => {
               onChange({
                 ...task,
-                title: e.target.value,
+                checked: checked as boolean,
+                dateTime: getNextDate(task),
               });
             }}
+            id={String(task.id)}
           />
-          <TimeAndTags task={task} formattedDate={formattedDate} />
+          <div>
+            <input
+              className={cn({
+                "line-through": task.checked,
+              })}
+              name={`${task.title}-input`}
+              id={`${task.title}-input`}
+              type="text"
+              value={task.title}
+              onChange={(e) => {
+                onChange({
+                  ...task,
+                  title: e.target.value,
+                });
+              }}
+            />
+            <TimeAndTags task={task} formattedDate={formattedDate} />
+          </div>
         </div>
-      </div>
-      <TaskControls
-        task={task}
-        tags={tags}
-        current={current}
-        onChange={onChange}
-        onCurrentTaskChange={onCurrentTaskChange}
-        onDelete={onDelete}
-      />
-    </article>
+        <TaskControls
+          task={task}
+          tags={tags}
+          current={current}
+          onChange={onChange}
+          onCurrentTaskChange={onCurrentTaskChange}
+          onDelete={onDelete}
+        />
+      </article>
+      <ul className="ml-4">
+        {childrenTasks.map((childrenTask) => (
+          <li key={childrenTask.id}>
+            <Task
+              task={childrenTask}
+              // TODO: fix current
+              current={false}
+              childrenTasks={[]}
+              onChange={onChange}
+              onCurrentTaskChange={onCurrentTaskChange}
+              onDelete={onDelete}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }

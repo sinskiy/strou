@@ -31,10 +31,12 @@ export default function Tasks({
     else if (a.checked && !b.checked) return 1;
     else return -1;
   }); */
-  const filteredTasks = tasks.filter((task) =>
-    selectedTags.length
-      ? task.tags?.some((tag) => selectedTags.includes(tag))
-      : task,
+  const filteredTasks = tasks.filter(
+    (task) =>
+      task.parent === -1 &&
+      (selectedTags.length
+        ? task.tags?.some((tag) => selectedTags.includes(tag))
+        : task),
   );
   const tasksList = filteredTasks.map((task) => (
     <Task
@@ -44,6 +46,7 @@ export default function Tasks({
       onChange={onChangeTask}
       onDelete={onDeleteTask}
       onCurrentTaskChange={onCurrentTaskChange}
+      childrenTasks={tasks.filter((childTask) => childTask.parent === task.id)}
     />
   ));
   return <ul>{tasksList}</ul>;
