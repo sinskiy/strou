@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import TagsSelector from "./tagsSelector";
 import TaskDatePicker from "./taskDatePicker";
-import TaskRepeat from "./taskRepeat";
+import MakeSubTask from "./makeSubTask";
 
 interface TaskControlsProps {
   task: Task;

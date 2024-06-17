@@ -8,7 +8,6 @@ import {
 import TaskControls from "./taskControls";
 import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
-import { getFormattedDate } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import TimeAndTags from "./timeAndTags";
 

@@ -8,6 +8,7 @@ type TasksAction =
       type: "added";
       id: number;
       title: string;
+      parent: number;
     }
   | {
       type: "changedAll";
@@ -38,6 +39,7 @@ export default function tasksReducer(
         {
           id: action.id,
           title: action.title,
+          parent: action.parent,
           checked: false,
         },
       ];

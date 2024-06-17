@@ -5,6 +5,7 @@ export interface Task {
   title: string;
   checked: boolean;
   tags?: string[];
+  parent?: number;
   dateTime?: number;
   repeatInterval?: number;
   weekDays?: number[];

@@ -9,7 +9,7 @@ import { Task, getNextID } from "@/lib/tasks";
 import tasksReducer from "@/lib/tasksReducer";
 import { useEffect, useReducer, useState } from "react";
 
-export type HandleAddTask = (title: string) => void;
+export type HandleAddTask = (title: string, parent: number) => void;
 export type HandleChangeTasks = (tasks: Task[]) => void;
 export type HandleChangeTask = (task: Task) => void;
 export type HandleDeleteTask = (originalIndex: number) => void;
@@ -46,11 +46,12 @@ export default function TasksPage() {
     setCurrentTask(savedCurrentTask);
   }, []);
 
-  const handleAddTask: HandleAddTask = (title) => {
+  const handleAddTask: HandleAddTask = (title, parent) => {
     dispatch({
       type: "added",
       id: nextID,
       title,
+      parent,
     });
     setNextID(nextID + 1);
   };
@@ -81,7 +82,6 @@ export default function TasksPage() {
     localStorage.currentTask = id;
   };
 
-  const [newTaskTitle, setNewTaskTitle] = useState("");
   return (
     <section className="card space-y-4 w-fit">
       {mounted ? (
@@ -96,11 +96,7 @@ export default function TasksPage() {
       ) : (
         <Skeleton className="w-full h-7" />
       )}
-      <AddTask
-        newTaskTitle={newTaskTitle}
-        setNewTaskTitle={setNewTaskTitle}
-        handleAddTask={handleAddTask}
-      />
+      <AddTask tasks={tasks} handleAddTask={handleAddTask} />
       {mounted ? (
         <Tasks
           tasks={tasks}
