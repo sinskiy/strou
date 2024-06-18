@@ -10,6 +10,7 @@ import { initialTags } from "@/lib/tags";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import TimeAndTags from "./timeAndTags";
+import { Input } from "./ui/input";
 
 interface TaskProps {
   task: TaskI;
@@ -65,10 +66,13 @@ export default function Task({
             id={String(task.id)}
           />
           <div>
-            <input
-              className={cn({
-                "line-through": task.checked,
-              })}
+            <Input
+              className={cn(
+                {
+                  "line-through": task.checked,
+                },
+                "bg-transparent border-none p-0 mb-3 h-fit",
+              )}
               name={`${task.title}-input`}
               id={`${task.title}-input`}
               type="text"

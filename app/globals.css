@@ -87,7 +87,7 @@
 
 @layer components {
   .card {
-    @apply bg-card text-card-foreground p-8 rounded-lg my-4 min-w-full;
+    @apply bg-card text-card-foreground p-8 max-sm:px-3 rounded-lg my-4 min-w-full;
   }
 }
 

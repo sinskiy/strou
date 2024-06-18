@@ -51,7 +51,7 @@ export default function Tags({
   }
   return (
     <div className="flex items-center justify-between gap-2">
-      <ul className="flex gap-2">{tagsList}</ul>
+      <ul className="flex gap-2 flex-wrap">{tagsList}</ul>
       <TasksAndTagsSettings
         tasks={tasks}
         setTasks={setTasks}
